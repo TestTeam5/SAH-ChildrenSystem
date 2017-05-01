@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import libs.NewsReader;
+import util.NewsReader;
 
 public class NewsReaderTest {
 	private NewsReader newsreader = new NewsReader("D:/uni/大三下/团开/项目/SAH-ChildrenSystem/src/resources/guangming.xml");
