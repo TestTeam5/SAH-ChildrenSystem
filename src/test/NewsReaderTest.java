@@ -8,7 +8,7 @@ import org.junit.Test;
 import util.NewsReader;
 
 public class NewsReaderTest {
-	private NewsReader newsreader = new NewsReader("D:/uni/大三下/团开/项目/SAH-ChildrenSystem/src/resources/guangming.xml");
+	private NewsReader newsreader = new NewsReader("resource/file/guangming.xml");
 
 	@Before
 	public void setUp() throws Exception {
