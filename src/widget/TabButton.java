@@ -2,12 +2,12 @@ package widget;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -90,4 +90,10 @@ public class TabButton extends JButton{
 			}
 		});
 	}
+	
+	/*public void paint(Graphics g){
+		super.paint(g);
+		g.setColor(Color.WHITE);
+		g.drawLine(0, 0, 0, getHeight()-1);
+	}*/
 }

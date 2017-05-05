@@ -7,6 +7,7 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
@@ -18,13 +19,16 @@ import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.FontUIResource;
 
 import widget.FontAwesome;
+import widget.PageSelectButton;
 import widget.TabButton;
 
 public class MainWindow {
@@ -107,7 +111,7 @@ public class MainWindow {
 		final CardLayout showNewsCardLayout = new CardLayout();
 		showNewsPanel.setLayout(showNewsCardLayout);
 		
-		// 显示新闻节目->新闻列表界面
+		// 显示新闻页面->新闻列表界面
 		JPanel showNewsListPanel = new JPanel();
 		showNewsListPanel.setLayout(new BorderLayout());
 		showNewsPanel.add("新闻列表", showNewsListPanel);
@@ -127,15 +131,15 @@ public class MainWindow {
 				"高校：新农村建设的生力军——华中师大服务新农村侧记",
 				"中国人民公安大学治安系教授王太元：就地解决还是增加留守儿童",
 				"加大经费保障提供重点扶持福建基础教育资源向农村倾斜",
-				"分成十个课题组走访八十三个村安徽大学百名学生撰写“新农村档案”",
-				"“六一”特别寻访留守儿童调查",
-				"留守儿童调查",
-				"儿童电影如何走出困局？"};
+				"分成十个课题组走访八十三个村安徽大学百名学生撰写“新农村档案”"};
 		JList newsList = new JList();
+		Border newsListBorder = new CompoundBorder(new CompoundBorder(BorderFactory.createEmptyBorder(25, 20, 35, 20),
+				BorderFactory.createLineBorder(Color.BLACK, 1)), BorderFactory.createEmptyBorder(15, 25, 20, 25));
+		newsList.setBorder(newsListBorder);
 		newsList.setListData(news);
 		newsList.setFixedCellHeight(25);
-		Border newsListBorder = BorderFactory.createEmptyBorder(20, 20, 20, 20); 
-		newsList.setBorder(newsListBorder);
+//		Border newsListBorder = BorderFactory.createEmptyBorder(20, 20, 20, 20); 
+//		newsList.setBorder(newsListBorder);
 		newsList.setCellRenderer(new DefaultListCellRenderer() {
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
@@ -147,13 +151,13 @@ public class MainWindow {
 		
 		
 		JPanel newsBottomButtons = new JPanel();
-		JButton newsFirstButton = new JButton("首页");
+		JButton newsFirstButton = new PageSelectButton("首页");
 		newsBottomButtons.add(newsFirstButton);
-		JButton newsPreviousButton = new JButton("上一页");
+		JButton newsPreviousButton = new PageSelectButton("上一页");
 		newsBottomButtons.add(newsPreviousButton);
-		JButton newsNextButton = new JButton("下一页");
+		JButton newsNextButton = new PageSelectButton("下一页");
 		newsBottomButtons.add(newsNextButton);
-		JButton newsLastButton = new JButton("尾页");
+		JButton newsLastButton = new PageSelectButton("尾页");
 		newsBottomButtons.add(newsLastButton);
 		showNewsListPanel.add(newsBottomButtons, BorderLayout.SOUTH);
 		
@@ -164,6 +168,7 @@ public class MainWindow {
 		
 		JPanel newsDetailMainTags = new JPanel();
 		newsDetailMainTags.setLayout(new GridLayout(1, 9));
+		newsDetailMainTags.setBackground(Color.WHITE);////
 		JButton newsDetailPaperType = new JButton("报纸类型");
 		newsDetailMainTags.add(newsDetailPaperType);
 		JButton newsDetailNewsType = new JButton("新闻类型");
@@ -229,32 +234,30 @@ public class MainWindow {
 				"高校：新农村建设的生力军——华中师大服务新农村侧记",
 				"中国人民公安大学治安系教授王太元：就地解决还是增加留守儿童",
 				"加大经费保障提供重点扶持福建基础教育资源向农村倾斜",
-				"分成十个课题组走访八十三个村安徽大学百名学生撰写“新农村档案”",
-				"“六一”特别寻访留守儿童调查",
-				"留守儿童调查",
-				"儿童电影如何走出困局？"};
+				"分成十个课题组走访八十三个村安徽大学百名学生撰写“新农村档案”"};
 		JList recycleNewsList = new JList();
 		recycleNewsList.setListData(recycleNews);
 		recycleNewsList.setFixedCellHeight(25);
-		Border recycleListBorder = BorderFactory.createEmptyBorder(20, 20, 20, 20); 
+		Border recycleListBorder = new CompoundBorder(new CompoundBorder(BorderFactory.createEmptyBorder(25, 20, 35, 20),
+				BorderFactory.createLineBorder(Color.BLACK, 1)), BorderFactory.createEmptyBorder(15, 25, 20, 25));
 		recycleNewsList.setBorder(recycleListBorder);
 		recycleNewsList.setCellRenderer(new DefaultListCellRenderer() {
             public void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                g.setColor(Color.black);
+                g.setColor(Color.BLACK);
                 g.drawLine(0, getHeight() - 1, getWidth(), getHeight() - 1);
             }
         });
 		recyclePanel.add(recycleNewsList, BorderLayout.CENTER);
 		
 		JPanel recycleNewsBottomButtons = new JPanel();
-		JButton recycleNewsFirstButton = new JButton("首页");
+		JButton recycleNewsFirstButton = new PageSelectButton("首页");
 		recycleNewsBottomButtons.add(recycleNewsFirstButton);
-		JButton recycleNewsPreviousButton = new JButton("上一页");
+		JButton recycleNewsPreviousButton = new PageSelectButton("上一页");
 		recycleNewsBottomButtons.add(recycleNewsPreviousButton);
-		JButton recycleNewsNextButton = new JButton("下一页");
+		JButton recycleNewsNextButton = new PageSelectButton("下一页");
 		recycleNewsBottomButtons.add(recycleNewsNextButton);
-		JButton recycleNewsLastButton = new JButton("尾页");
+		JButton recycleNewsLastButton = new PageSelectButton("尾页");
 		recycleNewsBottomButtons.add(recycleNewsLastButton);
 		recyclePanel.add(recycleNewsBottomButtons, BorderLayout.SOUTH);
 		
