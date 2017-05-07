@@ -3,6 +3,7 @@ package util;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -15,7 +16,17 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-// 用于读取新闻详细内容，调用 getNewsDetail 方法即可
+import model.NewsTags;
+
+/*
+ * 用于读取新闻各项内容，
+ * 调用 getNewsDetail 方法读取详细内容；
+ * getNewsTags读取标签；
+ * getTitle读取标题;
+ * getDate读取日期;
+ * getLocation读取Location;
+ * getIsDeleted读取是否删除标识;
+ */
 public class NewsReader {
 	File file=null;
 	DocumentBuilder documentBuilder=null;
@@ -38,6 +49,47 @@ public class NewsReader {
 		else{
 			return encoded(encodedContent);
 		}
+	}
+	
+	// 传入新闻ID字符串，返回对应新闻的日期
+	public String getDate(String ID){
+		Node newsNode = getNode(ID);
+		return getNodeContent(newsNode, "Date");
+	}
+	
+	// 传入新闻ID字符串，返回对应新闻的location
+	public String getLocation(String ID){
+		Node newsNode = getNode(ID);
+		return getNodeContent(newsNode, "Location");
+	}
+	
+	// 传入新闻ID字符串，返回对应新闻的删除标识
+	public String getIsDeleted(String ID){
+		Node newsNode = getNode(ID);
+		return getNodeContent(newsNode, "IsDeleted");
+	}
+	
+	// 传入新闻ID字符串，返回对应新闻的标题
+	public String getTitle(String ID){
+		Node newsNode = getNode(ID);
+		return getNodeContent(newsNode, "Title");
+	}
+	
+	// 传入新闻ID字符串，返回对应新闻的新闻标签
+	//标签字段格式为“int String|int String|......”
+	public ArrayList<NewsTags> getNewsTags(String ID){
+		Node newsNode = getNode(ID);
+		String tagString = getNodeContent(newsNode, "TagIts");
+		ArrayList<NewsTags> newsTagsList = new ArrayList<NewsTags>();
+		for(String tagIt: tagString.split("\\|")){
+			int index = tagIt.indexOf(' ');
+			int type = Integer.parseInt(tagIt.substring(0, index));
+			String tag = tagIt.substring(index + 1);
+			NewsTags newsTag = new NewsTags(type, tag);
+			newsTagsList.add(newsTag);
+			NewsTags.addCount(newsTag);
+		}
+		return newsTagsList;
 	}
 	
 	// 返回对应ID新闻的EncodedContent字段
