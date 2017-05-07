@@ -1,7 +1,6 @@
 package widget;
 
 import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,35 +10,36 @@ import java.util.Vector;
 
 import javax.swing.JButton;
 
-public class MainTagsButton extends JButton{
-	static Vector<MainTagsButton> mainTagsButtons = new Vector<>();
-	static MainTagsButton selectedButton = null;
+public class TagButtonGroup {
+	private Vector<JButton> buttons = new Vector<>();
 	
-	public MainTagsButton(String text){
-		super(text);
-		setForeground(Color.WHITE);
-		setBackground(Color.DARK_GRAY);
-		setFocusPainted(false);
-		setBorderPainted(false);
-		setMargin(new Insets(2, 0, 2, 0));
-		mainTagsButtons.add(this);
+	private JButton selectedButton = null;
+	
+	public void add(JButton button){
+		buttons.add(button);
 		
-		this.addActionListener(new ActionListener() {
+		button.setForeground(Color.WHITE);
+		button.setBackground(Color.DARK_GRAY);
+		button.setFocusPainted(false);
+		button.setBorderPainted(false);
+		button.setMargin(new Insets(2, 0, 2, 0));
+		
+		button.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				for(MainTagsButton mainTagsButton: mainTagsButtons){
-					mainTagsButton.setBackground(Color.DARK_GRAY);
-					mainTagsButton.setForeground(Color.WHITE);
+				for(JButton temp: buttons){
+					temp.setBackground(Color.DARK_GRAY);
+					temp.setForeground(Color.WHITE);
 				}
-				selectedButton = (MainTagsButton)e.getSource();
+				selectedButton = (JButton)e.getSource();
 				selectedButton.setBackground(new Color(230, 230, 230));
 				selectedButton.setForeground(Color.BLACK);
 			}
 		});
 		
-		this.addMouseListener(new MouseListener() {
+		button.addMouseListener(new MouseListener() {
 			
 			@Override
 			public void mouseReleased(MouseEvent e) {
@@ -56,7 +56,7 @@ public class MainTagsButton extends JButton{
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
 				if(selectedButton != e.getSource()){
-					MainTagsButton temp = (MainTagsButton)e.getSource();
+					JButton temp = (JButton)e.getSource();
 					temp.setBackground(Color.DARK_GRAY);
 				}
 			}
@@ -65,7 +65,7 @@ public class MainTagsButton extends JButton{
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
 				if(selectedButton != e.getSource()){
-					MainTagsButton temp = (MainTagsButton)e.getSource();
+					JButton temp = (JButton)e.getSource();
 					temp.setBackground(new Color(90, 90, 90));
 				}
 			}
@@ -78,9 +78,25 @@ public class MainTagsButton extends JButton{
 		});
 	}
 	
-	public void paint(Graphics g){
-		super.paint(g);
-		g.setColor(Color.WHITE);
-		g.drawLine(0, 0, 0, getHeight()-1);
+	public JButton get(int index){
+		return buttons.get(index);
+	}
+	
+	public void clearSelection(){
+		selectedButton=null;
+		for(JButton temp: buttons){
+			temp.setBackground(Color.DARK_GRAY);
+			temp.setForeground(Color.WHITE);
+		}
+	}
+	
+	public void select(int index){
+		for(JButton temp: buttons){
+			temp.setBackground(Color.DARK_GRAY);
+			temp.setForeground(Color.WHITE);
+		}
+		selectedButton = buttons.get(index);
+		selectedButton.setBackground(new Color(230, 230, 230));
+		selectedButton.setForeground(Color.BLACK);
 	}
 }
