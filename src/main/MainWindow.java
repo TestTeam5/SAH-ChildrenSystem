@@ -17,8 +17,10 @@ import java.util.Enumeration;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JEditorPane;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -269,13 +271,27 @@ public class MainWindow {
 					for (int j = 0; j < 9; j++) {
 						if (e.getActionCommand().equals(mainTagsText[j])) {
 							newsDetailSubTagsCardLayout.show(newsDetailSubTagsCardPanel, Integer.toString(j));
-							// 清除选中状态
-							newsDetailSubTagsBtnGroup[j].clearSelection();
 						}
 					}
 				}
 			});
 		}
+		
+		// 添加详细新闻内容版面
+		JEditorPane newsContentPane = new JEditorPane();
+		newsContentPane.setBackground(Color.WHITE);
+		newsContentPane.setContentType("text/html");
+		newsContentPane.setEditable(false);
+		//test.setFont(new Font("微软雅黑", Font.CENTER_BASELINE, 20));
+		newsContentPane.setText("<html><body><H1>留守儿童与回家父母手拉手</H1><span>2014-01-29</span>&nbsp;&nbsp;<span>光明日报(数字报)</span><br/><span>06,教科新闻</span><P>信息来源於四川新闻网 / Cited from http://www.newssc.org/<P>□川报集团特派记者 王小玲本报记者 黄泽君<P>【基层即景】<P>小区绿意盎然，地面不见一点垃圾，楼道扶梯干乾净净……11月13日，记者走进成都市锦江区双桂路街道五福桥社区江东民居时，不少居民正围在一起聊天。生活环境改善了，有问题能很快得到解决。居民龙先勇觉得，自从社会管理创新以来，日子越过越舒心了。<P>成立院落党支部、鼓励居民成为志愿者服务社区、实行“以院养院”的物管自治机制……社区党委书记姚艳洪介绍，目前五福桥社区一共成立了11个社会组织，注册志愿者多达1500余名，全部由本社区居民组成，在养老、物管、社区自治等方面为居民提供服务。<P>生活满意度越来越高，生活环境越来越好，这是五福桥社区居民近年来最大的感受。大家希望，能有更多的利好政策倾向基层，倾向社区。<P>【会场连线】<P>嘉宾：李向志 十八大代表、德阳市委书记丁爱谱 十八大代表、攀枝花市东区长寿路街道健康路社区党员<P>畅通社区工作人员成长渠道<P>社区党委书记姚艳洪：希望把人、财、物等资源更多地配置到社区，进一步提高社区工作人员的素质和待遇。<P>李向志：社会管理是个系统工程，在实践中要从城乡社区抓起，夯实基层基础，坚持重心下移、服务下延、工作下沉。作为全国社会管理创新试点城市之一，德阳近两年来做了一些探索，我们将社区人员基本报酬、办公经费纳入财政预算，并建立了自然增长机制。同时，加强社区队伍建设，每个社区居委会都配备了5至9名工作人员，并聘请社区综合服务协管员，招录大学生加入社区管理队伍，加大在社区工作人员中优先发展党员、招录公务员、选拔基层领导干部的工作力度，进一步畅通了社区工作人员的成长渠道。建议国家建立社会管理工作投入保障机制，特别是建立面向基层 “费随事转”的转移支付机制，为加强和创新社会管理提供有力保障。<P>整合辖区资源应有长效机制<P>居民黄家发：现在社区每周都会开展活动，这让我们的社区更加和谐，但有时会出现组织经费不足的情况，希望能有更多资金和政策支持。<P>丁爱谱：十八大报告提出要强化企事业单位、人民团体在社会管理和服务中的职责，引导社会组织健康有序发展，发挥群衆参与社会管理的基础作用。作为一名普通的党员，我在20多年的社区服务工作中，深有同感。目前，尽管我们在整合辖区资源、协调居民参与上做了一些尝试，但是仍然缺乏以制度固定下来的资源整合长效机制。如果能够建立一种社区牵头、辖区企业参与、百姓受益的政策或工作导向，使社区与辖区单位的关系能制度化、规范化，社区的各项社会工作就会更容易开展，效果也会好很多。<P>让群衆在社区就能办好事<P>居民胡延碧：我们希望有更多与民生相关的公共服务，能够深入基层，深入社区。<P>李向志：十八大报告提出要改进政府提供公共服务方式，加强基层社会管理和服务体系建设，增强城乡社区服务功能。我们要坚持把服务群衆作为社区建设的核心和关键，不断完善社区服务体系，切实解决民生问题。一方面要完善政务服务平台，将党务服务、劳动就业、社会保障等服务职能从街道（乡镇）便民服务中心向社区延伸，真正实现群衆在社区就能办所有事。另一方面，也要改进我们的社区服务方式，德阳这两年向社区群衆免费发放服务联系卡，建立困难群衆情况登记制度，社区工作人员定期主动上门探访空巢老人、残疾人、留守儿童等，帮助解决实际困难，我认为这些都是行之有效的办法。<P>（本报北京11月13日电） </P></body></html>");
+		
+		JScrollPane newsDetailContentPanel = new NewsScrollPane(newsContentPane);
+		newsDetailContentPanel.setBackground(Color.WHITE);
+		Border newsDetailContentBorder = new CompoundBorder(BorderFactory.createEmptyBorder(10,0, 0, 0),
+				BorderFactory.createLineBorder(Color.BLACK, 1));
+		newsDetailContentPanel.setBorder(newsDetailContentBorder);
+		showNewsDetailMainPanel.add(newsDetailContentPanel, BorderLayout.CENTER);
+		
 
 		// 统计界面
 		statisticsPanel.setLayout(new BorderLayout());
@@ -397,6 +413,31 @@ public class MainWindow {
 		statisticsFigurePanel.setBackground(Color.WHITE);
 		gb.setConstraints(statisticsFigurePanel, gbc);
 		statisticsPanel.add(statisticsFigurePanel);
+		
+		JPanel statisticsSelectMode = new JPanel();
+		statisticsSelectMode.setLayout(new GridLayout(1, 6));
+		for(int i = 0; i < 4; i++){
+			JPanel temp = new JPanel();
+			temp.setBackground(Color.WHITE);
+			statisticsSelectMode.add(temp);
+		}
+		TagButtonGroup modeSelectGroup = new TagButtonGroup();
+		JButton trendStatistics = new JButton("趋势统计");
+		modeSelectGroup.add(trendStatistics);
+		statisticsSelectMode.add(trendStatistics);
+		JButton tendencyComparison = new JButton("倾向性比较");
+		modeSelectGroup.add(tendencyComparison);
+		statisticsSelectMode.add(tendencyComparison);
+		
+		statisticsFigurePanel.setLayout(new BorderLayout());
+		statisticsFigurePanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+		statisticsFigurePanel.add(statisticsSelectMode, BorderLayout.NORTH);
+		
+		JPanel statisticsFigureContent = new JPanel();
+		statisticsFigureContent.setBackground(Color.WHITE);
+		statisticsFigureContent.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0),
+				BorderFactory.createLineBorder(Color.BLACK)));
+		statisticsFigurePanel.add(statisticsFigureContent, BorderLayout.CENTER);
 
 		// 回收站界面
 		recyclePanel.setLayout(new BorderLayout());
@@ -463,6 +504,8 @@ public class MainWindow {
 					statisticsSubTagsLayout.show(statisticsSubTags, "0");
 					// 清除选中状态
 					statisticsSubTagsBtnGroup[0].clearSelection();
+					// 设置模式选择按钮选中第一个
+					modeSelectGroup.select(0);
 					break;
 				case "回收站":
 					cardLayout.show(pagePanel, "回收站");
@@ -483,6 +526,15 @@ public class MainWindow {
 				if (e.getSource() instanceof JTable) {
 					src = (JTable) e.getSource();
 					showNewsCardLayout.show(showNewsPanel, "新闻详细内容");
+					
+					// 设置主标签默认选中第一个
+					newsDetailMainTagsGroup.select(0);
+					
+					// 设置新闻详细内容滚动条滚动到顶部
+					JScrollBar newsContentScrollBar = newsDetailContentPanel.getVerticalScrollBar();  
+			        if (newsContentScrollBar != null) {  
+			            newsContentScrollBar.setValue(0);  
+			        }
 					// txtInfo.setText( sportType + " : " +
 					// src.getSelectedIndex() + " : " + src.getSelectedValue() +
 					// "\n" );
