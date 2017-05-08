@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ArrayOfNewsData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NewsData>
+        <Title>青少年“身边最让我感动的人”评选揭晓</Title>
+        <Date>2006-01-16</Date>
+        <Location>光明日报</Location>
+        <Type>02,教科文衞</Type>
+        <WordCount>399</WordCount>
+        <ID>news:23lh^200601161410077(S:193916305)</ID>
+    </NewsData>
+    <NewsData>
+        <Title>确保农民工子女享受国家政策</Title>
+        <Date>2006-03-04</Date>
+        <Location>光明日报</Location>
+        <Type>06,两会特刊</Type>
+        <WordCount>724</WordCount>
+        <ID>news:12bc^200603041410010(S:193916305)</ID>
+    </NewsData>
+</ArrayOfNewsData>
