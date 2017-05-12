@@ -1,8 +1,6 @@
 package util;
 
-import java.util.ArrayList;
-
-import model.News;
+import model.NewsList;
 
 /*
  * 用于初始化整个程序及保存修改。
@@ -11,12 +9,21 @@ import model.News;
  */
 
 public class Initializer {
-
-	public ArrayList<News> newsList;
 	
-	/*
-	 * 初始化代码块（待实现）
-	 */
+	NewsList guangming, nanfangdaily, sichuan;
+	XMLReader guangmingreader, nanfangdailyreader, sichuanreader;
+	{
+		guangming = new NewsList();
+		nanfangdaily = new NewsList();
+		sichuan = new NewsList();
+		guangmingreader = new XMLReader("resource/file/guangming.xml");
+		nanfangdailyreader = new XMLReader("resource/file/nanfangdaily.xml");
+		sichuanreader = new XMLReader("resource/file/sichuan.xml");
+		guangming.init(guangmingreader);
+		nanfangdaily.init(nanfangdailyreader);
+		sichuan.init(sichuanreader);
+	}
+	
 	
 	public void saveChanges(){
 		/*
