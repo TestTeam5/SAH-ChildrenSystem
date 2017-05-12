@@ -30,10 +30,17 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.FontUIResource;
 
+import org.jfree.chart.ChartPanel;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.DefaultPieDataset;
+
+import widget.BarChartFactory;
 import widget.FontAwesome;
 import widget.NewsScrollPane;
 import widget.NewsTable;
 import widget.PageSelectButton;
+import widget.PieChartFactory;
+import widget.ShiftButton;
 import widget.TabButton;
 import widget.TagButtonGroup;
 
@@ -430,7 +437,7 @@ public class MainWindow {
 			});
 		}
 
-		// 放置统计图的容器
+		// 统计界面主面板的容器
 		gbc.gridwidth = 8;
 		JPanel statisticsFigurePanel = new JPanel();
 		statisticsFigurePanel.setBackground(Color.WHITE);
@@ -456,11 +463,73 @@ public class MainWindow {
 		statisticsFigurePanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		statisticsFigurePanel.add(statisticsSelectMode, BorderLayout.NORTH);
 		
-		JPanel statisticsFigureContent = new JPanel();
-		statisticsFigureContent.setBackground(Color.WHITE);
-		statisticsFigureContent.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0),
+		// 放置统计图的面板（包括左右按钮）
+		JPanel statisticsFigureLayout = new JPanel();
+		statisticsFigureLayout.setBackground(Color.WHITE);
+		statisticsFigureLayout.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0),
 				BorderFactory.createLineBorder(Color.BLACK)));
-		statisticsFigurePanel.add(statisticsFigureContent, BorderLayout.CENTER);
+		statisticsFigurePanel.add(statisticsFigureLayout, BorderLayout.CENTER);
+		
+		statisticsFigureLayout.setLayout(new BorderLayout());
+		JPanel leftButtonPanel = new JPanel(new GridLayout(3, 1));
+		leftButtonPanel.setBackground(Color.WHITE);
+		JPanel leftTempPanel = new JPanel();
+		leftTempPanel.setBackground(Color.WHITE);
+		leftButtonPanel.add(leftTempPanel);
+		JButton leftButton = new ShiftButton("fa-chevron-left", 20, "");
+		leftButtonPanel.add(leftButton);
+		statisticsFigureLayout.add(leftButtonPanel, BorderLayout.WEST);
+		JPanel rightButtonPanel = new JPanel(new GridLayout(3, 1));
+		rightButtonPanel.setBackground(Color.WHITE);
+		JPanel rightTempPanel = new JPanel();
+		rightTempPanel.setBackground(Color.WHITE);
+		rightButtonPanel.add(rightTempPanel);
+		JButton rightButton = new ShiftButton("fa-chevron-right", 20, "");
+		rightButtonPanel.add(rightButton);
+		statisticsFigureLayout.add(rightButtonPanel, BorderLayout.EAST);
+		
+		JPanel statisticsFigureContent = new JPanel();
+		final CardLayout figureCardLayout = new CardLayout();
+		statisticsFigureContent.setLayout(figureCardLayout);
+		statisticsFigureLayout.add(statisticsFigureContent, BorderLayout.CENTER);
+		
+		// 趋势统计面板
+		JPanel trendStatisticsPanel = new JPanel();
+		trendStatisticsPanel.setLayout(new BorderLayout());
+		statisticsFigureContent.add("趋势统计", trendStatisticsPanel);
+		
+		// 倾向性比较面板
+		JPanel tendencyComparisonPanel = new JPanel();
+		tendencyComparisonPanel.setLayout(new BorderLayout());
+		statisticsFigureContent.add("倾向性比较", tendencyComparisonPanel);
+		
+		// 趋势预测统计图
+		// 创建柱状图数据集对象
+		//创建数据  
+        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();  
+        //数据初始化  
+        barDataset.addValue(1.0, "某报纸", "2014年");  
+        barDataset.addValue(7.0, "某报纸", "2015年");  
+        barDataset.addValue(3.0, "某报纸", "2016年");  
+        
+        String title = "光明日报";
+        BarChartFactory barChartFactory = new BarChartFactory(barDataset, title);
+        ChartPanel barChartPanel = barChartFactory.getBarChartPanel();
+        trendStatisticsPanel.add(barChartPanel, BorderLayout.CENTER);
+		
+		// 倾向性比较统计图
+		// 创建饼形图数据集对象  
+        DefaultPieDataset pieDataset = new DefaultPieDataset();  
+        // 分别图形区域的说明和数据  
+        pieDataset.setValue("积极健康", 100);  
+        pieDataset.setValue("可怜悲惨", 75);  
+        pieDataset.setValue("沐恩幸福", 74);  
+        pieDataset.setValue("问题儿童", 60);  
+        pieDataset.setValue("其他", 50);
+        
+        PieChartFactory pieChartFactory = new PieChartFactory(pieDataset, title);
+        ChartPanel pieChartPanel = pieChartFactory.getPieChartPanel();
+        tendencyComparisonPanel.add(pieChartPanel, BorderLayout.CENTER);
 
 		// 回收站界面
 		recyclePanel.setLayout(new BorderLayout());
@@ -562,6 +631,25 @@ public class MainWindow {
 					// src.getSelectedIndex() + " : " + src.getSelectedValue() +
 					// "\n" );
 				}
+			}
+		});
+		
+		// 设置 趋势统计 和 倾向性比较 按钮点击事件
+		trendStatistics.addActionListener(new ActionListener() {
+					
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				figureCardLayout.show(statisticsFigureContent, "趋势统计");
+			}
+		});
+		
+		tendencyComparison.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				figureCardLayout.show(statisticsFigureContent, "倾向性比较");
 			}
 		});
 	}
