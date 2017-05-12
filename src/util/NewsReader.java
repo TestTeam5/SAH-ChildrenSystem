@@ -3,7 +3,6 @@ package util;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -16,7 +15,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import model.NewsTags;
 
 /*
  * 用于读取新闻各项内容，
@@ -73,23 +71,6 @@ public class NewsReader {
 	public String getTitle(String ID){
 		Node newsNode = getNode(ID);
 		return getNodeContent(newsNode, "Title");
-	}
-	
-	// 传入新闻ID字符串，返回对应新闻的新闻标签
-	//标签字段格式为“int String|int String|......”
-	public ArrayList<NewsTags> getNewsTags(String ID){
-		Node newsNode = getNode(ID);
-		String tagString = getNodeContent(newsNode, "TagIts");
-		ArrayList<NewsTags> newsTagsList = new ArrayList<NewsTags>();
-		for(String tagIt: tagString.split("\\|")){
-			int index = tagIt.indexOf(' ');
-			int type = Integer.parseInt(tagIt.substring(0, index));
-			String tag = tagIt.substring(index + 1);
-			NewsTags newsTag = new NewsTags(type, tag);
-			newsTagsList.add(newsTag);
-			NewsTags.addCount(newsTag);
-		}
-		return newsTagsList;
 	}
 	
 	// 返回对应ID新闻的EncodedContent字段

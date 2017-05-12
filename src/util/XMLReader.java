@@ -21,8 +21,9 @@ public class XMLReader {
 
 	DocumentBuilderFactory dbf = null;
 
-	public XMLReader(File file) {
-		this.file = file;
+	public XMLReader(String filePath)
+	{
+		 this.file=new File(filePath);
 	}
 
 	public ArrayList<Map<String, String>> readXml() {
@@ -57,4 +58,5 @@ public class XMLReader {
 		}
 		return newsList;
 	}
+
 }
