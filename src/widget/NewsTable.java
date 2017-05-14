@@ -28,6 +28,19 @@ public class NewsTable extends JTable {
 		this.setRowHeight(25);
 		this.setShowGrid(false);
 	}
+	
+	public NewsTable(TableModel model) {
+		super(model);
+		this.setGridColor(gridColor);
+		this.setRowHeight(rowHeight);
+		// 隐藏表格标题
+		DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
+		headerRenderer.setPreferredSize(new Dimension(0, 0));
+		this.getTableHeader().setDefaultRenderer(headerRenderer);
+		
+		this.setRowHeight(25);
+		this.setShowGrid(false);
+	}
 
 	@Override
 	public boolean isCellEditable(int row, int column){

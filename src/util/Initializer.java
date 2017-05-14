@@ -10,15 +10,15 @@ import model.NewsList;
 
 public class Initializer {
 	
-	NewsList guangming, nanfangdaily, sichuan;
-	XMLReader guangmingreader, nanfangdailyreader, sichuanreader;
-	{
+	public static NewsList guangming, nanfangdaily, sichuan;
+	
+	public static void initData() {
 		guangming = new NewsList();
 		nanfangdaily = new NewsList();
 		sichuan = new NewsList();
-		guangmingreader = new XMLReader("resource/file/guangming.xml");
-		nanfangdailyreader = new XMLReader("resource/file/nanfangdaily.xml");
-		sichuanreader = new XMLReader("resource/file/sichuan.xml");
+		XMLReader guangmingreader = new XMLReader("resource/file/guangming.xml");
+		XMLReader nanfangdailyreader = new XMLReader("resource/file/nanfangdaily.xml");
+		XMLReader sichuanreader = new XMLReader("resource/file/sichuan.xml");
 		guangming.init(guangmingreader);
 		nanfangdaily.init(nanfangdailyreader);
 		sichuan.init(sichuanreader);

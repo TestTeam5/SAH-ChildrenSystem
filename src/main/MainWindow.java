@@ -29,12 +29,15 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartPanel;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 
+import util.Initializer;
+import util.NewsGetter;
 import widget.BarChartFactory;
 import widget.FontAwesome;
 import widget.NewsScrollPane;
@@ -57,6 +60,10 @@ public class MainWindow {
 		// 日志输出
 		Logger logger = Logger.getLogger(MainWindow.class.getName());
 		logger.debug("界面初始化开始");
+		
+		logger.debug("数据初始化开始");
+		Initializer.initData();
+		logger.debug("数据初始化完成");
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -146,20 +153,25 @@ public class MainWindow {
 		showNewsListPanel.setLayout(new BorderLayout());
 		showNewsPanel.add("新闻列表", showNewsListPanel);
 
-		Object[][] showNewsTableData = { new Object[] { "青少年“身边最让我感动的人”评选揭晓" }, new Object[] { "确保农民工子女享受国家政策" },
-				new Object[] { "全国政协十届四次会议举行第三次全体会议贾庆林出席12位委员围绕科教文衞等社会事业..." }, new Object[] { "不能忽视农村留守儿童" },
-				new Object[] { "对农村“留守儿童”问题的理性思考" }, new Object[] { "好政策播种新希望——记湖北省农村教师资助行动计划" },
-				new Object[] { "和谐社会视野下的教育公平" }, new Object[] { "农村学生辍学问题受关注周济坦言新形势下义务教育工作面临新挑战" },
-				new Object[] { "农村留守儿童教育亟待加强" }, new Object[] { "17部委领导慰问在京流动人口子女和农村留守儿童" },
-				new Object[] { "江苏“七彩夏日”点亮精彩暑假" }, new Object[] { "高校：新农村建设的生力军——华中师大服务新农村侧记" },
-				new Object[] { "中国人民公安大学治安系教授王太元：就地解决还是增加留守儿童" }, new Object[] { "加大经费保障提供重点扶持福建基础教育资源向农村倾斜" },
-				new Object[] { "分成十个课题组走访八十三个村安徽大学百名学生撰写“新农村档案”" }, new Object[] { "大学生耿高鹏为救落水少年英勇献身" },
-				new Object[] { "农村留守儿童心理需关爱" }, new Object[] { "志愿服务，是永不谢幕的青春之歌——对武汉大学“赵小亭事迹”的观察与啓示" },
-				new Object[] { "老艺人传授“惠洋十音”" }, new Object[] { "“三进三同”体验国情民生" }, new Object[] { "江苏农家书屋实现全覆盖" },
-				new Object[] { "开发农村人力资源促进城乡统筹发展" }, new Object[] { "全国教书育人楷模候选人简介" },
-				new Object[] { "全国教书育人楷模候选人简介（上接6版）" }, new Object[] { "城市，孩子的温暖家园——合肥全社会关爱未成年人的故事" } };
+		NewsGetter.init();
+		Object[][] showNewsTableData = NewsGetter.getNews();
+		
+//		Object[][] showNewsTableData = { new Object[] { "青少年“身边最让我感动的人”评选揭晓" }, new Object[] { "确保农民工子女享受国家政策" },
+//				new Object[] { "全国政协十届四次会议举行第三次全体会议贾庆林出席12位委员围绕科教文衞等社会事业..." }, new Object[] { "不能忽视农村留守儿童" },
+//				new Object[] { "对农村“留守儿童”问题的理性思考" }, new Object[] { "好政策播种新希望——记湖北省农村教师资助行动计划" },
+//				new Object[] { "和谐社会视野下的教育公平" }, new Object[] { "农村学生辍学问题受关注周济坦言新形势下义务教育工作面临新挑战" },
+//				new Object[] { "农村留守儿童教育亟待加强" }, new Object[] { "17部委领导慰问在京流动人口子女和农村留守儿童" },
+//				new Object[] { "江苏“七彩夏日”点亮精彩暑假" }, new Object[] { "高校：新农村建设的生力军——华中师大服务新农村侧记" },
+//				new Object[] { "中国人民公安大学治安系教授王太元：就地解决还是增加留守儿童" }, new Object[] { "加大经费保障提供重点扶持福建基础教育资源向农村倾斜" },
+//				new Object[] { "分成十个课题组走访八十三个村安徽大学百名学生撰写“新农村档案”" }, new Object[] { "大学生耿高鹏为救落水少年英勇献身" },
+//				new Object[] { "农村留守儿童心理需关爱" }, new Object[] { "志愿服务，是永不谢幕的青春之歌——对武汉大学“赵小亭事迹”的观察与啓示" },
+//				new Object[] { "老艺人传授“惠洋十音”" }, new Object[] { "“三进三同”体验国情民生" }, new Object[] { "江苏农家书屋实现全覆盖" },
+//				new Object[] { "开发农村人力资源促进城乡统筹发展" }, new Object[] { "全国教书育人楷模候选人简介" },
+//				new Object[] { "全国教书育人楷模候选人简介（上接6版）" }, new Object[] { "城市，孩子的温暖家园——合肥全社会关爱未成年人的故事" } };
 		Object[] showNewsColumnTitle = { "标题" };
-		JTable showNewsTable = new NewsTable(showNewsTableData, showNewsColumnTitle);
+		DefaultTableModel showNewsModel = new DefaultTableModel(); // 新建一个默认数据模型
+		JTable showNewsTable = new NewsTable(showNewsModel);
+		showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
 
 		JScrollPane showNewsScrollPane = new NewsScrollPane(showNewsTable);
 		Border showNewsScrollBorder = new CompoundBorder(
@@ -179,6 +191,79 @@ public class MainWindow {
 		JButton newsLastButton = new PageSelectButton("尾页");
 		newsBottomButtons.add(newsLastButton);
 		showNewsListPanel.add(newsBottomButtons, BorderLayout.SOUTH);
+		
+		// 点击首页事件
+		newsFirstButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				NewsGetter.init();
+				Object[][] showNewsTableData = NewsGetter.getNews();
+				Object[] showNewsColumnTitle = { "标题" };
+				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
+				// 设置滚动条滚动到顶部
+				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
+				if(showNewsScrollBar != null){
+					showNewsScrollBar.setValue(0);
+				}
+			}
+		});
+		
+		// 点击上一页事件
+		newsPreviousButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Object[][] showNewsTableData = NewsGetter.getPreviousNews();
+				Object[] showNewsColumnTitle = { "标题" };
+				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
+				// 设置滚动条滚动到顶部
+				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
+				if(showNewsScrollBar != null){
+					showNewsScrollBar.setValue(0);
+				}
+			}
+		});
+		
+		// 点击下一页事件
+		newsNextButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(NewsGetter.newspaper != 3){
+					Object[][] showNewsTableData = NewsGetter.getNews();
+					Object[] showNewsColumnTitle = { "标题" };
+					showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
+					// 设置滚动条滚动到顶部
+					JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
+					if(showNewsScrollBar != null){
+						showNewsScrollBar.setValue(0);
+					}
+				}
+			}
+		});
+		
+		// 点击尾页事件
+		newsLastButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Object[][] showNewsTableData = NewsGetter.getLastNews();
+				Object[] showNewsColumnTitle = { "标题" };
+				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
+				// 设置滚动条滚动到顶部
+				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
+				if(showNewsScrollBar != null){
+					showNewsScrollBar.setValue(0);
+				}
+			}
+		});
+		
+		
 
 		// 显示新闻节目->新闻详细内容界面
 		JPanel showNewsDetailPanel = new JPanel();
@@ -294,7 +379,7 @@ public class MainWindow {
 			});
 		}
 		
-		// 详细新闻界面底部返回按钮及容器
+		// 详细新闻界面底部返回按钮、删除按钮及容器
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		backPanel.setBackground(Color.WHITE);
@@ -304,6 +389,16 @@ public class MainWindow {
 		backButton.setFocusPainted(false);
 		backButton.setBorderPainted(false);
 		backPanel.add(backButton);
+		JPanel tempPanel = new JPanel();
+		tempPanel.setSize(1, 1);
+		tempPanel.setBackground(Color.WHITE);
+		backPanel.add(tempPanel);
+		JButton deleteButton = new JButton("删除");
+		deleteButton.setBackground(Color.DARK_GRAY);
+		deleteButton.setForeground(Color.WHITE);
+		deleteButton.setFocusPainted(false);
+		deleteButton.setBorderPainted(false);
+		backPanel.add(deleteButton);
 		showNewsDetailMainPanel.add(backPanel, BorderLayout.SOUTH);
 		
 		// 添加返回按钮的点击事件
