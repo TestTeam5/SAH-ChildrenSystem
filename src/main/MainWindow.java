@@ -264,8 +264,9 @@ public class MainWindow {
 		});
 		
 		
+		
 
-		// 显示新闻节目->新闻详细内容界面
+		// 显示新闻界面->新闻详细内容界面
 		JPanel showNewsDetailPanel = new JPanel();
 		showNewsDetailPanel.setLayout(new BorderLayout());
 
@@ -720,8 +721,12 @@ public class MainWindow {
 			public void mouseClicked(MouseEvent e) {
 				JTable src = null;
 				if (e.getSource() instanceof JTable) {
-					src = (JTable) e.getSource();
 					showNewsCardLayout.show(showNewsPanel, "新闻详细内容");
+					
+					src = (JTable) e.getSource();
+					
+					NewsGetter.setSelected(src.getSelectedRow());
+					newsContentPane.setText(NewsGetter.getSelectedContent());
 					
 					// 设置主标签默认选中第一个
 					newsDetailMainTagsGroup.select(0);
@@ -731,6 +736,7 @@ public class MainWindow {
 			        if (newsContentScrollBar != null) {  
 			            newsContentScrollBar.setValue(0);  
 			        }
+			        
 					// txtInfo.setText( sportType + " : " +
 					// src.getSelectedIndex() + " : " + src.getSelectedValue() +
 					// "\n" );

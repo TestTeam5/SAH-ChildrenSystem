@@ -39,6 +39,8 @@ public class NewsList {
 		tagscount.put("8 3", 0);tagscount.put("8 4", 0);
 	};
 	
+	private int deletedCount = 0;	// 统计被删除新闻数量
+	
 	
 	/*
 	 * 新闻相关操作
@@ -77,6 +79,7 @@ public class NewsList {
 		}
 		return this.newslist.get(index).get("ID");
 	}
+	
 	//获得标签的方法待商榷
 	public String getTagIts(int index){
 		if(index >= newslist.size()){
@@ -95,7 +98,10 @@ public class NewsList {
 		if(index >= newslist.size()){
 			return false;
 		}
-		return (this.newslist.get(index).get("IsDeleted") == "true") ? true : false;
+		if(this.newslist.get(index).get("IsDeleted") == null){
+			return false;
+		}
+		return (this.newslist.get(index).get("IsDeleted").equals("true")) ? true : false;
 	}
 	
 	public void delete(int index){
@@ -116,12 +122,38 @@ public class NewsList {
 		return newslist.size();
 	}
 	
+	// 获取被删除新闻总数
+	public int getDeletedCount(){
+		return deletedCount;
+	}
+	
+	// 获取未被删除新闻总数
+	public int getNotDeletedCount(){
+		return size()-getDeletedCount();
+	}
+	
 	public boolean isEmpty(){
 		if(newslist.size() == 0){
 			return true;
 		}
 		return false;
 	}
+	
+	// 获取第一个未被删除的新闻下标
+	public int getFirstNotDeleted(){
+		for(int i = 0; i < size(); i++){
+			if(!isDeleted(i)){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	// 获取对应新闻项
+	public Map<String, String> getNewsItem(int index){
+		return newslist.get(index);
+	}
+	
 	
 	/*
 	 * 标签相关操作
@@ -144,15 +176,23 @@ public class NewsList {
 	}
 	private void count(){
 		String TagIts;
+		String IsDeleted;
 		for(Map<String, String> news : this.newslist){
+			// 统计标签数量
 			TagIts = news.get("TagIts");
 			if(TagIts != null){
 				for(String tag : TagIts.split("\\|")){
 					addCount(tag);
 				}
 			}
+			// 统计已删除新闻数量
+			IsDeleted = news.get("IsDeleted");
+			if(IsDeleted == "true"){
+				addDeletedCount();
+			}
 		}
 	}
+	
 	private  void addCount(String ntag){
 		int tagCount = this.tagscount.get(ntag);
 		this.tagscount.put(ntag, ++tagCount);
@@ -161,6 +201,14 @@ public class NewsList {
 		int tagCount = this.tagscount.get(ntag);
 		this.tagscount.put(ntag, --tagCount);
 	}
+	
+	private void addDeletedCount(){
+		deletedCount++;
+	}
+	private void minusDeletedCount(){
+		deletedCount--;
+	}
+	
 	
 }
 	

@@ -3,7 +3,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted />
+        <IsDeleted>true</IsDeleted>
         <Memo />
         <Title>青少年“身边最让我感动的人”评选揭晓</Title>
         <Date>2006-01-16</Date>
