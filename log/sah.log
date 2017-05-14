@@ -352,3 +352,7 @@
 2017-05-14 19:18:13 [main] DEBUG main.MainWindow.main(MainWindow.java:64) 数据初始化开始
 2017-05-14 19:18:15 [main] DEBUG main.MainWindow.main(MainWindow.java:67) 数据初始化完成
 2017-05-14 19:18:15 [main] DEBUG main.MainWindow.main(MainWindow.java:80) 界面初始化完成
+2017-05-14 19:59:55 [main] DEBUG main.MainWindow.main(MainWindow.java:62) 界面初始化开始
+2017-05-14 19:59:55 [main] DEBUG main.MainWindow.main(MainWindow.java:64) 数据初始化开始
+2017-05-14 19:59:57 [main] DEBUG main.MainWindow.main(MainWindow.java:67) 数据初始化完成
+2017-05-14 19:59:57 [main] DEBUG main.MainWindow.main(MainWindow.java:80) 界面初始化完成
