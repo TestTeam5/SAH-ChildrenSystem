@@ -63,6 +63,7 @@ public class MainWindow {
 		
 		logger.debug("数据初始化开始");
 		Initializer.initData();
+		NewsGetter.init();
 		logger.debug("数据初始化完成");
 		
 		EventQueue.invokeLater(new Runnable() {
@@ -153,7 +154,6 @@ public class MainWindow {
 		showNewsListPanel.setLayout(new BorderLayout());
 		showNewsPanel.add("新闻列表", showNewsListPanel);
 
-		NewsGetter.init();
 		Object[][] showNewsTableData = NewsGetter.getNews();
 		
 //		Object[][] showNewsTableData = { new Object[] { "青少年“身边最让我感动的人”评选揭晓" }, new Object[] { "确保农民工子女享受国家政策" },
@@ -233,15 +233,13 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(NewsGetter.newspaper != 3){
-					Object[][] showNewsTableData = NewsGetter.getNews();
-					Object[] showNewsColumnTitle = { "标题" };
-					showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
-					// 设置滚动条滚动到顶部
-					JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
-					if(showNewsScrollBar != null){
-						showNewsScrollBar.setValue(0);
-					}
+				Object[][] showNewsTableData = NewsGetter.getNews();
+				Object[] showNewsColumnTitle = { "标题" };
+				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
+				// 设置滚动条滚动到顶部
+				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
+				if(showNewsScrollBar != null){
+					showNewsScrollBar.setValue(0);
 				}
 			}
 		});
@@ -349,6 +347,20 @@ public class MainWindow {
 				});
 				newsDetailSubTagsGb.setConstraints(newsDetailSubTagsBtnGroup[i].get(j), newsDetailSubTagsGbc);
 				newsDetailSubTagsPanels[i].add(newsDetailSubTagsBtnGroup[i].get(j));
+				
+				// 添加子标签点击事件
+				newsDetailSubTagsBtnGroup[i].get(j).addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						for (int j = 0; j < subTagsText[NewsGetter.getSelectedMainTag()].length - 1 ; j++) {
+							if (e.getActionCommand().equals(subTagsText[NewsGetter.getSelectedMainTag()][j])) {
+								NewsGetter.refactorTags(j);
+							}
+						}
+					}
+				});
 			}
 
 			newsDetailSubTagsGbc.gridwidth = GridBagConstraints.REMAINDER;
@@ -374,6 +386,7 @@ public class MainWindow {
 					for (int j = 0; j < 9; j++) {
 						if (e.getActionCommand().equals(mainTagsText[j])) {
 							newsDetailSubTagsCardLayout.show(newsDetailSubTagsCardPanel, Integer.toString(j));
+							NewsGetter.setSelectedMainTag(j);
 						}
 					}
 				}
@@ -401,6 +414,24 @@ public class MainWindow {
 		deleteButton.setBorderPainted(false);
 		backPanel.add(deleteButton);
 		showNewsDetailMainPanel.add(backPanel, BorderLayout.SOUTH);
+		
+		// 添加删除按钮的点击事件
+		deleteButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				Object[][] showNewsTableData = NewsGetter.deleteSelectedNews();
+				Object[] showNewsColumnTitle = { "标题" };
+				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
+				// 设置滚动条滚动到顶部
+				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
+				if(showNewsScrollBar != null){
+					showNewsScrollBar.setValue(0);
+				}
+				showNewsCardLayout.show(showNewsPanel, "新闻列表");
+			}
+		});
 		
 		// 添加返回按钮的点击事件
 		backButton.addActionListener(new ActionListener() {
@@ -721,8 +752,6 @@ public class MainWindow {
 			public void mouseClicked(MouseEvent e) {
 				JTable src = null;
 				if (e.getSource() instanceof JTable) {
-					showNewsCardLayout.show(showNewsPanel, "新闻详细内容");
-					
 					src = (JTable) e.getSource();
 					
 					NewsGetter.setSelected(src.getSelectedRow());
@@ -734,8 +763,11 @@ public class MainWindow {
 					// 设置新闻详细内容滚动条滚动到顶部
 					JScrollBar newsContentScrollBar = newsDetailContentPanel.getVerticalScrollBar();  
 			        if (newsContentScrollBar != null) {  
-			            newsContentScrollBar.setValue(0);  
+			            newsContentScrollBar.setValue(0);
 			        }
+			        
+			        
+			        showNewsCardLayout.show(showNewsPanel, "新闻详细内容");
 			        
 					// txtInfo.setText( sportType + " : " +
 					// src.getSelectedIndex() + " : " + src.getSelectedValue() +
