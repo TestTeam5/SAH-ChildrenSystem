@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import util.XMLReader;
 import util.XMLWriter;
@@ -20,64 +21,26 @@ public class NewsList {
 	final String[] paths = {"resource/file/guangming.xml", "resource/file/nanfangdaily.xml", "resource/file/sichuan.xml"};
 	
 	private ArrayList<Map<String, String>> newslist = new ArrayList<>();
-	private  Map<String, Integer> tagscount0 = new HashMap<>();	// 0 代表光明日报
-	private Map<String, Integer> tagscount1 = new HashMap<>();	// 1 代表南方都市报
-	private Map<String, Integer> tagscount2 = new HashMap<>();	// 2 代表四川日报
+	private Map<String, Map<String, Integer> > tagscount0 = new HashMap<>();	// 0 代表光明日报
+	private Map<String, Map<String, Integer> > tagscount1 = new HashMap<>();	// 1 代表南方都市报
+	private Map<String, Map<String, Integer> > tagscount2 = new HashMap<>();	// 2 代表四川日报
+	
+	private final String[] allTags = {"0 0", "0 1", "0 2",
+			"1 0", "1 1", "1 2", "1 3", 
+			"2 0", "2 1", "2 2", "2 3", "2 4", "2 5", "2 6", "2 7", "2 8", "2 9",
+			"3 0", "3 1", "3 2", "3 3", "3 4", "3 5", "3 6", "3 7", 
+			"4 0", "4 1", "4 2", "4 3", "4 4", 
+			"5 0", "5 1", "5 2", "5 3", "5 4", 
+			"6 0", "6 1", "6 2", "6 3", "6 4", 
+			"7 0", "7 1", "7 2", "7 3", "7 4",
+			"8 0", "8 1", "8 2", "8 3", "8 4"};
 	
 	{
-		tagscount0.put("0 0", 0);tagscount0.put("0 1", 0);tagscount0.put("0 2", 0);
-		tagscount0.put("1 0", 0);tagscount0.put("1 1", 0);tagscount0.put("1 2", 0);
-		tagscount0.put("1 3", 0);tagscount0.put("2 0", 0);tagscount0.put("2 1", 0);
-		tagscount0.put("2 2", 0);tagscount0.put("2 3", 0);tagscount0.put("2 4", 0);
-		tagscount0.put("2 5", 0);tagscount0.put("2 6", 0);tagscount0.put("2 7", 0);
-		tagscount0.put("2 8", 0);tagscount0.put("2 9", 0);tagscount0.put("3 0", 0);
-		tagscount0.put("3 1", 0);tagscount0.put("3 2", 0);tagscount0.put("3 3", 0);
-		tagscount0.put("3 4", 0);tagscount0.put("3 5", 0);tagscount0.put("3 6", 0);
-		tagscount0.put("3 7", 0);tagscount0.put("4 0", 0);tagscount0.put("4 1", 0);
-		tagscount0.put("4 2", 0);tagscount0.put("4 3", 0);tagscount0.put("4 4", 0);
-		tagscount0.put("5 0", 0);tagscount0.put("5 1", 0);tagscount0.put("5 2", 0);
-		tagscount0.put("5 3", 0);tagscount0.put("5 4", 0);tagscount0.put("6 0", 0);
-		tagscount0.put("6 1", 0);tagscount0.put("6 2", 0);tagscount0.put("6 3", 0);
-		tagscount0.put("6 4", 0);tagscount0.put("7 0", 0);tagscount0.put("7 1", 0);
-		tagscount0.put("7 2", 0);tagscount0.put("7 3", 0);tagscount0.put("7 4", 0);
-		tagscount0.put("8 0", 0);tagscount0.put("8 1", 0);tagscount0.put("8 2", 0);
-		tagscount0.put("8 3", 0);tagscount0.put("8 4", 0);
-		
-		tagscount1.put("0 0", 0);tagscount1.put("0 1", 0);tagscount1.put("0 2", 0);
-		tagscount1.put("1 0", 0);tagscount1.put("1 1", 0);tagscount1.put("1 2", 0);
-		tagscount1.put("1 3", 0);tagscount1.put("2 0", 0);tagscount1.put("2 1", 0);
-		tagscount1.put("2 2", 0);tagscount1.put("2 3", 0);tagscount1.put("2 4", 0);
-		tagscount1.put("2 5", 0);tagscount1.put("2 6", 0);tagscount1.put("2 7", 0);
-		tagscount1.put("2 8", 0);tagscount1.put("2 9", 0);tagscount1.put("3 0", 0);
-		tagscount1.put("3 1", 0);tagscount1.put("3 2", 0);tagscount1.put("3 3", 0);
-		tagscount1.put("3 4", 0);tagscount1.put("3 5", 0);tagscount1.put("3 6", 0);
-		tagscount1.put("3 7", 0);tagscount1.put("4 0", 0);tagscount1.put("4 1", 0);
-		tagscount1.put("4 2", 0);tagscount1.put("4 3", 0);tagscount1.put("4 4", 0);
-		tagscount1.put("5 0", 0);tagscount1.put("5 1", 0);tagscount1.put("5 2", 0);
-		tagscount1.put("5 3", 0);tagscount1.put("5 4", 0);tagscount1.put("6 0", 0);
-		tagscount1.put("6 1", 0);tagscount1.put("6 2", 0);tagscount1.put("6 3", 0);
-		tagscount1.put("6 4", 0);tagscount1.put("7 0", 0);tagscount1.put("7 1", 0);
-		tagscount1.put("7 2", 0);tagscount1.put("7 3", 0);tagscount1.put("7 4", 0);
-		tagscount1.put("8 0", 0);tagscount1.put("8 1", 0);tagscount1.put("8 2", 0);
-		tagscount1.put("8 3", 0);tagscount1.put("8 4", 0);
-		
-		tagscount2.put("0 0", 0);tagscount2.put("0 1", 0);tagscount2.put("0 2", 0);
-		tagscount2.put("1 0", 0);tagscount2.put("1 1", 0);tagscount2.put("1 2", 0);
-		tagscount2.put("1 3", 0);tagscount2.put("2 0", 0);tagscount2.put("2 1", 0);
-		tagscount2.put("2 2", 0);tagscount2.put("2 3", 0);tagscount2.put("2 4", 0);
-		tagscount2.put("2 5", 0);tagscount2.put("2 6", 0);tagscount2.put("2 7", 0);
-		tagscount2.put("2 8", 0);tagscount2.put("2 9", 0);tagscount2.put("3 0", 0);
-		tagscount2.put("3 1", 0);tagscount2.put("3 2", 0);tagscount2.put("3 3", 0);
-		tagscount2.put("3 4", 0);tagscount2.put("3 5", 0);tagscount2.put("3 6", 0);
-		tagscount2.put("3 7", 0);tagscount2.put("4 0", 0);tagscount2.put("4 1", 0);
-		tagscount2.put("4 2", 0);tagscount2.put("4 3", 0);tagscount2.put("4 4", 0);
-		tagscount2.put("5 0", 0);tagscount2.put("5 1", 0);tagscount2.put("5 2", 0);
-		tagscount2.put("5 3", 0);tagscount2.put("5 4", 0);tagscount2.put("6 0", 0);
-		tagscount2.put("6 1", 0);tagscount2.put("6 2", 0);tagscount2.put("6 3", 0);
-		tagscount2.put("6 4", 0);tagscount2.put("7 0", 0);tagscount2.put("7 1", 0);
-		tagscount2.put("7 2", 0);tagscount2.put("7 3", 0);tagscount2.put("7 4", 0);
-		tagscount2.put("8 0", 0);tagscount2.put("8 1", 0);tagscount2.put("8 2", 0);
-		tagscount2.put("8 3", 0);tagscount2.put("8 4", 0);
+		for(String s: allTags){
+			tagscount0.put(s, new HashMap<String, Integer>());
+			tagscount1.put(s, new HashMap<String, Integer>());
+			tagscount2.put(s, new HashMap<String, Integer>());
+		}
 	};
 	
 	private int deletedCount = 0;	// 统计被删除新闻数量
@@ -232,13 +195,28 @@ public class NewsList {
 	 * 标签相关操作
 	 */
 	public int getCount(String ntag, int num){
+		int count = 0;
+		Map<String, Integer> temp = null;
+		if(num == 0)
+			temp = tagscount0.get(ntag);
+		else if(num == 1)
+			temp = tagscount1.get(ntag);
+		else if(num == 2)
+			temp = tagscount2.get(ntag);
+		for(Integer value: temp.values()){
+			count += value;
+		}
+		return count;
+	}
+	
+	public Map<String, Integer> getTagCountMap(String ntag, int num){
 		if(num == 0)
 			return tagscount0.get(ntag);
 		else if(num == 1)
 			return tagscount1.get(ntag);
 		else if(num == 2)
 			return tagscount2.get(ntag);
-		return 0;
+		return null;
 	}
 	
 	public int getSelectedSubTag(int index, int selectedMainTag){
@@ -272,7 +250,7 @@ public class NewsList {
 		if(i != -1){
 			newTagString = newsTag.substring(0, i) + ntag + newsTag.substring(i + 3);
 			this.newslist.get(index).put("TagIts", newTagString);
-			minusCount(newsTag.substring(i, i + 3), num);
+			minusCount(newsTag.substring(i, i + 3), num, this.newslist.get(index).get("Date").substring(0, 4));
 		}else{
 			if(!newsTag.equals("")){
 				newsTag = newsTag + "|";
@@ -280,7 +258,7 @@ public class NewsList {
 			newTagString = newsTag + ntag;
 			this.newslist.get(index).put("TagIts", newTagString);
 		}
-		addCount(ntag, num);
+		addCount(ntag, num, this.newslist.get(index).get("Date").substring(0, 4));
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "TagIts", newTagString);
 	}
 	private void count(){
@@ -292,7 +270,7 @@ public class NewsList {
 				TagIts = news.get("TagIts");
 				if(TagIts != null){
 					for(String tag : TagIts.split("\\|")){
-						addCount(tag, 0);
+						addCount(tag, 0, news.get("Date").substring(0, 4));
 					}
 				}
 				// 统计已删除新闻数量
@@ -307,7 +285,7 @@ public class NewsList {
 				TagIts = news.get("TagIts");
 				if(TagIts != null){
 					for(String tag : TagIts.split("\\|")){
-						addCount(tag, 1);
+						addCount(tag, 1, news.get("Date").substring(0, 4));
 					}
 				}
 				// 统计已删除新闻数量
@@ -322,7 +300,7 @@ public class NewsList {
 				TagIts = news.get("TagIts");
 				if(TagIts != null){
 					for(String tag : TagIts.split("\\|")){
-						addCount(tag, 2);
+						addCount(tag, 2, news.get("Date").substring(0, 4));
 					}
 				}
 				// 统计已删除新闻数量
@@ -336,28 +314,54 @@ public class NewsList {
 		}
 	}
 	
-	private  void addCount(String ntag, int num){
+	private  void addCount(String ntag, int num, String year){
+		Map<String, Integer> temp = null;
 		if(num == 0){
-			int tagCount = this.tagscount0.get(ntag);
-			this.tagscount0.put(ntag, ++tagCount);
+			temp = this.tagscount0.get(ntag);
+			int tagCount = 0;
+			if(temp.containsKey(year)){
+				tagCount = temp.get(year);
+			}
+			temp.put(year, ++tagCount);
 		}else if(num == 1){
-			int tagCount = this.tagscount1.get(ntag);
-			this.tagscount1.put(ntag, ++tagCount);
+			temp = this.tagscount1.get(ntag);
+			int tagCount = 0;
+			if(temp.containsKey(year)){
+				tagCount = temp.get(year);
+			}
+			temp.put(year, ++tagCount);
 		}else if(num == 2){
-			int tagCount = this.tagscount2.get(ntag);
-			this.tagscount2.put(ntag, ++tagCount);
+			temp = this.tagscount2.get(ntag);
+			int tagCount = 0;
+			if(temp.containsKey(year)){
+				tagCount = temp.get(year);
+			}
+			temp.put(year, ++tagCount);
 		}
 	}
-	private  void minusCount(String ntag, int num){
+	private  void minusCount(String ntag, int num, String year){
+		Map<String, Integer> temp = null;
 		if(num == 0){
-			int tagCount = this.tagscount0.get(ntag);
-			this.tagscount0.put(ntag, --tagCount);
+			temp = this.tagscount0.get(ntag);
+			int tagCount = 0;
+			if(temp.containsKey(year)){
+				tagCount = temp.get(year);
+			}
+			temp.put(year, --tagCount);
 		}else if(num == 1){
-			int tagCount = this.tagscount1.get(ntag);
-			this.tagscount1.put(ntag, --tagCount);
+			temp = this.tagscount1.get(ntag);
+			int tagCount = 0;
+			if(temp.containsKey(year)){
+				tagCount = temp.get(year);
+			}
+			temp.put(year, --tagCount);
 		}else if(num == 2){
-			int tagCount = this.tagscount2.get(ntag);
-			this.tagscount2.put(ntag, --tagCount);
+			temp = this.tagscount2.get(ntag);
+			int tagCount = 0;
+			if(temp.containsKey(year)){
+				tagCount = temp.get(year);
+			}
+			temp.put(year, --tagCount);
 		}
 	}
 	

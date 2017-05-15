@@ -16,9 +16,8 @@ import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class BarChartFactory {
-	private ChartPanel barChartPanel;
 	
-	public BarChartFactory(DefaultCategoryDataset dataset, String title){
+	public static ChartPanel getBarChartPanel(DefaultCategoryDataset dataset, String title){
 		JFreeChart barChart = ChartFactory.createBarChart(title,"类别(X)", "数量(Y)", dataset,PlotOrientation.VERTICAL,false,true,false); 
 		// 设置标题字体
 		barChart.getTitle().setFont(new Font("微软雅黑", 0, 15));
@@ -35,6 +34,11 @@ public class BarChartFactory {
         //设定背景透明度（0-1.0之间） 
         categoryPlot.setBackgroundAlpha(0);
         categoryPlot.setBackgroundPaint(Color.WHITE);
+        
+        // 设置图表区域无数据时的默认显示文字  
+        categoryPlot.setNoDataMessage("没有统计数据");
+        categoryPlot.setNoDataMessagePaint(Color.DARK_GRAY);
+        categoryPlot.setNoDataMessageFont(new Font("微软雅黑", 0, 20));
         
         //X轴  
         CategoryAxis domainAxis = categoryPlot.getDomainAxis();  
@@ -75,10 +79,6 @@ public class BarChartFactory {
         //每个BAR的最大宽度  
         //renderer.setMaximumBarWidth(0.5f); 
         
-        barChartPanel = new ChartPanel(barChart, true);
-	}
-	
-	public ChartPanel getBarChartPanel(){
-		return barChartPanel;
+        return new ChartPanel(barChart, true);
 	}
 }

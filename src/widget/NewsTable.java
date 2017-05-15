@@ -2,6 +2,7 @@ package widget;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Cursor;
 import java.awt.Dimension;
 
 import javax.swing.JTable;
@@ -48,6 +49,9 @@ public class NewsTable extends JTable {
 	}
 	
 	public TableCellRenderer getCellRenderer(int row, int column) {
+		if(column == 1){
+			return new MyCellRenderer2();
+		}
 		return new MyCellRenderer();
 	}
 
@@ -69,6 +73,35 @@ public class NewsTable extends JTable {
 				component.setBackground(selectionColor);
 				setBorder(null);// 去掉边
 			} else {
+				if (row % 2 == 0) {
+					component.setBackground(evenRowColor);
+				} else {
+					component.setBackground(oddRowColor);
+				}
+			}
+		}
+	}
+	
+	class MyCellRenderer2 extends DefaultTableCellRenderer {
+
+		public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+				int row, int column) {
+			Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			this.setColor(cell, table, isSelected, hasFocus, row, column);
+			return cell;
+		}
+
+		/*
+		 * 设置颜色
+		 */
+		private void setColor(Component component, JTable table, boolean isSelected, boolean hasFocus, int row,
+				int column) {
+			if (isSelected) {
+				component.setForeground(Color.BLUE);
+				component.setBackground(selectionColor);
+				setBorder(null);// 去掉边
+			} else {
+				component.setForeground(Color.RED);
 				if (row % 2 == 0) {
 					component.setBackground(evenRowColor);
 				} else {

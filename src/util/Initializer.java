@@ -17,11 +17,4 @@ public class Initializer {
 		newsList.init();
 	}
 	
-	
-	public void saveChanges(){
-		/*
-		 * 保存修改到文件（待实现）
-		 */
-	}
-	
 }

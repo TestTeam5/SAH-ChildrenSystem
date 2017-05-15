@@ -29,7 +29,9 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.FontUIResource;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
 import org.jfree.chart.ChartPanel;
@@ -39,6 +41,7 @@ import org.jfree.data.general.DefaultPieDataset;
 import util.DeletedNewsGetter;
 import util.Initializer;
 import util.NewsGetter;
+import util.StatisticsGetter;
 import widget.BarChartFactory;
 import widget.FontAwesome;
 import widget.NewsScrollPane;
@@ -632,53 +635,104 @@ public class MainWindow {
 		tendencyComparisonPanel.setLayout(new BorderLayout());
 		statisticsFigureContent.add("倾向性比较", tendencyComparisonPanel);
 		
-		// 趋势预测统计图
-		// 创建柱状图数据集对象
-		//创建数据  
-        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();  
-        //数据初始化  
-        barDataset.addValue(1.0, "某报纸", "2014年");  
-        barDataset.addValue(7.0, "某报纸", "2015年");  
-        barDataset.addValue(3.0, "某报纸", "2016年");  
-        
-        String title = "光明日报";
-        BarChartFactory barChartFactory = new BarChartFactory(barDataset, title);
-        ChartPanel barChartPanel = barChartFactory.getBarChartPanel();
-        trendStatisticsPanel.add(barChartPanel, BorderLayout.CENTER);
+		// 设置向左按钮点击事件
+		leftButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				StatisticsGetter.changePreviousNewspaper();
+				if(!StatisticsGetter.isTendencyComparison){
+					trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
+					trendStatisticsPanel.add(StatisticsGetter.getBarChartPanel());
+					trendStatisticsPanel.updateUI();
+				}else{
+					tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
+					tendencyComparisonPanel.add(StatisticsGetter.getBarChartPanel());
+					tendencyComparisonPanel.updateUI();
+				}
+			}
+		});
 		
-		// 倾向性比较统计图
-		// 创建饼形图数据集对象  
-        DefaultPieDataset pieDataset = new DefaultPieDataset();  
-        // 分别图形区域的说明和数据  
-        pieDataset.setValue("积极健康", 100);  
-        pieDataset.setValue("可怜悲惨", 75);  
-        pieDataset.setValue("沐恩幸福", 74);  
-        pieDataset.setValue("问题儿童", 60);  
-        pieDataset.setValue("其他", 50);
-        
-        PieChartFactory pieChartFactory = new PieChartFactory(pieDataset, title);
-        ChartPanel pieChartPanel = pieChartFactory.getPieChartPanel();
-        tendencyComparisonPanel.add(pieChartPanel, BorderLayout.CENTER);
+		// 设置向右点击事件
+		rightButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				StatisticsGetter.changeNextNewspaper();
+				if(!StatisticsGetter.isTendencyComparison){
+					trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
+					trendStatisticsPanel.add(StatisticsGetter.getBarChartPanel());
+					trendStatisticsPanel.updateUI();
+				}else{
+					tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
+					tendencyComparisonPanel.add(StatisticsGetter.getBarChartPanel());
+					tendencyComparisonPanel.updateUI();
+				}
+			}
+		});
+		
+		// 趋势统计点击事件
+		trendStatistics.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(StatisticsGetter.isTendencyComparison){
+					StatisticsGetter.setIsTendencyComparison(false);
+					trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
+					trendStatisticsPanel.add(StatisticsGetter.getBarChartPanel());
+					trendStatisticsPanel.updateUI();
+				}
+			}
+		});
+		
+		// 倾向性比较点击事件
+		tendencyComparison.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(!StatisticsGetter.isTendencyComparison){
+					StatisticsGetter.setIsTendencyComparison(true);
+					tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
+					tendencyComparisonPanel.add(StatisticsGetter.getPieChartPanel());
+					tendencyComparisonPanel.updateUI();
+				}
+			}
+		});
+		
+		
+//		// 趋势预测统计图
+//		// 创建柱状图数据集对象
+//		//创建数据  
+//        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();  
+//        //数据初始化  
+//        barDataset.addValue(1, "某报纸", "2014年");  
+//        barDataset.addValue(7, "某报纸", "2015年");  
+//        barDataset.addValue(3, "某报纸", "2016年");  
+//        
+//        String title = "光明日报";
+//        ChartPanel barChartPanel = BarChartFactory.getBarChartPanel(barDataset, title);
+//        trendStatisticsPanel.add(barChartPanel, BorderLayout.CENTER);
+		
+//		// 倾向性比较统计图
+//		// 创建饼形图数据集对象  
+//        DefaultPieDataset pieDataset = new DefaultPieDataset();  
+//        // 分别图形区域的说明和数据  
+//        pieDataset.setValue("积极健康", 100);  
+//        pieDataset.setValue("可怜悲惨", 75);  
+//        pieDataset.setValue("沐恩幸福", 74);  
+//        pieDataset.setValue("问题儿童", 60);  
+//        pieDataset.setValue("其他", 50);
+//        
+//        ChartPanel pieChartPanel = PieChartFactory.getPieChartPanel(pieDataset, title);
+//        tendencyComparisonPanel.add(pieChartPanel, BorderLayout.CENTER);
 
 		// 回收站界面
 		recyclePanel.setLayout(new BorderLayout());
 
-//		Object[][] recycleNewsTableData = { new Object[] { "青少年“身边最让我感动的人”评选揭晓", "还原" },
-//				new Object[] { "确保农民工子女享受国家政策", "还原" },
-//				new Object[] { "全国政协十届四次会议举行第三次全体会议贾庆林出席12位委员围绕科教文衞等社会事业...", "还原" },
-//				new Object[] { "不能忽视农村留守儿童", "还原" }, new Object[] { "对农村“留守儿童”问题的理性思考", "还原" },
-//				new Object[] { "好政策播种新希望——记湖北省农村教师资助行动计划", "还原" }, new Object[] { "和谐社会视野下的教育公平", "还原" },
-//				new Object[] { "农村学生辍学问题受关注周济坦言新形势下义务教育工作面临新挑战", "还原" }, new Object[] { "农村留守儿童教育亟待加强", "还原" },
-//				new Object[] { "17部委领导慰问在京流动人口子女和农村留守儿童", "还原" }, new Object[] { "江苏“七彩夏日”点亮精彩暑假", "还原" },
-//				new Object[] { "高校：新农村建设的生力军——华中师大服务新农村侧记", "还原" },
-//				new Object[] { "中国人民公安大学治安系教授王太元：就地解决还是增加留守儿童", "还原" },
-//				new Object[] { "加大经费保障提供重点扶持福建基础教育资源向农村倾斜", "还原" },
-//				new Object[] { "分成十个课题组走访八十三个村安徽大学百名学生撰写“新农村档案”", "还原" }, new Object[] { "大学生耿高鹏为救落水少年英勇献身", "还原" },
-//				new Object[] { "农村留守儿童心理需关爱", "还原" }, new Object[] { "志愿服务，是永不谢幕的青春之歌——对武汉大学“赵小亭事迹”的观察与啓示", "还原" },
-//				new Object[] { "老艺人传授“惠洋十音”", "还原" }, new Object[] { "“三进三同”体验国情民生", "还原" },
-//				new Object[] { "江苏农家书屋实现全覆盖", "还原" }, new Object[] { "开发农村人力资源促进城乡统筹发展", "还原" },
-//				new Object[] { "全国教书育人楷模候选人简介", "还原" }, new Object[] { "全国教书育人楷模候选人简介（上接6版）", "还原" },
-//				new Object[] { "城市，孩子的温暖家园——合肥全社会关爱未成年人的故事", "还原" } };
 		Object[][] recycleNewsTableData = DeletedNewsGetter.getNews();
 		Object[] recycleNewsColumnTitle = { "标题", "操作" };
 		DefaultTableModel recycleNewsModel = new DefaultTableModel(); // 新建一个默认数据模型
@@ -704,6 +758,37 @@ public class MainWindow {
 		JButton recycleNewsLastButton = new PageSelectButton("尾页");
 		recycleNewsBottomButtons.add(recycleNewsLastButton);
 		recyclePanel.add(recycleNewsBottomButtons, BorderLayout.SOUTH);
+		
+		// 表格点击事件
+		recycleNewsTable.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				JTable src = null;
+				if (e.getSource() instanceof JTable) {
+					src = (JTable) e.getSource();
+					if(src.getSelectedColumn() == 1){
+						Object[][] recycleNewsTableData = DeletedNewsGetter.restore(src.getSelectedRow());
+						Object[] recycleNewsColumnTitle = { "标题", "操作" };
+						recycleNewsModel.setDataVector(recycleNewsTableData, recycleNewsColumnTitle);
+						recycleNewsTable.getColumn(recycleNewsColumnTitle[1]).setMaxWidth(60);
+						// 设置滚动条滚动到顶部
+						JScrollBar recycleNewsScrollBar = recycleScrollPane.getVerticalScrollBar();
+						if(recycleNewsScrollBar != null){
+							recycleNewsScrollBar.setValue(0);
+						}
+					}
+				}
+			}
+		});
+		
+//		TableColumn tableColumn = recycleNewsTable.getColumn("操作"); 
+//		 //DefaultTableCellRenderer类可以绘制单元格的背景、字体颜色等功能   
+//        DefaultTableCellRenderer recycleNewsColume2Render = new DefaultTableCellRenderer();   
+//        //绘制部门列的背景为黄色   
+//        recycleNewsColume2Render.setBackground(Color.blue);
+//        tableColumn.setCellRenderer(recycleNewsColume2Render);
 		
 		// 点击首页事件
 		recycleNewsFirstButton.addActionListener(new ActionListener() {
@@ -798,6 +883,7 @@ public class MainWindow {
 					Object[] showNewsColumnTitle = { "标题" };
 					DefaultTableModel showNewsModel = new DefaultTableModel(); // 新建一个默认数据模型
 					showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
+					showNewsTable.clearSelection();
 					// 设置滚动条滚动到顶部
 					JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
 					if(showNewsScrollBar != null){
@@ -814,6 +900,10 @@ public class MainWindow {
 					statisticsSubTagsBtnGroup[0].clearSelection();
 					// 设置模式选择按钮选中第一个
 					modeSelectGroup.select(0);
+					
+					StatisticsGetter.init();
+					trendStatisticsPanel.add(StatisticsGetter.getOldBarChartPanel(), BorderLayout.CENTER);
+					tendencyComparisonPanel.add(StatisticsGetter.getOldPieChartPanel(), BorderLayout.CENTER);
 					break;
 				case "回收站":
 					cardLayout.show(pagePanel, "回收站");
@@ -822,6 +912,7 @@ public class MainWindow {
 					Object[] recycleNewsColumnTitle = { "标题", "操作" };
 					recycleNewsModel.setDataVector(recycleNewsTableData, recycleNewsColumnTitle);
 					recycleNewsTable.getColumn(recycleNewsColumnTitle[1]).setMaxWidth(60);
+					recycleNewsTable.clearSelection();
 					// 设置滚动条滚动到顶部
 					JScrollBar recycleNewsScrollBar = recycleScrollPane.getVerticalScrollBar();
 					if(recycleNewsScrollBar != null){
@@ -850,18 +941,9 @@ public class MainWindow {
 					// 设置主标签默认选中第一个
 					newsDetailMainTagsGroup.select(0);
 					
-					// 设置新闻详细内容滚动条滚动到顶部
-					JScrollBar newsContentScrollBar = newsDetailContentPanel.getVerticalScrollBar();  
-			        if (newsContentScrollBar != null) {  
-			            newsContentScrollBar.setValue(0);
-			        }
-			        
-			        
+					newsContentPane.setCaretPosition(0);
+        
 			        showNewsCardLayout.show(showNewsPanel, "新闻详细内容");
-			        
-					// txtInfo.setText( sportType + " : " +
-					// src.getSelectedIndex() + " : " + src.getSelectedValue() +
-					// "\n" );
 				}
 			}
 		});

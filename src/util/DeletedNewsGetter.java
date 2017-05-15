@@ -48,7 +48,7 @@ public class DeletedNewsGetter {
 			if (index >= newsList.size()) {
 				newsTitles[i] = new Object[] { "", "" };
 			} else {
-				newsTitles[i] = new Object[] { newsList.getTitle(index), "还原" };
+				newsTitles[i] = new Object[] { newsList.getTitle(index), "<Html><u>还原</u></Html>" };
 			}
 			indexPlus();
 		}

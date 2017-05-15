@@ -14,9 +14,7 @@ import org.jfree.chart.plot.PiePlot;
 import org.jfree.data.general.DefaultPieDataset;
 
 public class PieChartFactory {
-	private ChartPanel pieChartPanel;
-	
-	public PieChartFactory(DefaultPieDataset dataset,String title){
+	public static ChartPanel getPieChartPanel(DefaultPieDataset dataset,String title){
 		JFreeChart pieChart = ChartFactory.createPieChart(title, dataset, true, true, false);
 		// 设置标题字体
 		pieChart.getTitle().setFont(new Font("微软雅黑", 0, 15));
@@ -66,10 +64,6 @@ public class PieChartFactory {
         }
         piePlot.setShadowPaint(null);
 		
-        pieChartPanel = new ChartPanel(pieChart, true);
-	}
-	
-	public ChartPanel getPieChartPanel(){
-		return pieChartPanel;
+        return new ChartPanel(pieChart, true);
 	}
 }
