@@ -126,6 +126,13 @@ public class NewsList {
 			num = 1;
 		else if(newslist.get(index).get("Location").equals("四川日报(数字报)"))
 			num = 2;
+		String year = getDate(index).substring(0, 4);
+		String tagIts = getTagIts(index);
+		if(tagIts != null){
+			for(String s: tagIts.split("\\|")){
+				minusCount(s, num, year);
+			}
+		}
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "IsDeleted", "true");
 	}
 	public void restore(int index){
@@ -140,6 +147,13 @@ public class NewsList {
 			num = 1;
 		else if(newslist.get(index).get("Location").equals("四川日报(数字报)"))
 			num = 2;
+		String year = getDate(index).substring(0, 4);
+		String tagIts = getTagIts(index);
+		if(tagIts != null){
+			for(String s: tagIts.split("\\|")){
+				addCount(s, num, year);
+			}
+		}
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "IsDeleted", "false");
 	}
 	
@@ -268,13 +282,13 @@ public class NewsList {
 			if(news.get("Location").equals("光明日报")){
 				// 统计标签数量
 				TagIts = news.get("TagIts");
-				if(TagIts != null){
+				IsDeleted = news.get("IsDeleted");
+				if(TagIts != null && !IsDeleted.equals("true")){
 					for(String tag : TagIts.split("\\|")){
 						addCount(tag, 0, news.get("Date").substring(0, 4));
 					}
 				}
 				// 统计已删除新闻数量
-				IsDeleted = news.get("IsDeleted");
 				if(IsDeleted != null){
 					if(IsDeleted.equals("true")){
 						addDeletedCount();
@@ -283,13 +297,13 @@ public class NewsList {
 			}else if(news.get("Location").equals("南方都市报(全国版)")){
 				// 统计标签数量
 				TagIts = news.get("TagIts");
-				if(TagIts != null){
+				IsDeleted = news.get("IsDeleted");
+				if(TagIts != null && !IsDeleted.equals("true")){
 					for(String tag : TagIts.split("\\|")){
 						addCount(tag, 1, news.get("Date").substring(0, 4));
 					}
 				}
 				// 统计已删除新闻数量
-				IsDeleted = news.get("IsDeleted");
 				if(IsDeleted != null){
 					if(IsDeleted.equals("true")){
 						addDeletedCount();
@@ -298,13 +312,13 @@ public class NewsList {
 			}else if(news.get("Location").equals("四川日报(数字报)")){
 				// 统计标签数量
 				TagIts = news.get("TagIts");
-				if(TagIts != null){
+				IsDeleted = news.get("IsDeleted");
+				if(TagIts != null && !IsDeleted.equals("true")){
 					for(String tag : TagIts.split("\\|")){
 						addCount(tag, 2, news.get("Date").substring(0, 4));
 					}
 				}
 				// 统计已删除新闻数量
-				IsDeleted = news.get("IsDeleted");
 				if(IsDeleted != null){
 					if(IsDeleted.equals("true")){
 						addDeletedCount();

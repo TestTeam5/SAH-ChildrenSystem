@@ -55,14 +55,13 @@ import widget.TagButtonGroup;
 public class MainWindow {
 
 	private JFrame frame;
+	// 日志输出
+	private static Logger logger = Logger.getLogger(MainWindow.class.getName());
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
-		
-		// 日志输出
-		Logger logger = Logger.getLogger(MainWindow.class.getName());
 		logger.debug("界面初始化开始");
 		
 		logger.debug("数据初始化开始");
@@ -190,6 +189,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("显示新闻界面-点击首页");
 				NewsGetter.init();
 				Object[][] showNewsTableData = NewsGetter.getNews();
 				Object[] showNewsColumnTitle = { "标题" };
@@ -917,9 +917,11 @@ public class MainWindow {
 				// TODO Auto-generated method stub
 				switch (e.getActionCommand()) {
 				case "首页":
+					logger.debug("点击首页");
 					cardLayout.show(pagePanel, "首页");
 					break;
 				case "新闻":
+					logger.debug("点击新闻");
 					cardLayout.show(pagePanel, "新闻");
 					showNewsCardLayout.show(showNewsPanel, "新闻列表");
 					//showNewsTable.clearSelection();
@@ -936,8 +938,9 @@ public class MainWindow {
 					}
 					break;
 				case "统计":
+					logger.debug("点击统计");
 					cardLayout.show(pagePanel, "统计");
-					recycleNewsTable.clearSelection();
+//					recycleNewsTable.clearSelection();
 					statisticsMainTags.select(0);
 					// 显示第一个主标签对应子标签
 					statisticsSubTagsLayout.show(statisticsSubTags, "0");
@@ -945,12 +948,13 @@ public class MainWindow {
 					statisticsSubTagsBtnGroup[0].clearSelection();
 					// 设置模式选择按钮选中第一个
 					modeSelectGroup.select(0);
-					
+					figureCardLayout.show(statisticsFigureContent, "趋势统计");
 					StatisticsGetter.init();
 					trendStatisticsPanel.add(StatisticsGetter.getOldBarChartPanel(), BorderLayout.CENTER);
 					tendencyComparisonPanel.add(StatisticsGetter.getOldPieChartPanel(), BorderLayout.CENTER);
 					break;
 				case "回收站":
+					logger.debug("点击回收站");
 					cardLayout.show(pagePanel, "回收站");
 					DeletedNewsGetter.init();
 					Object[][] recycleNewsTableData = DeletedNewsGetter.getNews();
