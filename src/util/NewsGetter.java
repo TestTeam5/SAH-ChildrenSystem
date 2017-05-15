@@ -42,7 +42,7 @@ public class NewsGetter {
 	public static void indexPlus() {
 		index++;
 		if(index < newsList.size()){
-			if(newsList.isDeleted(index))
+			if(newsList.isDeleted(index, false))
 				indexPlus();
 		}
 	}
@@ -50,10 +50,15 @@ public class NewsGetter {
 	// 执行index--操作
 	public static void indexMinus() {
 		index--;
-		if(index < newsList.getFirstNotDeleted())
+		if(index < newsList.getFirstNotDeleted()){
 			index = newsList.getFirstNotDeleted();
-		else if(newsList.isDeleted(index))
+			if(index == -1){
+				index = newsList.size();
+			}
+		}
+		else if(newsList.isDeleted(index, false)){
 			indexMinus();
+		}
 	}
 
 	// 获取上一页新闻标题
@@ -86,6 +91,11 @@ public class NewsGetter {
 		index = tempIndex;
 	}
 	
+	// 获取选中新闻主标签下的子标签值，若无子标签返回-1
+	public static int getSelectedSubTag(){
+		return newsList.getSelectedSubTag(index, selectedMainTag);
+	}
+	
 	public static String getSelectedContent(){
 		NewsDetailReader newsDetailReader = new NewsDetailReader(newsList.getNewsItem(selectedIndex));
 		return newsDetailReader.getContent();
@@ -95,7 +105,9 @@ public class NewsGetter {
 		for(int i = 0; i < 25; i++){
 			indexMinus();
 		}
+		index--;
 		newsList.delete(selectedIndex);
+		indexPlus();
 		return getNews();
 	}
 	

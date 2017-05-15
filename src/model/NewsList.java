@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import util.XMLReader;
+import util.XMLWriter;
 
 /*标签编号x y对照表
  *   \	x		0							1					2					3
@@ -16,6 +17,8 @@ import util.XMLReader;
 
 public class NewsList {
 
+	final String[] paths = {"resource/file/guangming.xml", "resource/file/nanfangdaily.xml", "resource/file/sichuan.xml"};
+	
 	private ArrayList<Map<String, String>> newslist = new ArrayList<>();
 	private  Map<String, Integer> tagscount0 = new HashMap<>();	// 0 代表光明日报
 	private Map<String, Integer> tagscount1 = new HashMap<>();	// 1 代表南方都市报
@@ -77,18 +80,16 @@ public class NewsList {
 		tagscount2.put("8 3", 0);tagscount2.put("8 4", 0);
 	};
 	
-	private int deletedCount0 = 0;	// 统计被删除新闻数量
-	private int deletedCount1 = 1;
-	private int deletedCount2 = 2;
+	private int deletedCount = 0;	// 统计被删除新闻数量
 	
 	
 	/*
 	 * 新闻相关操作
 	 */
 	public void init(){
-		XMLReader guangmingreader = new XMLReader("resource/file/guangming.xml");
-		XMLReader nanfangdailyreader = new XMLReader("resource/file/nanfangdaily.xml");
-		XMLReader sichuanreader = new XMLReader("resource/file/sichuan.xml");
+		XMLReader guangmingreader = new XMLReader(paths[0]);
+		XMLReader nanfangdailyreader = new XMLReader(paths[1]);
+		XMLReader sichuanreader = new XMLReader(paths[2]);
 		this.newslist = guangmingreader.readXml();
 		this.newslist.addAll(nanfangdailyreader.readXml());
 		this.newslist.addAll(sichuanreader.readXml());
@@ -139,9 +140,10 @@ public class NewsList {
 		return this.newslist.get(index).get("Location");
 	}
 	
-	public boolean isDeleted(int index){
+	// 返回是否被删除, 若超出界限，返回defaultBool值
+	public boolean isDeleted(int index, boolean defaultBool){
 		if(index >= newslist.size()){
-			return false;
+			return defaultBool;
 		}
 		if(this.newslist.get(index).get("IsDeleted") == null){
 			return false;
@@ -154,12 +156,28 @@ public class NewsList {
 			return;
 		}
 		this.newslist.get(index).put("IsDeleted", "true");
+		int num = 0;
+		if(newslist.get(index).get("Location").equals("光明日报"))
+			num = 0;
+		else if(newslist.get(index).get("Location").equals("南方都市报(全国版)"))
+			num = 1;
+		else if(newslist.get(index).get("Location").equals("四川日报(数字报)"))
+			num = 2;
+		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "IsDeleted", "true");
 	}
 	public void restore(int index){
 		if(index >= newslist.size()){
 			return;
 		}
 		this.newslist.get(index).put("IsDeleted", "false");
+		int num = 0;
+		if(newslist.get(index).get("Location").equals("光明日报"))
+			num = 0;
+		else if(newslist.get(index).get("Location").equals("南方都市报(全国版)"))
+			num = 1;
+		else if(newslist.get(index).get("Location").equals("四川日报(数字报)"))
+			num = 2;
+		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "IsDeleted", "false");
 	}
 	
 	
@@ -169,7 +187,7 @@ public class NewsList {
 	
 	// 获取被删除新闻总数
 	public int getDeletedCount(){
-		return deletedCount0 + deletedCount1 + deletedCount2;
+		return deletedCount;
 	}
 	
 	// 获取未被删除新闻总数
@@ -187,7 +205,17 @@ public class NewsList {
 	// 获取第一个未被删除的新闻下标
 	public int getFirstNotDeleted(){
 		for(int i = 0; i < size(); i++){
-			if(!isDeleted(i)){
+			if(!isDeleted(i, false)){
+				return i;
+			}
+		}
+		return -1;
+	}
+	
+	// 获取第一个被删除的新闻下标
+	public int getFirstDeleted(){
+		for(int i = 0; i < size(); i++){
+			if(isDeleted(i, true)){
 				return i;
 			}
 		}
@@ -203,7 +231,7 @@ public class NewsList {
 	/*
 	 * 标签相关操作
 	 */
-	public  int getCount(String ntag, int num){
+	public int getCount(String ntag, int num){
 		if(num == 0)
 			return tagscount0.get(ntag);
 		else if(num == 1)
@@ -212,6 +240,20 @@ public class NewsList {
 			return tagscount2.get(ntag);
 		return 0;
 	}
+	
+	public int getSelectedSubTag(int index, int selectedMainTag){
+		String newsTag = this.newslist.get(index).get("TagIts");
+		if(newsTag == null)
+			return -1;
+		String mainTagString = selectedMainTag + " ";
+		int i = newsTag.indexOf(mainTagString);
+		if(i == -1){
+			return -1;
+		}else{
+			return Integer.parseInt(newsTag.substring(i+2, i+3));
+		}
+	}
+	
 	//若有同类标签则替换，否则添加
 	public void refactor(int index, String ntag){
 		int num = 0;
@@ -221,16 +263,25 @@ public class NewsList {
 			num = 1;
 		else if(newslist.get(index).get("Location").equals("四川日报(数字报)"))
 			num = 2;
-		String NewTag = this.newslist.get(index).get("TagIts");
-		String type = NewTag.substring(0, 2);
-		int i = NewTag.indexOf(type);
+		String newsTag = this.newslist.get(index).get("TagIts");
+		if(newsTag == null)
+			newsTag = "";
+		String type = ntag.substring(0, 2);
+		int i = newsTag.indexOf(type);
+		String newTagString = "";
 		if(i != -1){
-			this.newslist.get(index).put("TagIts", NewTag.substring(0, i) + ntag + NewTag.substring(i + 3));
-			minusCount(NewTag.substring(i, i + 3), num);
+			newTagString = newsTag.substring(0, i) + ntag + newsTag.substring(i + 3);
+			this.newslist.get(index).put("TagIts", newTagString);
+			minusCount(newsTag.substring(i, i + 3), num);
 		}else{
-			this.newslist.get(index).put("TagIts", NewTag + "|" + ntag);
+			if(!newsTag.equals("")){
+				newsTag = newsTag + "|";
+			}
+			newTagString = newsTag + ntag;
+			this.newslist.get(index).put("TagIts", newTagString);
 		}
 		addCount(ntag, num);
+		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "TagIts", newTagString);
 	}
 	private void count(){
 		String TagIts;
@@ -240,40 +291,46 @@ public class NewsList {
 				// 统计标签数量
 				TagIts = news.get("TagIts");
 				if(TagIts != null){
-					for(String tag : TagIts.split("|")){
+					for(String tag : TagIts.split("\\|")){
 						addCount(tag, 0);
 					}
 				}
 				// 统计已删除新闻数量
 				IsDeleted = news.get("IsDeleted");
-				if(IsDeleted == "true"){
-					addDeletedCount(0);
+				if(IsDeleted != null){
+					if(IsDeleted.equals("true")){
+						addDeletedCount();
+					}
 				}
 			}else if(news.get("Location").equals("南方都市报(全国版)")){
 				// 统计标签数量
 				TagIts = news.get("TagIts");
 				if(TagIts != null){
-					for(String tag : TagIts.split("|")){
+					for(String tag : TagIts.split("\\|")){
 						addCount(tag, 1);
 					}
 				}
 				// 统计已删除新闻数量
 				IsDeleted = news.get("IsDeleted");
-				if(IsDeleted == "true"){
-					addDeletedCount(1);
+				if(IsDeleted != null){
+					if(IsDeleted.equals("true")){
+						addDeletedCount();
+					}
 				}
 			}else if(news.get("Location").equals("四川日报(数字报)")){
 				// 统计标签数量
 				TagIts = news.get("TagIts");
 				if(TagIts != null){
-					for(String tag : TagIts.split("|")){
+					for(String tag : TagIts.split("\\|")){
 						addCount(tag, 2);
 					}
 				}
 				// 统计已删除新闻数量
 				IsDeleted = news.get("IsDeleted");
-				if(IsDeleted == "true"){
-					addDeletedCount(2);
+				if(IsDeleted != null){
+					if(IsDeleted.equals("true")){
+						addDeletedCount();
+					}
 				}
 			}
 		}
@@ -304,21 +361,11 @@ public class NewsList {
 		}
 	}
 	
-	private void addDeletedCount(int num){
-		if(num == 0)
-			deletedCount0++;
-		else if(num == 1)
-			deletedCount1++;
-		else if(num == 2)
-			deletedCount2++;
+	private void addDeletedCount(){
+		deletedCount++;
 	}
-	private void minusDeletedCount(int num){
-		if(num == 0)
-			deletedCount0--;
-		else if(num == 1)
-			deletedCount1--;
-		else if(num == 2)
-			deletedCount2--;
+	private void minusDeletedCount(){
+		deletedCount--;
 	}
 	
 	

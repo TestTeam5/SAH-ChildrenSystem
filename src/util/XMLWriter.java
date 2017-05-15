@@ -16,7 +16,7 @@ import org.w3c.dom.NodeList;
 
 public class XMLWriter {
 	
-	public void write(String path, String ID, String tagName, String tagValue){
+	public static void write(String path, String ID, String tagName, String tagValue){
 
         try {
             // 1.得到DOM解析器的工厂实例
