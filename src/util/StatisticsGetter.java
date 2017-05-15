@@ -53,6 +53,10 @@ public class StatisticsGetter {
 		selectedMainTag = num;
 	}
 	
+	public static int getSelectedMainTag(){
+		return selectedMainTag;
+	}
+	
 	public static void setSelectedSubTag(int num){
 		selectedSubTag = num;
 	}
@@ -75,6 +79,11 @@ public class StatisticsGetter {
 	}
 	
 	public static ChartPanel getOldBarChartPanel(){
+		return barChartPanel;
+	}
+	
+	public static ChartPanel getDefaultBarChartPanel(){
+		barChartPanel = BarChartFactory.getBarChartPanel(new DefaultCategoryDataset(), getTitle());
 		return barChartPanel;
 	}
 	

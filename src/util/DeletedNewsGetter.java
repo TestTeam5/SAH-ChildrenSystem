@@ -81,7 +81,8 @@ public class DeletedNewsGetter {
 			indexMinus();
 		}
 		newsList.restore(index);
-		for(int i = 0; i < 25 - num; i++){
+		indexMinus();
+		for(int i = 0; i < 26 - num; i++){
 			indexMinus();
 		}
 		

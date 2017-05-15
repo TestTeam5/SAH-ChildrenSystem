@@ -363,6 +363,18 @@ public class MainWindow {
 					g.drawLine(getWidth() - 1, 0, getWidth() - 1, getHeight() - 1);
 				}
 			});
+			newsDetailSubTagsBtnGroup[i].get(subTagsText[i].length - 1).addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					for (int j = 0; j < subTagsText[NewsGetter.getSelectedMainTag()].length - 1 ; j++) {
+						if (e.getActionCommand().equals(subTagsText[NewsGetter.getSelectedMainTag()][j])) {
+							NewsGetter.refactorTags(j);
+						}
+					}
+				}
+			});
 
 			newsDetailSubTagsGb.setConstraints(newsDetailSubTagsBtnGroup[i].get(subTagsText[i].length - 1),
 					newsDetailSubTagsGbc);
@@ -552,23 +564,6 @@ public class MainWindow {
 			statisticsSubTagsPanels[i].add(temp);
 		}
 
-		// 添加主标签点击事件
-		for (int i = 0; i < 9; i++) {
-			statisticsMainTags.get(i).addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					for (int j = 0; j < 9; j++) {
-						if (e.getActionCommand().equals(mainTagsText[j])) {
-							statisticsSubTagsLayout.show(statisticsSubTags, Integer.toString(j));
-							// 清除选中状态
-							statisticsSubTagsBtnGroup[j].clearSelection();
-						}
-					}
-				}
-			});
-		}
-
 		// 统计界面主面板的容器
 		gbc.gridwidth = 8;
 		JPanel statisticsFigurePanel = new JPanel();
@@ -648,7 +643,7 @@ public class MainWindow {
 					trendStatisticsPanel.updateUI();
 				}else{
 					tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
-					tendencyComparisonPanel.add(StatisticsGetter.getBarChartPanel());
+					tendencyComparisonPanel.add(StatisticsGetter.getPieChartPanel());
 					tendencyComparisonPanel.updateUI();
 				}
 			}
@@ -667,7 +662,7 @@ public class MainWindow {
 					trendStatisticsPanel.updateUI();
 				}else{
 					tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
-					tendencyComparisonPanel.add(StatisticsGetter.getBarChartPanel());
+					tendencyComparisonPanel.add(StatisticsGetter.getPieChartPanel());
 					tendencyComparisonPanel.updateUI();
 				}
 			}
@@ -702,6 +697,56 @@ public class MainWindow {
 				}
 			}
 		});
+		
+		// 添加主标签点击事件
+		for (int i = 0; i < 9; i++) {
+			statisticsMainTags.get(i).addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					for (int j = 0; j < 9; j++) {
+						if (e.getActionCommand().equals(mainTagsText[j])) {
+							statisticsSubTagsLayout.show(statisticsSubTags, Integer.toString(j));
+							// 清除选中状态
+							statisticsSubTagsBtnGroup[j].clearSelection();
+							StatisticsGetter.setSelectedMainTag(j);
+							if(StatisticsGetter.isTendencyComparison){
+								tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
+								tendencyComparisonPanel.add(StatisticsGetter.getPieChartPanel());
+								tendencyComparisonPanel.updateUI();
+							}else{
+								trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
+								trendStatisticsPanel.add(StatisticsGetter.getDefaultBarChartPanel());
+								trendStatisticsPanel.updateUI();
+							}
+						}
+					}
+				}
+			});
+		}
+		
+		// 添加子标签点击事件
+		for(int i = 0; i < 9; i++){
+			for (int j = 0; j < subTagsText[i].length - 1; j++) {
+				statisticsSubTagsBtnGroup[i].get(j).addActionListener(new ActionListener() {
+					
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						for(int j = 0; j < subTagsText[StatisticsGetter.getSelectedMainTag()].length; j++){
+							if (e.getActionCommand().equals(subTagsText[StatisticsGetter.getSelectedMainTag()][j])) {
+								StatisticsGetter.setSelectedSubTag(j);
+								if(!StatisticsGetter.isTendencyComparison){
+									trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
+									trendStatisticsPanel.add(StatisticsGetter.getBarChartPanel());
+									trendStatisticsPanel.updateUI();
+								}
+							}
+						}
+					}
+				});
+			}
+		}
 		
 		
 //		// 趋势预测统计图
