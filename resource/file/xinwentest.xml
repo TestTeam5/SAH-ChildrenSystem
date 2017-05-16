@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><ArrayOfNewsData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <NewsData>
-        <TagIts>0 0|1 1</TagIts>
+        <TagIts>0 1|1 0</TagIts>
         <IsLoad>true</IsLoad>
-        <IsDeleted/>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>青少年“身边最让我感动的人”评选揭晓</Title>
         <Date>2006-01-16</Date>
