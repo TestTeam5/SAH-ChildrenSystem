@@ -32,7 +32,7 @@ public class BarChartFactory {
         categoryPlot.setRangeGridlineStroke(new BasicStroke(1.0f));
         
         //设定背景透明度（0-1.0之间） 
-        categoryPlot.setBackgroundAlpha(0);
+        categoryPlot.setBackgroundAlpha(1);
         categoryPlot.setBackgroundPaint(Color.WHITE);
         
         // 设置图表区域无数据时的默认显示文字  
