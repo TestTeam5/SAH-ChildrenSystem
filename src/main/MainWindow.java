@@ -990,6 +990,14 @@ public class MainWindow {
 					// 设置主标签默认选中第一个
 					newsDetailMainTagsGroup.select(0);
 					
+					// 设置子标签面板切换到第一个
+					newsDetailSubTagsCardLayout.show(newsDetailSubTagsCardPanel, "0");
+					NewsGetter.setSelectedMainTag(0);
+					int temp = NewsGetter.getSelectedSubTag();
+					if(temp != -1){
+						newsDetailSubTagsBtnGroup[0].select(temp);
+					}
+					
 					newsContentPane.setCaretPosition(0);
         
 			        showNewsCardLayout.show(showNewsPanel, "新闻详细内容");

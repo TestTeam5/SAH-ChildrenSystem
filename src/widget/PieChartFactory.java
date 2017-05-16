@@ -44,7 +44,7 @@ public class PieChartFactory {
         // 设置饼图为圆形
         piePlot.setCircular(true);
         //设定背景透明度（0-1.0之间） 
-        piePlot.setBackgroundAlpha(0);
+        piePlot.setBackgroundAlpha(1);
         piePlot.setBackgroundPaint(Color.WHITE); 
         //设定前景透明度（0-1.0之间） 
         piePlot.setForegroundAlpha(1f); 
