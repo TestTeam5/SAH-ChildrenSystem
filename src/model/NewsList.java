@@ -283,7 +283,7 @@ public class NewsList {
 				// 统计标签数量
 				TagIts = news.get("TagIts");
 				IsDeleted = news.get("IsDeleted");
-				if(TagIts != null && !IsDeleted.equals("true")){
+				if(TagIts != null && IsDeleted != null && !IsDeleted.equals("true")){
 					for(String tag : TagIts.split("\\|")){
 						addCount(tag, 0, news.get("Date").substring(0, 4));
 					}
@@ -298,7 +298,7 @@ public class NewsList {
 				// 统计标签数量
 				TagIts = news.get("TagIts");
 				IsDeleted = news.get("IsDeleted");
-				if(TagIts != null && !IsDeleted.equals("true")){
+				if(TagIts != null && IsDeleted != null && !IsDeleted.equals("true")){
 					for(String tag : TagIts.split("\\|")){
 						addCount(tag, 1, news.get("Date").substring(0, 4));
 					}
@@ -313,7 +313,7 @@ public class NewsList {
 				// 统计标签数量
 				TagIts = news.get("TagIts");
 				IsDeleted = news.get("IsDeleted");
-				if(TagIts != null && !IsDeleted.equals("true")){
+				if(TagIts != null && IsDeleted != null && !IsDeleted.equals("true")){
 					for(String tag : TagIts.split("\\|")){
 						addCount(tag, 2, news.get("Date").substring(0, 4));
 					}
