@@ -89,7 +89,6 @@ public class NewsList {
 		return this.newslist.get(index).get("ID");
 	}
 	
-	//获得标签的方法待商榷
 	public String getTagIts(int index){
 		if(index >= newslist.size()){
 			return null;
