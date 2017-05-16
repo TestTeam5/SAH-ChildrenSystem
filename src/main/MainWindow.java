@@ -208,6 +208,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("显示新闻界面-点击下一页");
 				Object[][] showNewsTableData = NewsGetter.getPreviousNews();
 				Object[] showNewsColumnTitle = { "标题" };
 				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
@@ -225,6 +226,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("显示新闻界面-点击下一页");
 				Object[][] showNewsTableData = NewsGetter.getNews();
 				Object[] showNewsColumnTitle = { "标题" };
 				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
@@ -242,6 +244,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("显示新闻界面-点击尾页");
 				Object[][] showNewsTableData = NewsGetter.getLastNews();
 				Object[] showNewsColumnTitle = { "标题" };
 				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
@@ -348,6 +351,7 @@ public class MainWindow {
 						// TODO Auto-generated method stub
 						for (int j = 0; j < subTagsText[NewsGetter.getSelectedMainTag()].length - 1 ; j++) {
 							if (e.getActionCommand().equals(subTagsText[NewsGetter.getSelectedMainTag()][j])) {
+								logger.debug("显示新闻界面-点击子标签"+j);
 								NewsGetter.refactorTags(j);
 							}
 						}
@@ -389,6 +393,7 @@ public class MainWindow {
 					// TODO Auto-generated method stub
 					for (int j = 0; j < 9; j++) {
 						if (e.getActionCommand().equals(mainTagsText[j])) {
+							logger.debug("显示新闻界面-点击主标签"+j);
 							newsDetailSubTagsCardLayout.show(newsDetailSubTagsCardPanel, Integer.toString(j));
 							NewsGetter.setSelectedMainTag(j);
 							int temp = NewsGetter.getSelectedSubTag();
@@ -429,6 +434,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("新闻详细界面-点击删除按钮");
 				Object[][] showNewsTableData = NewsGetter.deleteSelectedNews();
 				Object[] showNewsColumnTitle = { "标题" };
 				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
@@ -447,6 +453,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("新闻详细界面-点击返回按钮");
 				showNewsCardLayout.show(showNewsPanel, "新闻列表");
 			}
 		});
@@ -636,6 +643,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("统计界面-点击向左切换按钮");
 				StatisticsGetter.changePreviousNewspaper();
 				if(!StatisticsGetter.isTendencyComparison){
 					trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
@@ -655,6 +663,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("统计界面-点击向右切换按钮");
 				StatisticsGetter.changeNextNewspaper();
 				if(!StatisticsGetter.isTendencyComparison){
 					trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
@@ -674,6 +683,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("点击趋势统计按钮");
 				if(StatisticsGetter.isTendencyComparison){
 					StatisticsGetter.setIsTendencyComparison(false);
 					trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
@@ -689,6 +699,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("点击倾向性比较按钮");
 				if(!StatisticsGetter.isTendencyComparison){
 					StatisticsGetter.setIsTendencyComparison(true);
 					tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
@@ -706,6 +717,7 @@ public class MainWindow {
 					// TODO Auto-generated method stub
 					for (int j = 0; j < 9; j++) {
 						if (e.getActionCommand().equals(mainTagsText[j])) {
+							logger.debug("统计界面-点击主标签"+j);
 							statisticsSubTagsLayout.show(statisticsSubTags, Integer.toString(j));
 							// 清除选中状态
 							statisticsSubTagsBtnGroup[j].clearSelection();
@@ -735,6 +747,7 @@ public class MainWindow {
 						// TODO Auto-generated method stub
 						for(int j = 0; j < subTagsText[StatisticsGetter.getSelectedMainTag()].length; j++){
 							if (e.getActionCommand().equals(subTagsText[StatisticsGetter.getSelectedMainTag()][j])) {
+								logger.debug("统计界面-点击子标签"+j);
 								StatisticsGetter.setSelectedSubTag(j);
 								if(!StatisticsGetter.isTendencyComparison){
 									trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
@@ -841,6 +854,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("删除界面-点击首页按钮");
 				DeletedNewsGetter.init();
 				Object[][] recycleNewsTableData = DeletedNewsGetter.getNews();
 				Object[] recycleNewsColumnTitle = { "标题", "操作" };
@@ -860,6 +874,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("删除界面-点击上一页按钮");
 				Object[][] recycleNewsTableData = DeletedNewsGetter.getPreviousNews();
 				Object[] recycleNewsColumnTitle = { "标题", "操作" };
 				recycleNewsModel.setDataVector(recycleNewsTableData, recycleNewsColumnTitle);
@@ -878,6 +893,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("删除界面-点击下一页按钮");
 				Object[][] recycleNewsTableData = DeletedNewsGetter.getNews();
 				Object[] recycleNewsColumnTitle = { "标题", "操作" };
 				recycleNewsModel.setDataVector(recycleNewsTableData, recycleNewsColumnTitle);
@@ -896,6 +912,7 @@ public class MainWindow {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				logger.debug("删除界面-点击尾页按钮");
 				Object[][] recycleNewsTableData = DeletedNewsGetter.getLastNews();
 				Object[] recycleNewsColumnTitle = { "标题", "操作" };
 				recycleNewsModel.setDataVector(recycleNewsTableData, recycleNewsColumnTitle);
