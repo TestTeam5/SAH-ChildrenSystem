@@ -93,7 +93,7 @@ public class NewsGetter {
 	
 	// 获取选中新闻主标签下的子标签值，若无子标签返回-1
 	public static int getSelectedSubTag(){
-		return newsList.getSelectedSubTag(index, selectedMainTag);
+		return newsList.getSelectedSubTag(selectedIndex, selectedMainTag);
 	}
 	
 	public static String getSelectedContent(){

@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import util.XMLReader;
 import util.XMLWriter;
@@ -37,9 +37,9 @@ public class NewsList {
 	
 	{
 		for(String s: allTags){
-			tagscount0.put(s, new HashMap<String, Integer>());
-			tagscount1.put(s, new HashMap<String, Integer>());
-			tagscount2.put(s, new HashMap<String, Integer>());
+			tagscount0.put(s, new TreeMap<String, Integer>());
+			tagscount1.put(s, new TreeMap<String, Integer>());
+			tagscount2.put(s, new TreeMap<String, Integer>());
 		}
 	};
 	
