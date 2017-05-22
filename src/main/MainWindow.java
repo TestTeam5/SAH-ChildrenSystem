@@ -146,7 +146,15 @@ public class MainWindow {
 		frame.getContentPane().add(pagePanel, BorderLayout.CENTER);
 
 		// 首页
+		//JTextField firstWelcomeInfoText = new JTextField("欢迎使用留守儿童舆情调查系统");
+		//firstPagePanel.add(firstWelcomeInfoText, BorderLayout.CENTER);
+		firstPagePanel.setLayout(new BorderLayout());
+		firstPagePanel.setBackground(Color.WHITE);
 		JTextField firstWelcomeInfoText = new JTextField("欢迎使用留守儿童舆情调查系统");
+		firstWelcomeInfoText.setHorizontalAlignment(JTextField.CENTER);
+		firstWelcomeInfoText.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+		firstWelcomeInfoText.setFocusable(false);
+		firstWelcomeInfoText.setBorder(null);
 		firstPagePanel.add(firstWelcomeInfoText, BorderLayout.CENTER);
 
 		// 显示新闻页面
@@ -747,7 +755,7 @@ public class MainWindow {
 		
 		// 添加子标签点击事件
 		for(int i = 0; i < 9; i++){
-			for (int j = 0; j < subTagsText[i].length - 1; j++) {
+			for (int j = 0; j < subTagsText[i].length; j++) {
 				statisticsSubTagsBtnGroup[i].get(j).addActionListener(new ActionListener() {
 					
 					@Override
