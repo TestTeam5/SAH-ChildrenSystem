@@ -146,7 +146,15 @@ public class MainWindow {
 		frame.getContentPane().add(pagePanel, BorderLayout.CENTER);
 
 		// 首页
+		//JTextField firstWelcomeInfoText = new JTextField("欢迎使用留守儿童舆情调查系统");
+		//firstPagePanel.add(firstWelcomeInfoText, BorderLayout.CENTER);
+		firstPagePanel.setLayout(new BorderLayout());
+		firstPagePanel.setBackground(Color.WHITE);
 		JTextField firstWelcomeInfoText = new JTextField("欢迎使用留守儿童舆情调查系统");
+		firstWelcomeInfoText.setHorizontalAlignment(JTextField.CENTER);
+		firstWelcomeInfoText.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+		firstWelcomeInfoText.setFocusable(false);
+		firstWelcomeInfoText.setBorder(null);
 		firstPagePanel.add(firstWelcomeInfoText, BorderLayout.CENTER);
 
 		// 显示新闻页面
@@ -322,6 +330,7 @@ public class MainWindow {
 
 		for (int i = 0; i < 9; i++) {
 			newsDetailSubTagsBtnGroup[i] = new TagButtonGroup();
+			newsDetailSubTagsBtnGroup[i].setCanReSelected(true);
 			newsDetailSubTagsPanels[i] = new JPanel();
 			newsDetailSubTagsPanels[i].setBackground(Color.WHITE);
 			GridBagLayout newsDetailSubTagsGb = new GridBagLayout();
@@ -372,8 +381,9 @@ public class MainWindow {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					for (int j = 0; j < subTagsText[NewsGetter.getSelectedMainTag()].length - 1 ; j++) {
+					for (int j = 0; j < subTagsText[NewsGetter.getSelectedMainTag()].length ; j++) {
 						if (e.getActionCommand().equals(subTagsText[NewsGetter.getSelectedMainTag()][j])) {
+							logger.debug("显示新闻界面-点击子标签"+j);
 							NewsGetter.refactorTags(j);
 						}
 					}
@@ -399,6 +409,8 @@ public class MainWindow {
 							int temp = NewsGetter.getSelectedSubTag();
 							if(temp != -1){
 								newsDetailSubTagsBtnGroup[j].select(temp);
+							}else{
+								newsDetailSubTagsBtnGroup[j].clearSelection();
 							}
 						}
 					}
@@ -637,6 +649,10 @@ public class MainWindow {
 		tendencyComparisonPanel.setLayout(new BorderLayout());
 		statisticsFigureContent.add("倾向性比较", tendencyComparisonPanel);
 		
+		StatisticsGetter.init();
+		trendStatisticsPanel.add(StatisticsGetter.getOldBarChartPanel(), BorderLayout.CENTER);
+		tendencyComparisonPanel.add(StatisticsGetter.getOldPieChartPanel(), BorderLayout.CENTER);
+		
 		// 设置向左按钮点击事件
 		leftButton.addActionListener(new ActionListener() {
 			
@@ -739,7 +755,7 @@ public class MainWindow {
 		
 		// 添加子标签点击事件
 		for(int i = 0; i < 9; i++){
-			for (int j = 0; j < subTagsText[i].length - 1; j++) {
+			for (int j = 0; j < subTagsText[i].length; j++) {
 				statisticsSubTagsBtnGroup[i].get(j).addActionListener(new ActionListener() {
 					
 					@Override
@@ -760,33 +776,6 @@ public class MainWindow {
 				});
 			}
 		}
-		
-		
-//		// 趋势预测统计图
-//		// 创建柱状图数据集对象
-//		//创建数据  
-//        DefaultCategoryDataset barDataset = new DefaultCategoryDataset();  
-//        //数据初始化  
-//        barDataset.addValue(1, "某报纸", "2014年");  
-//        barDataset.addValue(7, "某报纸", "2015年");  
-//        barDataset.addValue(3, "某报纸", "2016年");  
-//        
-//        String title = "光明日报";
-//        ChartPanel barChartPanel = BarChartFactory.getBarChartPanel(barDataset, title);
-//        trendStatisticsPanel.add(barChartPanel, BorderLayout.CENTER);
-		
-//		// 倾向性比较统计图
-//		// 创建饼形图数据集对象  
-//        DefaultPieDataset pieDataset = new DefaultPieDataset();  
-//        // 分别图形区域的说明和数据  
-//        pieDataset.setValue("积极健康", 100);  
-//        pieDataset.setValue("可怜悲惨", 75);  
-//        pieDataset.setValue("沐恩幸福", 74);  
-//        pieDataset.setValue("问题儿童", 60);  
-//        pieDataset.setValue("其他", 50);
-//        
-//        ChartPanel pieChartPanel = PieChartFactory.getPieChartPanel(pieDataset, title);
-//        tendencyComparisonPanel.add(pieChartPanel, BorderLayout.CENTER);
 
 		// 回收站界面
 		recyclePanel.setLayout(new BorderLayout());
@@ -945,7 +934,6 @@ public class MainWindow {
 					NewsGetter.init();
 					Object[][] showNewsTableData = NewsGetter.getNews();
 					Object[] showNewsColumnTitle = { "标题" };
-					DefaultTableModel showNewsModel = new DefaultTableModel(); // 新建一个默认数据模型
 					showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
 					showNewsTable.clearSelection();
 					// 设置滚动条滚动到顶部
@@ -966,6 +954,8 @@ public class MainWindow {
 					// 设置模式选择按钮选中第一个
 					modeSelectGroup.select(0);
 					figureCardLayout.show(statisticsFigureContent, "趋势统计");
+					trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
+					tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
 					StatisticsGetter.init();
 					trendStatisticsPanel.add(StatisticsGetter.getOldBarChartPanel(), BorderLayout.CENTER);
 					tendencyComparisonPanel.add(StatisticsGetter.getOldPieChartPanel(), BorderLayout.CENTER);
@@ -1013,6 +1003,8 @@ public class MainWindow {
 					int temp = NewsGetter.getSelectedSubTag();
 					if(temp != -1){
 						newsDetailSubTagsBtnGroup[0].select(temp);
+					}else{
+						newsDetailSubTagsBtnGroup[0].clearSelection();
 					}
 					
 					newsContentPane.setCaretPosition(0);

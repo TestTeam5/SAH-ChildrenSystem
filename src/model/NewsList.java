@@ -132,6 +132,7 @@ public class NewsList {
 				minusCount(s, num, year);
 			}
 		}
+		addDeletedCount();
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "IsDeleted", "true");
 		deletedCount++;
 	}
@@ -154,6 +155,7 @@ public class NewsList {
 				addCount(s, num, year);
 			}
 		}
+		minusDeletedCount();
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "IsDeleted", "false");
 		deletedCount--;
 	}
@@ -261,19 +263,31 @@ public class NewsList {
 			newsTag = "";
 		String type = ntag.substring(0, 2);
 		int i = newsTag.indexOf(type);
+		int j = newsTag.indexOf(ntag);
 		String newTagString = "";
-		if(i != -1){
-			newTagString = newsTag.substring(0, i) + ntag + newsTag.substring(i + 3);
-			this.newslist.get(index).put("TagIts", newTagString);
-			minusCount(newsTag.substring(i, i + 3), num, this.newslist.get(index).get("Date").substring(0, 4));
-		}else{
-			if(!newsTag.equals("")){
-				newsTag = newsTag + "|";
+		if(j != -1){
+			if(j == 0){
+				if(newsTag.length() > 3){
+					newTagString = newsTag.substring(4);
+				}
+			}else{
+				newTagString = newsTag.substring(0, j-1) + newsTag.substring(j+3);
 			}
-			newTagString = newsTag + ntag;
-			this.newslist.get(index).put("TagIts", newTagString);
+			minusCount(ntag, num, this.newslist.get(index).get("Date").substring(0, 4));
+		}else{
+			if(i != -1){
+				newTagString = newsTag.substring(0, i) + ntag + newsTag.substring(i + 3);
+				this.newslist.get(index).put("TagIts", newTagString);
+				minusCount(newsTag.substring(i, i + 3), num, this.newslist.get(index).get("Date").substring(0, 4));
+			}else{
+				if(!newsTag.equals("")){
+					newsTag = newsTag + "|";
+				}
+				newTagString = newsTag + ntag;
+				this.newslist.get(index).put("TagIts", newTagString);
+			}
+			addCount(ntag, num, this.newslist.get(index).get("Date").substring(0, 4));
 		}
-		addCount(ntag, num, this.newslist.get(index).get("Date").substring(0, 4));
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "TagIts", newTagString);
 	}
 	private void count(){
