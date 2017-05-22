@@ -15,6 +15,9 @@ public class TagButtonGroup {
 	
 	private JButton selectedButton = null;
 	
+	// 设置再次点击是否可以取消选择
+	private boolean canReSelected = false;
+	
 	public void add(JButton button){
 		buttons.add(button);
 		
@@ -33,9 +36,20 @@ public class TagButtonGroup {
 					temp.setBackground(Color.DARK_GRAY);
 					temp.setForeground(Color.WHITE);
 				}
-				selectedButton = (JButton)e.getSource();
-				selectedButton.setBackground(new Color(230, 230, 230));
-				selectedButton.setForeground(Color.BLACK);
+				// 可以取消选择的情况，需要先判断点击按钮是否已被点击
+				if(canReSelected){
+					if(selectedButton != (JButton)e.getSource()){
+						selectedButton = (JButton)e.getSource();
+						selectedButton.setBackground(new Color(230, 230, 230));
+						selectedButton.setForeground(Color.BLACK);
+					}else{
+						selectedButton = null;
+					}
+				}else{
+					selectedButton = (JButton)e.getSource();
+					selectedButton.setBackground(new Color(230, 230, 230));
+					selectedButton.setForeground(Color.BLACK);
+				}
 			}
 		});
 		
@@ -98,5 +112,10 @@ public class TagButtonGroup {
 		selectedButton = buttons.get(index);
 		selectedButton.setBackground(new Color(230, 230, 230));
 		selectedButton.setForeground(Color.BLACK);
+	}
+	
+	// 设置再次点击是否可以取消选择
+	public void setCanReSelected(boolean setting){
+		this.canReSelected = setting;
 	}
 }
