@@ -1,13 +1,12 @@
 package test;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import junit.framework.TestCase;
 import util.XMLReader;
 import util.XMLWriter;
 
@@ -15,15 +14,18 @@ import util.XMLWriter;
  * 先保证XMLReader能通过测试，不然该测试结果无法预测。
  */
 
-public class XMLWriterTest {
+public class XMLWriterTest extends TestCase{
 	
-	private String path = "resource/file/xinwentest.xml";
+	private String path;
 	private String ID;
-    private XMLReader xmlreader = new XMLReader(path);
-	private ArrayList<Map<String, String>> list = xmlreader.readXml();
+    private XMLReader xmlreader;
+	private ArrayList<Map<String, String>> list;
 
-	@Before
+	@BeforeClass
 	public void setUp() throws Exception {
+		path = "resource/file/xinwentest.xml";
+	    xmlreader = new XMLReader(path);
+		list = xmlreader.readXml();
 	}
 
 	@Test

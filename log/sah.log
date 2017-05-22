@@ -1271,3 +1271,7 @@
 2017-05-22 00:19:26 [AWT-EventQueue-0] DEBUG main.MainWindow$23.actionPerformed(MainWindow.java:720) 统计界面-点击主标签2
 2017-05-22 00:19:30 [AWT-EventQueue-0] DEBUG main.MainWindow$21.actionPerformed(MainWindow.java:686) 点击趋势统计按钮
 2017-05-22 00:19:31 [AWT-EventQueue-0] DEBUG main.MainWindow$24.actionPerformed(MainWindow.java:750) 统计界面-点击子标签3
+2017-05-22 21:46:05 [main] DEBUG main.MainWindow.main(MainWindow.java:65) 界面初始化开始
+2017-05-22 21:46:05 [main] DEBUG main.MainWindow.main(MainWindow.java:67) 数据初始化开始
+2017-05-22 21:46:06 [main] DEBUG main.MainWindow.main(MainWindow.java:71) 数据初始化完成
+2017-05-22 21:46:07 [main] DEBUG main.MainWindow.main(MainWindow.java:84) 界面初始化完成

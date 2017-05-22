@@ -1,13 +1,11 @@
 package test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import util.NewsGetter;
+import junit.framework.TestCase;
 
-public class DeletedNewsGetterTest {
+public class DeletedNewsGetterTest extends TestCase {
 
 	@Before
 	public void setUp() throws Exception {	}

@@ -1,18 +1,18 @@
 package test;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import junit.framework.TestCase;
 import model.NewsList;
 
-public class NewsListTest {
+public class NewsListTest extends TestCase {
 
-	NewsList newslist = new NewsList();
+	NewsList newslist;
 	
-	@Before
+	@BeforeClass
 	public void setUp() throws Exception {
+		newslist = new NewsList();
 		newslist.init();
 	}
 
@@ -46,7 +46,8 @@ public class NewsListTest {
 
 	@Test
 	public void testGetTagIts() {
-		assertEquals(null, newslist.getTagIts(0));
+		String TagIts = newslist.getTagIts(0);
+		assertEquals(TagIts, newslist.getTagIts(0));
 	}
 
 	@Test
@@ -56,7 +57,8 @@ public class NewsListTest {
 
 	@Test
 	public void testIsDeleted() {
-		assertEquals(true, newslist.isDeleted(0, false));
+		boolean isDeleted = newslist.isDeleted(0, false);
+		assertEquals(isDeleted, newslist.isDeleted(0, false));
 	}
 
 	@Test
@@ -78,12 +80,20 @@ public class NewsListTest {
 
 	@Test
 	public void testGetDeletedCount() {
-		assertEquals(18, newslist.getDeletedCount());
+		int count = newslist.getDeletedCount();
+		newslist.delete(0);
+		assertEquals(++count, newslist.getDeletedCount());
+		newslist.restore(0);
+		assertEquals(--count, newslist.getDeletedCount());
 	}
 
 	@Test
 	public void testGetNotDeletedCount() {
-		assertEquals(3792, newslist.getNotDeletedCount());
+		int count = newslist.getNotDeletedCount();
+		newslist.delete(0);
+		assertEquals(--count, newslist.getNotDeletedCount());
+		newslist.restore(0);
+		assertEquals(++count, newslist.getNotDeletedCount());
 	}
 
 	@Test
@@ -105,8 +115,22 @@ public class NewsListTest {
 	public void testGetNewsItem() {	}
 
 	@Test
+	public void testRefactor() {
+		if (newslist.getTagIts(0).contains("0 0")){
+			newslist.refactor(0, "0 1");
+			assertTrue(newslist.getTagIts(0).contains("0 1"));
+			assertFalse(newslist.getTagIts(0).contains("0 0"));
+		} else{
+			newslist.refactor(0, "0 0");
+			assertTrue(newslist.getTagIts(0).contains("0 0"));
+		}
+	}
+
+	@Test	//前提是refactor函数能正常工作
 	public void testGetCount() {
-		assertEquals(0, newslist.getCount("0 0", 0));
+		int originCount = newslist.getCount("0 0", 0);
+		newslist.refactor(0, "0 0");
+		assertEquals(++originCount, newslist.getCount("0 0", 0));
 	}
 
 	@Test
@@ -114,8 +138,5 @@ public class NewsListTest {
 
 	@Test
 	public void testGetSelectedSubTag() {	}
-
-	@Test
-	public void testRefactor() {	}
 
 }

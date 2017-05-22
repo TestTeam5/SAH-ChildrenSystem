@@ -133,6 +133,7 @@ public class NewsList {
 			}
 		}
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "IsDeleted", "true");
+		deletedCount++;
 	}
 	public void restore(int index){
 		if(index >= newslist.size()){
@@ -154,6 +155,7 @@ public class NewsList {
 			}
 		}
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "IsDeleted", "false");
+		deletedCount--;
 	}
 	
 	

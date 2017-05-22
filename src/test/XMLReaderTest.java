@@ -1,21 +1,21 @@
 package test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import junit.framework.TestCase;
 import util.XMLReader;
 
 
-public class XMLReaderTest {
-    private XMLReader xmlreader = new XMLReader("resource/file/xuexiao.xml");
+public class XMLReaderTest extends TestCase {
+    private XMLReader xmlreader;
     
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public void setUp() throws Exception { 
+		xmlreader = new XMLReader("resource/file/xuexiao.xml");
 	}
 	
 

@@ -1,11 +1,11 @@
 package test;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 
-public class StatisticsGetterTest {
+import junit.framework.TestCase;
+
+public class StatisticsGetterTest extends TestCase {
 
 	@Before
 	public void setUp() throws Exception {
