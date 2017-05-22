@@ -934,7 +934,6 @@ public class MainWindow {
 					NewsGetter.init();
 					Object[][] showNewsTableData = NewsGetter.getNews();
 					Object[] showNewsColumnTitle = { "标题" };
-					DefaultTableModel showNewsModel = new DefaultTableModel(); // 新建一个默认数据模型
 					showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
 					showNewsTable.clearSelection();
 					// 设置滚动条滚动到顶部

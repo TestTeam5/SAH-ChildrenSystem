@@ -132,6 +132,7 @@ public class NewsList {
 				minusCount(s, num, year);
 			}
 		}
+		addDeletedCount();
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "IsDeleted", "true");
 	}
 	public void restore(int index){
@@ -153,6 +154,7 @@ public class NewsList {
 				addCount(s, num, year);
 			}
 		}
+		minusDeletedCount();
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "IsDeleted", "false");
 	}
 	
