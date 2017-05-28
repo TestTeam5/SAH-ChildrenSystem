@@ -6,6 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ DeletedNewsGetterTest.class, 
+		FileManagerTest.class,
 		InitializerTest.class, 
 		NewsDetailReaderTest.class, 
 		NewsGetterTest.class,

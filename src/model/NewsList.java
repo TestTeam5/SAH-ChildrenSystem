@@ -207,7 +207,6 @@ public class NewsList {
 		return newslist.get(index);
 	}
 	
-	
 	/*
 	 * 标签相关操作
 	 */
