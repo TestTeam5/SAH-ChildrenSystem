@@ -34,7 +34,7 @@
     <NewsData>
         <TagIts>5 2|1 1|0 0|7 3</TagIts>
         <IsLoad>true</IsLoad>
-        <IsDeleted>false</IsDeleted>
+        <IsDeleted>true</IsDeleted>
         <Memo/>
         <Title>全国政协十届四次会议举行第三次全体会议贾庆林出席12位委员围绕科教文衞等社会事业...</Title>
         <Date>2006-03-10</Date>
@@ -98,7 +98,7 @@
     <NewsData>
         <TagIts>5 3|6 2|4 2</TagIts>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>和谐社会视野下的教育公平</Title>
         <Date>2006-04-19</Date>
@@ -144,9 +144,9 @@
         <EncodedContent>PABoAHQAbQBsAD4APABiAG8AZAB5AD4APABQAD4ALGelYq+LKACwiwWAV3/tZSkAHCBcTzpOsGWcUVFn+l6+i4R2AE4qTs2RgYm5ZWKXLACCWZxnDU6KYpxRUWdZdYhbP1HleoR2WWWygO6VmJjjibNRfVksAHRlKk4+eRpP/ZAGXDpOnFFRZwtOAE7jTlllsoCEdjp/MVnYTvpR4073TgIwHSAtTv1WnFEaTidZZlu6TodlDk7RU1VcZltilm9SZk6wiyBfS1GRTuVlTVIoV6xOXE87TpiYOk4cIHNRMXI/UeV6Dk6wZZxRUWf6Xr6LHSCEdhRvsov2ZdmPN2j0i1OQAjANAAoAPABQAD4AMXUtTv1Won5BU1dbGk87Tp5ShHYcIFpTMXK6i1tXHSDRj+VlKFcXU6xOyWIAXzdeVV4CMCxnIWu6i1tXhHY7TpiYL2YcINFTVVxsUcp2i04aTvpevos+eRpPO05JTrBlnFFRZx0gAjAOThpPhHYTTrZbZlsFgPRW1X4cIGxRynaLThpODk6wZZxRUWf6Xr6LHSABMBwgc1ExcpxRUWcAZ/BWvpakf1NPHSABMBwg0VNVXGxRynaLThpODk6cUVFnvnxeeYdlDmb6Xr6LHSABMBwgon5BU1dbGk8oV7BlnFFRZwhUXE87U5d1NlKmXvpevostToR2XE8odR0gSXv4dnNRE06YmNuPTIiGTrBzOlcUb7KLAjANAAoAPABQAD4AIF9LUZFOKFcUb7KLLU4HY/pRLABuY99+oYssAO52TVJoUf1Wpn4JZzEALgAyAL9OnFERbOVdLAB2UVl1iFsoV5xRUWeEdlBbc1koV0lOoVJZZbKAdF6En7VrhHamfglnMgAwADAAMAAaWQdOLAAMgBRO2Y8qTnBlV1soVxCQdF6eWH+VAjAxdbxlFln6UaFS5V2EdpxREWw7ToGJL2ZSl+5YdF4sAChXNnLNa8xTzFMWWfpRU2LlXYR2tlutXi1OLACUluNO0XakYrpOhHaHZRZTNGxzXvh2+VuDj05PLAD5Wz9R5XqEdmZbYE4ATiyCDU79gNl+iE4uXqlSOwCCWZxnL2ZVU7JO+lG7U1Ni5V0sAFl1KFe2W8yRhHY2crJOFmLNa7JOMXW8ZX9ixWKGTmhR6JCEdrZboVKMVDB19JWzUqhSLABfTohfEVwJZ/Zl9JWMVL58m1K7U4WP/FtpW1BbhHZmW2BOAjD5W7xlY2sEWbxlEGJ/lXNRLpUfZ4R2WXWIWz9R5XosALZbrV4NToxbdGUgkBBihHZZZbKAOn8xWSwAf0/WTuxOKFdmWxpOATAfdTttATDFYB9hATDBVLdfSXu5ZWKXLAD9kNdTMFKGTnFfzVQsAAlnhHbOTg9cMVzTZwpOhk4NTm+CPnkaT2BOFGwsAAlnhHbgVsNfBnR/lR9ni1ORYgyA/Fv0gYZOTIg6Tk9Q7l0WYidgPGhtYvJmLAAJZ4R2GnXzgRBihk4ATptOHCB2YCdgi072Th0ghHY7TguMBYAWYquIs1u6TgIwyk6MX/h2U19/lYR2AE4qTvZlH2csABZZ+lGhUuVdzU42cS9mnFERbJ5YoFI2ZWVRhHY7ToGJFJCEXywAWXWIWz9R5XqEdrBzYYwNTu9Tf5BNUQIwHCCCWVVPKFfdT8GLnFERbJ5YoFI2ZWVRhHYMVPZlLACKYpxRUWdZdYhbP1HleoR2WWWygO6VmJjjibNRfVksAC9msGWcUVFn+l6+i2KXNE6EdgBOKk4RYxhiLAAMgA1OxU7FTi9mZlsvZ0x1jFRZZbKA6JDolYR2FHh2ev6LmJgCMB0gIAA8AC8AUAA+ADwALwBiAG8AZAB5AD4APAAvAGgAdABtAGwAPgA=</EncodedContent>
     </NewsData>
     <NewsData>
-        <TagIts>0 0|8 3</TagIts>
+        <TagIts>0 0|8 3|4 2</TagIts>
         <IsLoad>true</IsLoad>
-        <IsDeleted>false</IsDeleted>
+        <IsDeleted>true</IsDeleted>
         <Memo/>
         <Title>17部委领导慰问在京流动人口子女和农村留守儿童</Title>
         <Date>2006-05-28</Date>
@@ -226,7 +226,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>分成十个课题组走访八十三个村安徽大学百名学生撰写“新农村档案”</Title>
         <Date>2006-09-08</Date>
@@ -272,7 +272,7 @@
         <EncodedContent>PABoAHQAbQBsAD4APABiAG8AZAB5AD4APABQAD4AsGVOUz55F1OsTjEAMAAIZzgA5WU1dS1OcVEtTi5ZP2W7bEBcOF7UWU5nf5UlZjcA5WU7TgFj7FMAXxpProssACxU1lMvjXtfPYSeWwowLU5xUS1OLlkBMP1WoVJilnNRvGXbjwBOZWugUjpfjFQ5ZduPKmcQYnReuk4dYPNgU5C3X/pevouEduWCcl4PYcGJCzCMVAowLU5xUS1OLlkBMP1WoVJilnNRvGXbjwBOZWugUjpfjFQ5ZduPJ1lmWx91HWDzYD9lu2xZZbKAhHYPYcGJCzBjd+VnxWC1UYR2R2ylYgIw1k46XwOMLACBiduPAE5lay+Ne189hJ5bLU4uWYR2gYlCbCwAO2DTfqhjf159WYR2z36MmiwAx5HWU+95gWcJZ0hlhHaqY71lLADgcpNiBFR5mOVdXE89hJ5bLACoY6hSKmcQYnReuk4dYPNgU5C3X/pevouMVCdZZlsfdR1g82A/ZbtsWWWygOVdXE+NUQpOsGXwUzaWAjANAAoAPABQAD4ATmd/lSVm9IssADIAMAAwADQAdF4tTi5ZJE4qTodl9k4LTtFT5U5lZywABFQwVwRU6JDolaSLH3cvjXtfPYSeWywA034IVJ5bRZYbUiCQJ2AwVwBfVVzlXVxPLACqY71lCWebUiwA5V1cT05inlssAFKXEVx0Xh1g82BTkLdf+l6+i4aY/FtTTzZSjFTlXVxPOmc2UvpXLGf6Xst6LABoUVpRaFE+eRpPc1HDX82RxolSlxFcdF5lULdeEGJ/lYR2PnkaTxts9FblZcp2U22aUywADU5vgj55Gk+HZRZTr3ODWJdfMFIdUmVrdGW7bCwAZlshaAEwtlutXgEwPnkaTxwgCU7TfghUHSBZZbKAUX/cftFTVVy/UjRZb4J9WSwAZlshaLdfsoDlXVxP248ATmVroFI6XywAKmcQYnReuk4dYPNgU5C3X/pevouMVCdZZlsfdR1g82A/ZbtsWWWygOVdXE/WU5dfhk4OZj5mEGJIZSwA11MwUoZOf14nWbpOEWykfxdPhHZ9WcSLAjAMVPZlX06BiQVukpEwVwt3MFIsABBi6X7qUy9mHVJla4R2LAANTv2AME+hi8eP2JosABFccGUwV7lljFTokAZSZlshaPlboFI6X1KXEVx0Xh1g82BTkLdf+l6+i9iPzZHGiQ1OH1ksALKAuk46TixnATC3X7KAOk5IUYR2nlJmWwZ09V8oVwlnm05mWyFo2I+hbAlnl18wUqSLH3c9hJ5bLACgUjpfUpcRXHReHWDzYFOQt1/6Xr6LhHZ/lUhlOmc2UtiPoWwJZ2JfEGIsAABOm07lXVxPqmO9ZdiPoWwJZz2EnlswUk1PLADYjwCXgYkRYuxOWlAnWc+RcILmgsZ+9IGEduVdXE8CMA0ACgA8AFAAPgBOZ3+VJWYHY/pRLACgUjpfjFQ5ZduPUpcRXHReHWDzYFOQt1/6Xr6LLAAvZlpRLU4uWUB3PHd/ldyPXE/6UYR2AE55mM2RJ1kYYmV16JByfywAL2aLTnNR/Va2W01SFJCMVBFsz2V9VNCPhHYYYmV15V0LeiwAc1H7fL9OB062W61eB1KrjilSynaEdhFsw1/lXQt6LAA+eRpPO05JTr58XnmHZQ5m+l6+i4R2+ldAeOVdC3oCMARUp35aUdRZP2WcXoxUZlshaCwAgYmKYh1g82Cki8aL248ATmVr334ATjBSLU4uWb58XnkKTmVnLADlTvlbWlGMVLpOEWzYmqZeH40jjYR2vnxeeSwAx5HWU/RmoFJOYp5bCWdIZYR2qmO9ZSwAaFFilz2EnluygLpOOk4sZwEwt1+ygDpOSFGEdoGJQmwsAChXZVBoUX+VSGU6ZzZSCk4LTp9SK1ksAChXoFI6X4SFMV+vc4KCCk4LTp9SK1ksAChXqFJYVGhRPnkaT+95gWfCUw5OCk4LTp9SK1ksAChXGlk6TlKXEVx0Xp5SnluLTp5SfVmLTgpOC06fUitZLABOYp5b5V1cTywAOF6TYg1OyGEsAA1OrWUAXxtSUpcRXHReHWDzYFOQt1/6Xr6LsGVAXGKXAjANAAoAPABQAD4ATmd/lSVmOl8DjCwAoFI6X4xUOWXbj1KXEVx0Xh1g82BTkLdf+l6+iy9mAE55mHNR+3xoUUBchHYYYmV1+06hUiwAAJeBiQRUuWVil3FRDFSqUptSLADbjwBOZWugUjpfhpj8WywADmZueEyAI40sAHRlCFREjZBuLABiXxBiCFSbUgIwgYlFUQZS0VMlY2ZbIWhZZbKAhHY7TiBuU5BcTyh1LABaVwFjaFFYVLKAuk4BMGhRC3qygLpOATBoUbllTU+ygLpOLADbjwBOZWugUjpfjFQ5ZduPt1+ygOVdXE8sAPpey3plUGhRJnsIVCB9KI1ZZbKAgYlCbIR2Zlsfdfx+CFQgfSiNjFRmWyFoWWWygCiNz5EDgDhoxIv3TlNP+3wsAMNP249SlxFcdF5mWx91t196ZlNPjn9oUWKX0VNVXAIwgYmKYmZbYE4vjXtf4YAmlZttO2BmTrCL2X5fW4xOrFFZZYhjc1k/Ud5W4U+EdjttqFIVXxFU8W1lUSwAJ1mbUqhjqFIIXrdf+l6+iwIwgYmgUidZlWJlUSwAvnzDX8R+x34sADpOUpcRXHRe0GObT/RmGln0Zn1ZhHa+fF55h2UWU6dOwVSMVA1noVICMIGJOl+bUsBRFlM+eRpPh2UWU69zg1gsAOVOUX8nVAEwUX/cfgEwUX84boR2dGW7bDpOzZG5cCwAJU48aGdi1WwsAAdoLGd8UbtsLADQYyFQ3o8BlSwAoFI6X9F2p2MsAOd+7X6oY9uPh2UOZp5SUX8BMIdlDmYKTlF/O22oUiwAOk5SlxFcdF4bUiCQ/35yglF/3H56evSVAjCBiVpXAWNilxFU+ldCXAEwDWehUvpXQlwsAIxbhFUxcv1WO05JTlllsoD6VzBXjFRsUcp2J2CHZRZTvou9ZflbUpcRXHReTVE5jRhP4GAAXz5lhHY/ZVZ7qmO9ZSwAPYSeW1KXEVx0XiFoFlk7bahSOldAYoR2bFHKdidgn1MZUiwAnluwc2ZbIWhZZbKADk4haBZZO22oUoR2CWdIZVSIpWMsAKhjqFJSlxFcdF47bahSOldAYvRmfVkwVzpOf14nWVKXEVx0Xg1noVICMIGJ4W5Uge1wxWAwV3NRMXKcUVFnUpcRXHReLACgUjpfnFFRZ4dlFlMCXjpXoXsGdCwAWlB9WZxRUWccIFl1iFs/UeV6HSCEdlllsoChewZ05V1cTywA44mzUX1ZnFERbOVdUFtzWQpOZlu+lu6VmJgCMIGJx5HWUwlnSGWqY71lLADbjwBOZWuMW4RVK43wVidZZlsfdUSNqVKeUtVsLAAHUp5boFI6XxFsnlLYmiFoJ1lmWx91HWDzYD9lu2xZZbKAAjCBict6s43xbRZTATBAdzx3f5XcjywA+l7LemVQaFF/lUhlOmc2UiwAnluwc1KXEVx0Xh1g82BTkLdf+l6+i4R2b4InYKpfr3MCMIGJf17bbKNbIE9SlxFcdF4dYPNgU5C3X/pevouEdn1Zz36MmgEwfVl4UYtXLABFUQZSVVw6ebBlFGxhjAEwsGVil4yMLAB/Ty1OLlm+fF559GagUvFtZVG6TsNfAjANAAoAPABQAD4ALU5xUS1OLlk/ZbtsQFzUWVhUATBmTrCLBFlmTrCLATAtTqNb6JDokH+VGFKRTnFcLAD9VqFS1FlYVEiW84HLeoxUCWdzUeiQ6JUfjSONDFTXXwBODFQsVNZThk5HbKViAjAgADwALwBQAD4APAAvAGIAbwBkAHkAPgA8AC8AaAB0AG0AbAA+AA==</EncodedContent>
     </NewsData>
     <NewsData>
-        <TagIts>0 1</TagIts>
+        <TagIts>0 1|5 2</TagIts>
         <IsLoad>true</IsLoad>
         <IsDeleted>false</IsDeleted>
         <Memo/>
@@ -546,7 +546,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>“送孩子一个光明的未来”</Title>
         <Date>2007-03-07</Date>
@@ -578,7 +578,7 @@
     <NewsData>
         <TagIts>4 1|5 2</TagIts>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>老有所养少有所育——代表委员谈“空巢老人”、“留守儿童”</Title>
         <Date>2007-03-15</Date>
@@ -674,7 +674,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>用余热温暖“留守儿童”——记安徽泾县文化馆退休干部王直</Title>
         <Date>2007-04-02</Date>
@@ -722,7 +722,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>浙江开化三十多位志愿者当“特殊家长”百名留守儿童找回快乐</Title>
         <Date>2007-04-15</Date>
@@ -770,7 +770,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>北大爱心社“爱心万里行”活动启动</Title>
         <Date>2007-05-23</Date>
@@ -802,7 +802,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>23部委领导慰问农村留守流动儿童</Title>
         <Date>2007-05-28</Date>
@@ -834,7 +834,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>福建万名“爱心妈妈”上岗</Title>
         <Date>2007-05-30</Date>
@@ -850,7 +850,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>“六一”该送孩子什麽礼物</Title>
         <Date>2007-05-31</Date>
@@ -866,7 +866,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>同打乒乓球同跳集体舞王兆国顾秀莲与儿童欢庆“六一”</Title>
         <Date>2007-06-01</Date>
@@ -882,7 +882,7 @@
     <NewsData>
         <TagIts/>
         <IsLoad>true</IsLoad>
-        <IsDeleted>true</IsDeleted>
+        <IsDeleted>false</IsDeleted>
         <Memo/>
         <Title>手拉手话和谐留守儿童来京欢度“六一”</Title>
         <Date>2007-06-02</Date>
