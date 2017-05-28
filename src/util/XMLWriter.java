@@ -48,19 +48,27 @@ public class XMLWriter {
                 }
             }
             
-            //保存xml文件
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            DOMSource domSource = new DOMSource(doc);
-            //设置编码类型
-            transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-            StreamResult result = new StreamResult(new FileOutputStream(path));
-            //把DOM树转换为xml文件
-            transformer.transform(domSource, result);
+            writeFile(doc, path);
             
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
     }
+	
+	public static void writeFile(Document doc, String path){
+		try{
+	        //保存xml文件
+	        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+	        Transformer transformer = transformerFactory.newTransformer();
+	        DOMSource domSource = new DOMSource(doc);
+	        //设置编码类型
+	        transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+	        StreamResult result = new StreamResult(new FileOutputStream(path));
+	        //把DOM树转换为xml文件
+	        transformer.transform(domSource, result);
+		} catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+	}
 
 }
