@@ -248,7 +248,7 @@ public class NewsList {
 		}
 	}
 	
-	//若有同类标签则替换，否则添加
+	// 若有同类标签,如果子标签相同则删除，子标签不同则替换，否则添加
 	public void refactor(int index, String ntag){
 		int num = 0;
 		if(newslist.get(index).get("Location").equals("光明日报"))
@@ -276,17 +276,16 @@ public class NewsList {
 		}else{
 			if(i != -1){
 				newTagString = newsTag.substring(0, i) + ntag + newsTag.substring(i + 3);
-				this.newslist.get(index).put("TagIts", newTagString);
 				minusCount(newsTag.substring(i, i + 3), num, this.newslist.get(index).get("Date").substring(0, 4));
 			}else{
 				if(!newsTag.equals("")){
 					newsTag = newsTag + "|";
 				}
 				newTagString = newsTag + ntag;
-				this.newslist.get(index).put("TagIts", newTagString);
 			}
 			addCount(ntag, num, this.newslist.get(index).get("Date").substring(0, 4));
 		}
+		this.newslist.get(index).put("TagIts", newTagString);
 		XMLWriter.write(paths[num], newslist.get(index).get("ID"), "TagIts", newTagString);
 	}
 	private void count(){

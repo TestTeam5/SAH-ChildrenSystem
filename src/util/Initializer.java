@@ -1,6 +1,7 @@
 package util;
 
 import model.NewsList;
+import model.TestNewsList;
 
 /*
  * 用于初始化整个程序及保存修改。
@@ -10,10 +11,16 @@ import model.NewsList;
 public class Initializer {
 	
 	public static NewsList newsList;
+	public static TestNewsList testNewsList;
 	
 	public static void initData() {
 		newsList = new NewsList();
 		newsList.init();
+	}
+	
+	public static void initTestData() {
+		testNewsList = new TestNewsList();
+		testNewsList.init();
 	}
 	
 }

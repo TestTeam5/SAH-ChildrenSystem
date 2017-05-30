@@ -15,11 +15,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Enumeration;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -29,25 +33,20 @@ import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.plaf.FontUIResource;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 
 import org.apache.log4j.Logger;
-import org.jfree.chart.ChartPanel;
-import org.jfree.data.category.DefaultCategoryDataset;
-import org.jfree.data.general.DefaultPieDataset;
 
 import util.DeletedNewsGetter;
+import util.FileCopy;
+import util.FilePathSelector;
 import util.Initializer;
 import util.NewsGetter;
 import util.StatisticsGetter;
-import widget.BarChartFactory;
 import widget.FontAwesome;
 import widget.NewsScrollPane;
 import widget.NewsTable;
 import widget.PageSelectButton;
-import widget.PieChartFactory;
 import widget.ShiftButton;
 import widget.TabButton;
 import widget.TagButtonGroup;
@@ -156,6 +155,36 @@ public class MainWindow {
 		firstWelcomeInfoText.setFocusable(false);
 		firstWelcomeInfoText.setBorder(null);
 		firstPagePanel.add(firstWelcomeInfoText, BorderLayout.CENTER);
+		
+		JPanel firstTopButtonPanel = new JPanel();
+		firstTopButtonPanel.setLayout(new GridLayout(1, 8));
+		firstPagePanel.add(firstTopButtonPanel, BorderLayout.NORTH);
+		
+//		JButton encryptButton = new JButton("加密");
+//		jpanel.add(encryptButton, BorderLayout.NORTH);
+//		encryptButton.addActionListener(new ActionListener() {
+//			
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				// TODO Auto-generated method stub
+//				EncryptedFileExporter.exportFile();
+//			}
+//		});
+		
+		JButton testButton = new JButton("测试");
+		firstTopButtonPanel.add(testButton);
+		testButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String filepath = FilePathSelector.getFilePath();
+				if(filepath != null){
+					String password = JOptionPane.showInputDialog("请输入秘钥：");
+					FileCopy.copyFile(filepath, password);
+				}
+			}
+		});
 
 		// 显示新闻页面
 		final CardLayout showNewsCardLayout = new CardLayout();
