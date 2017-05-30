@@ -1,0 +1,53 @@
+package util;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+public class ConsistencyCheck {
+	
+	private static final String tag = "TagIts";
+	private static double consistencyCount, sum;
+	private static List<List<Map<String, String>>> uncheckNews;
+
+	public static double consistencyRate(List<List<Map<String, String>>> unchecks) {
+		if(unchecks.equals(null)){
+			System.out.println("NO FILES");
+			return 0;
+		}  else{
+			uncheckNews = unchecks;
+			sum = (double)unchecks.get(0).size();
+			consistencyCount = (double)getConsistencyCount();
+			return consistencyCount  / sum;
+		}
+	}
+	
+	private static int getConsistencyCount(){
+		int indexOfNewsList, indexOfNews, count = uncheckNews.get(0).size();
+		String tags1, tags2;
+		for(indexOfNews = 0; indexOfNews < uncheckNews.get(0).size(); indexOfNews++){
+			tags1 = uncheckNews.get(0).get(indexOfNews).get(tag);
+			for(indexOfNewsList = 1; indexOfNewsList < uncheckNews.size(); indexOfNewsList++){
+				tags2 = uncheckNews.get(indexOfNewsList).get(indexOfNews).get(tag);
+				if(!inOrder(tags1).equals(inOrder(tags2))){
+					count--;
+					break;
+				}
+			}
+		}
+		return count;
+	}
+	
+	private static String inOrder(String tags){
+		String[] orderTagsArray = tags.split("|");
+		Arrays.sort(orderTagsArray);
+		StringBuffer orderTags = new StringBuffer();
+		for(String tag : orderTagsArray){
+			orderTags.append(tag);
+			orderTags.append("|");
+		}
+		orderTags.deleteCharAt(orderTags.length() - 1);
+		return orderTags.toString();
+	}
+
+}
