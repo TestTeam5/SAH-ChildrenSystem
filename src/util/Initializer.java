@@ -18,9 +18,9 @@ public class Initializer {
 		newsList.init();
 	}
 	
-	public static void initTestData() {
+	public static boolean initTestData() {
 		testNewsList = new TestNewsList();
-		testNewsList.init();
+		return testNewsList.init();
 	}
 	
 }

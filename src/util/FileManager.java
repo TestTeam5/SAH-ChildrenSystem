@@ -1,5 +1,6 @@
 package util;
 
+import java.io.File;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -28,7 +29,7 @@ public class FileManager {
 	private static void merge(String path){
 		Document oldDoc, newDoc;
 		newDoc = getDOMTree(path);
-		if(newDoc.equals(null)){
+		if(newDoc == null){
 			System.out.println("ERROR WHEN CREATING DOMTREE, PLEASE CHECK THE FILE PATH: " + path);
 		} else{
 			String oldPath = getOldPath(newDoc);
@@ -60,7 +61,7 @@ public class FileManager {
 	        // 2.从DOM工厂里获取DOM解析器
 	        DocumentBuilder db = dbf.newDocumentBuilder();
 	        // 3.解析XML文档，得到document，即DOM树
-	        Document doc = db.parse(path);
+	        Document doc = db.parse(new File(path));
 	        return doc;
 		} catch (Exception ex) {
             System.out.println(ex.getMessage());

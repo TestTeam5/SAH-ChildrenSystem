@@ -10,20 +10,19 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.NumberFormat;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JEditorPane;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
@@ -37,12 +36,14 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 
+import util.ConsistencyCheck;
 import util.DeletedNewsGetter;
-import util.FileCopy;
+import util.FileManager;
 import util.FilePathSelector;
 import util.Initializer;
 import util.NewsGetter;
 import util.StatisticsGetter;
+import util.TestNewsGetter;
 import widget.FontAwesome;
 import widget.NewsScrollPane;
 import widget.NewsTable;
@@ -62,13 +63,13 @@ public class MainWindow {
 	 */
 	public static void main(String[] args) {
 		logger.debug("界面初始化开始");
-		
+
 		logger.debug("数据初始化开始");
 		Initializer.initData();
 		NewsGetter.init();
 		DeletedNewsGetter.init();
 		logger.debug("数据初始化完成");
-		
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -81,7 +82,7 @@ public class MainWindow {
 			}
 		});
 		logger.debug("界面初始化完成");
-		
+
 	}
 
 	/**
@@ -145,44 +146,423 @@ public class MainWindow {
 		frame.getContentPane().add(pagePanel, BorderLayout.CENTER);
 
 		// 首页
-		//JTextField firstWelcomeInfoText = new JTextField("欢迎使用留守儿童舆情调查系统");
-		//firstPagePanel.add(firstWelcomeInfoText, BorderLayout.CENTER);
 		firstPagePanel.setLayout(new BorderLayout());
 		firstPagePanel.setBackground(Color.WHITE);
+
+		// 首页顶部按钮
+		JPanel firstTopButtonPanel = new JPanel();
+		firstTopButtonPanel.setBackground(Color.WHITE);
+		firstTopButtonPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));
+		firstTopButtonPanel.setLayout(new GridLayout(1, 8, 5, 5));
+		firstPagePanel.add(firstTopButtonPanel, BorderLayout.NORTH);
+
+		JButton importButton = new PageSelectButton("导入");
+		firstTopButtonPanel.add(importButton);
+		JButton testButton = new PageSelectButton("测试");
+		firstTopButtonPanel.add(testButton);
+		JButton consistencyButton = new PageSelectButton("结果");
+		firstTopButtonPanel.add(consistencyButton);
+		for (int i = 0; i < 5; i++) {
+			JPanel temp = new JPanel();
+			temp.setBackground(Color.WHITE);
+			firstTopButtonPanel.add(temp);
+		}
+
+		// 首页主体部分
+		JPanel firstCardPanel = new JPanel();
+		final CardLayout firstCardLayout = new CardLayout();
+		firstCardPanel.setLayout(firstCardLayout);
+		firstPagePanel.add(firstCardPanel, BorderLayout.CENTER);
+
+		JPanel firstWelcomeInfoPanel = new JPanel();
+		firstCardPanel.add("欢迎信息", firstWelcomeInfoPanel);
+		JPanel firstTestPanel = new JPanel();
+		firstCardPanel.add("测试界面", firstTestPanel);
+		JPanel firstConsistencyPanel = new JPanel();
+		firstCardPanel.add("检验结果", firstConsistencyPanel);
+
+		// 首页->欢迎信息界面
+		firstWelcomeInfoPanel.setLayout(new BorderLayout());
+		firstWelcomeInfoPanel.setBackground(Color.WHITE);
+
 		JTextField firstWelcomeInfoText = new JTextField("欢迎使用留守儿童舆情调查系统");
 		firstWelcomeInfoText.setHorizontalAlignment(JTextField.CENTER);
 		firstWelcomeInfoText.setFont(new Font("微软雅黑", Font.PLAIN, 20));
 		firstWelcomeInfoText.setFocusable(false);
 		firstWelcomeInfoText.setBorder(null);
-		firstPagePanel.add(firstWelcomeInfoText, BorderLayout.CENTER);
+		firstWelcomeInfoPanel.add(firstWelcomeInfoText);
+
+		// 首页->测试界面
+		firstTestPanel.setLayout(new BorderLayout());
+		Border firstTestBorder = BorderFactory.createEmptyBorder(20, 20, 20, 20);
+		firstTestPanel.setBorder(firstTestBorder);
+		firstTestPanel.setBackground(Color.WHITE);
+
+		// **************************************************************************************
+		JPanel firstTestMainTagsPanel = new JPanel();
+
+		GridBagLayout firstTestMainTagsGb = new GridBagLayout();
+		GridBagConstraints firstTestMainTagsGbc = new GridBagConstraints();
+		firstTestMainTagsPanel.setLayout(firstTestMainTagsGb);
+
+		firstTestMainTagsGbc.fill = GridBagConstraints.BOTH;
+		firstTestMainTagsGbc.weightx = 1;
+		TagButtonGroup firstTestMainTagsGroup = new TagButtonGroup();
+		for (int i = 0; i < 8; i++) {
+			firstTestMainTagsGroup.add(new JButton(mainTagsText[i]) {
+				public void paint(Graphics g) {
+					super.paint(g);
+					g.setColor(Color.WHITE);
+					g.drawLine(getWidth() - 1, 0, getWidth() - 1, getHeight() - 1);
+				}
+			});
+			firstTestMainTagsGb.setConstraints(firstTestMainTagsGroup.get(i), firstTestMainTagsGbc);
+			firstTestMainTagsPanel.add(firstTestMainTagsGroup.get(i));
+		}
+		firstTestMainTagsGbc.gridwidth = GridBagConstraints.REMAINDER;
+		firstTestMainTagsGroup.add(new JButton(mainTagsText[8]) {
+			public void paint(Graphics g) {
+				super.paint(g);
+				g.setColor(Color.WHITE);
+				g.drawLine(getWidth() - 1, 0, getWidth() - 1, getHeight() - 1);
+			}
+		});
+		firstTestMainTagsGb.setConstraints(firstTestMainTagsGroup.get(8), firstTestMainTagsGbc);
+		firstTestMainTagsPanel.add(firstTestMainTagsGroup.get(8));
+
+		firstTestPanel.add(firstTestMainTagsPanel, BorderLayout.NORTH);
+
+		// 新闻详细界面->主标签下方的外部容器
+		JPanel firstTestMainPanel = new JPanel();
+		firstTestMainPanel.setLayout(new BorderLayout());
+		firstTestMainPanel.setBackground(Color.WHITE);
+		firstTestMainPanel.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+		firstTestPanel.add(firstTestMainPanel, BorderLayout.CENTER);
+
+		// 新闻详细界面->子标签的CardLayout容器
+		JPanel firstTestSubTagsCardPanel = new JPanel();
+		final CardLayout firstTestSubTagsCardLayout = new CardLayout();
+		firstTestSubTagsCardPanel.setLayout(firstTestSubTagsCardLayout);
+		firstTestMainPanel.add(firstTestSubTagsCardPanel, BorderLayout.NORTH);
+
+		// 每个子标签容器
+		JPanel[] firstTestSubTagsPanels = new JPanel[9];
+		// 每个子标签的按钮组
+		TagButtonGroup[] firstTestSubTagsBtnGroup = new TagButtonGroup[9];
+
+		for (int i = 0; i < 9; i++) {
+			firstTestSubTagsBtnGroup[i] = new TagButtonGroup();
+			firstTestSubTagsBtnGroup[i].setCanReSelected(true);
+			firstTestSubTagsPanels[i] = new JPanel();
+			firstTestSubTagsPanels[i].setBackground(Color.WHITE);
+			GridBagLayout firstTestSubTagsGb = new GridBagLayout();
+			GridBagConstraints firstTestSubTagsGbc = new GridBagConstraints();
+			firstTestSubTagsPanels[i].setLayout(firstTestSubTagsGb);
+			firstTestSubTagsCardPanel.add(Integer.toString(i), firstTestSubTagsPanels[i]);
+
+			firstTestSubTagsGbc.fill = GridBagConstraints.BOTH;
+			firstTestSubTagsGbc.weightx = 1;
+
+			for (int j = 0; j < subTagsText[i].length - 1; j++) {
+				firstTestSubTagsBtnGroup[i].add(new JButton(subTagsText[i][j]) {
+					public void paint(Graphics g) {
+						super.paint(g);
+						g.setColor(Color.WHITE);
+						g.drawLine(getWidth() - 1, 0, getWidth() - 1, getHeight() - 1);
+					}
+				});
+				firstTestSubTagsGb.setConstraints(firstTestSubTagsBtnGroup[i].get(j), firstTestSubTagsGbc);
+				firstTestSubTagsPanels[i].add(firstTestSubTagsBtnGroup[i].get(j));
+
+				// 添加子标签点击事件
+				firstTestSubTagsBtnGroup[i].get(j).addActionListener(new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// TODO Auto-generated method stub
+						for (int j = 0; j < subTagsText[TestNewsGetter.getSelectedMainTag()].length - 1; j++) {
+							if (e.getActionCommand().equals(subTagsText[TestNewsGetter.getSelectedMainTag()][j])) {
+								logger.debug("显示新闻界面-点击子标签" + j);
+								TestNewsGetter.refactorTags(j);
+							}
+						}
+					}
+				});
+			}
+
+			firstTestSubTagsGbc.gridwidth = GridBagConstraints.REMAINDER;
+			firstTestSubTagsBtnGroup[i].add(new JButton(subTagsText[i][subTagsText[i].length - 1]) {
+				public void paint(Graphics g) {
+					super.paint(g);
+					g.setColor(Color.WHITE);
+					g.drawLine(getWidth() - 1, 0, getWidth() - 1, getHeight() - 1);
+				}
+			});
+			firstTestSubTagsBtnGroup[i].get(subTagsText[i].length - 1).addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					for (int j = 0; j < subTagsText[TestNewsGetter.getSelectedMainTag()].length; j++) {
+						if (e.getActionCommand().equals(subTagsText[TestNewsGetter.getSelectedMainTag()][j])) {
+							logger.debug("显示新闻界面-点击子标签" + j);
+							TestNewsGetter.refactorTags(j);
+						}
+					}
+				}
+			});
+
+			firstTestSubTagsGb.setConstraints(firstTestSubTagsBtnGroup[i].get(subTagsText[i].length - 1),
+					firstTestSubTagsGbc);
+			firstTestSubTagsPanels[i].add(firstTestSubTagsBtnGroup[i].get(subTagsText[i].length - 1));
+		}
+
+		// 添加主标签点击事件
+		for (int i = 0; i < 9; i++) {
+			firstTestMainTagsGroup.get(i).addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					for (int j = 0; j < 9; j++) {
+						if (e.getActionCommand().equals(mainTagsText[j])) {
+							logger.debug("显示新闻界面-点击主标签" + j);
+							firstTestSubTagsCardLayout.show(firstTestSubTagsCardPanel, Integer.toString(j));
+							TestNewsGetter.setSelectedMainTag(j);
+							int temp = TestNewsGetter.getSelectedSubTag();
+							if (temp != -1) {
+								firstTestSubTagsBtnGroup[j].select(temp);
+							} else {
+								firstTestSubTagsBtnGroup[j].clearSelection();
+							}
+						}
+					}
+				}
+			});
+		}
+
+		// 测试界面底部上一条、下一条按钮
+		JPanel firstTestShiftPanel = new JPanel();
+		firstTestShiftPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		firstTestShiftPanel.setBackground(Color.WHITE);
+		JButton firstTestLastButton = new JButton("上一条");
+		firstTestLastButton.setBackground(Color.DARK_GRAY);
+		firstTestLastButton.setForeground(Color.WHITE);
+		firstTestLastButton.setFocusPainted(false);
+		firstTestLastButton.setBorderPainted(false);
+		firstTestShiftPanel.add(firstTestLastButton);
+		JPanel firstTestTempPanel = new JPanel();
+		firstTestTempPanel.setSize(1, 1);
+		firstTestTempPanel.setBackground(Color.WHITE);
+		firstTestShiftPanel.add(firstTestTempPanel);
+		JButton firstTestNextButton = new JButton("下一条");
+		firstTestNextButton.setBackground(Color.DARK_GRAY);
+		firstTestNextButton.setForeground(Color.WHITE);
+		firstTestNextButton.setFocusPainted(false);
+		firstTestNextButton.setBorderPainted(false);
+		firstTestShiftPanel.add(firstTestNextButton);
 		
-		JPanel firstTopButtonPanel = new JPanel();
-		firstTopButtonPanel.setLayout(new GridLayout(1, 8));
-		firstPagePanel.add(firstTopButtonPanel, BorderLayout.NORTH);
+		firstTestTempPanel = new JPanel();
+		firstTestTempPanel.setSize(1, 1);
+		firstTestTempPanel.setBackground(Color.WHITE);
+		firstTestShiftPanel.add(firstTestTempPanel);
 		
-//		JButton encryptButton = new JButton("加密");
-//		jpanel.add(encryptButton, BorderLayout.NORTH);
-//		encryptButton.addActionListener(new ActionListener() {
-//			
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				// TODO Auto-generated method stub
-//				EncryptedFileExporter.exportFile();
-//			}
-//		});
+		JTextField numEditBox = new JTextField("1");
+		numEditBox.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		numEditBox.setFocusable(true);
+		numEditBox.setColumns(2);
+		firstTestShiftPanel.add(numEditBox);
 		
-		JButton testButton = new JButton("测试");
-		firstTopButtonPanel.add(testButton);
+		JTextField totalNumText = new JTextField("/10");
+		totalNumText.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		totalNumText.setFocusable(false);
+		totalNumText.setBorder(null);
+		firstTestShiftPanel.add(totalNumText);
+		
+		firstTestTempPanel = new JPanel();
+		firstTestTempPanel.setSize(1, 1);
+		firstTestTempPanel.setBackground(Color.WHITE);
+		firstTestShiftPanel.add(firstTestTempPanel);
+		
+		JButton firstTestChangeButton = new JButton("转到");
+		firstTestChangeButton.setBackground(Color.DARK_GRAY);
+		firstTestChangeButton.setForeground(Color.WHITE);
+		firstTestChangeButton.setFocusPainted(false);
+		firstTestChangeButton.setBorderPainted(false);
+		firstTestShiftPanel.add(firstTestChangeButton);
+		
+		firstTestMainPanel.add(firstTestShiftPanel, BorderLayout.SOUTH);
+
+		// 添加详细新闻内容版面
+		JEditorPane firstTestNewsContentPane = new JEditorPane();
+		firstTestNewsContentPane.setBackground(Color.WHITE);
+		firstTestNewsContentPane.setContentType("text/html");
+		firstTestNewsContentPane.setEditable(false);
+		firstTestNewsContentPane.setSelectionColor(new Color(230, 230, 230));
+		firstTestNewsContentPane.setText(
+				"<html><body><H1>留守儿童与回家父母手拉手</H1><span>2014-01-29</span>&nbsp;&nbsp;<span>光明日报(数字报)</span><br/><span>06,教科新闻</span><P>信息来源於四川新闻网 / Cited from http://www.newssc.org/<P>□川报集团特派记者 王小玲本报记者 黄泽君<P>【基层即景】<P>小区绿意盎然，地面不见一点垃圾，楼道扶梯干乾净净……11月13日，记者走进成都市锦江区双桂路街道五福桥社区江东民居时，不少居民正围在一起聊天。生活环境改善了，有问题能很快得到解决。居民龙先勇觉得，自从社会管理创新以来，日子越过越舒心了。<P>成立院落党支部、鼓励居民成为志愿者服务社区、实行“以院养院”的物管自治机制……社区党委书记姚艳洪介绍，目前五福桥社区一共成立了11个社会组织，注册志愿者多达1500余名，全部由本社区居民组成，在养老、物管、社区自治等方面为居民提供服务。<P>生活满意度越来越高，生活环境越来越好，这是五福桥社区居民近年来最大的感受。大家希望，能有更多的利好政策倾向基层，倾向社区。<P>【会场连线】<P>嘉宾：李向志 十八大代表、德阳市委书记丁爱谱 十八大代表、攀枝花市东区长寿路街道健康路社区党员<P>畅通社区工作人员成长渠道<P>社区党委书记姚艳洪：希望把人、财、物等资源更多地配置到社区，进一步提高社区工作人员的素质和待遇。<P>李向志：社会管理是个系统工程，在实践中要从城乡社区抓起，夯实基层基础，坚持重心下移、服务下延、工作下沉。作为全国社会管理创新试点城市之一，德阳近两年来做了一些探索，我们将社区人员基本报酬、办公经费纳入财政预算，并建立了自然增长机制。同时，加强社区队伍建设，每个社区居委会都配备了5至9名工作人员，并聘请社区综合服务协管员，招录大学生加入社区管理队伍，加大在社区工作人员中优先发展党员、招录公务员、选拔基层领导干部的工作力度，进一步畅通了社区工作人员的成长渠道。建议国家建立社会管理工作投入保障机制，特别是建立面向基层 “费随事转”的转移支付机制，为加强和创新社会管理提供有力保障。<P>整合辖区资源应有长效机制<P>居民黄家发：现在社区每周都会开展活动，这让我们的社区更加和谐，但有时会出现组织经费不足的情况，希望能有更多资金和政策支持。<P>丁爱谱：十八大报告提出要强化企事业单位、人民团体在社会管理和服务中的职责，引导社会组织健康有序发展，发挥群衆参与社会管理的基础作用。作为一名普通的党员，我在20多年的社区服务工作中，深有同感。目前，尽管我们在整合辖区资源、协调居民参与上做了一些尝试，但是仍然缺乏以制度固定下来的资源整合长效机制。如果能够建立一种社区牵头、辖区企业参与、百姓受益的政策或工作导向，使社区与辖区单位的关系能制度化、规范化，社区的各项社会工作就会更容易开展，效果也会好很多。<P>让群衆在社区就能办好事<P>居民胡延碧：我们希望有更多与民生相关的公共服务，能够深入基层，深入社区。<P>李向志：十八大报告提出要改进政府提供公共服务方式，加强基层社会管理和服务体系建设，增强城乡社区服务功能。我们要坚持把服务群衆作为社区建设的核心和关键，不断完善社区服务体系，切实解决民生问题。一方面要完善政务服务平台，将党务服务、劳动就业、社会保障等服务职能从街道（乡镇）便民服务中心向社区延伸，真正实现群衆在社区就能办所有事。另一方面，也要改进我们的社区服务方式，德阳这两年向社区群衆免费发放服务联系卡，建立困难群衆情况登记制度，社区工作人员定期主动上门探访空巢老人、残疾人、留守儿童等，帮助解决实际困难，我认为这些都是行之有效的办法。<P>（本报北京11月13日电） </P></body></html>");
+
+		JScrollPane firstTestContentPanel = new NewsScrollPane(firstTestNewsContentPane);
+		firstTestContentPanel.setBackground(Color.WHITE);
+		Border firstTestContentBorder = new CompoundBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0),
+				BorderFactory.createLineBorder(Color.BLACK, 1));
+		firstTestContentPanel.setBorder(firstTestContentBorder);
+		firstTestMainPanel.add(firstTestContentPanel, BorderLayout.CENTER);
+		// ***********************************************************************************************************
+
+		// 首页->结果界面
+		firstConsistencyPanel.setLayout(new BorderLayout());
+		firstConsistencyPanel.setBackground(Color.WHITE);
+
+		JTextField firstConsistencyText = new JTextField("一致性检验结果为：");
+		firstConsistencyText.setHorizontalAlignment(JTextField.CENTER);
+		firstConsistencyText.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+		firstConsistencyText.setFocusable(false);
+		firstConsistencyText.setBorder(null);
+		firstConsistencyPanel.add(firstConsistencyText);
+
+		// 导入按钮点击事件
+		importButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				List<String> filepaths = FilePathSelector.getFilePaths();
+				FileManager.mergeAll(filepaths);
+				Initializer.initData();
+			}
+		});
+
+		// 测试按钮点击事件
 		testButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if (Initializer.initTestData()) {
+					TestNewsGetter.init();
+					firstTestNewsContentPane.setText(TestNewsGetter.getSelectedContent());
+					firstTestNewsContentPane.setCaretPosition(0);
+
+					totalNumText.setText("/" + TestNewsGetter.getMaxCount());
+					numEditBox.setText((TestNewsGetter.getSelectedIndex() + 1) + "");
+					
+					// 设置主标签默认选中第一个
+					firstTestMainTagsGroup.select(0);
+
+					// 设置子标签面板切换到第一个
+					firstTestSubTagsCardLayout.show(firstTestSubTagsCardPanel, "0");
+					TestNewsGetter.setSelectedMainTag(0);
+					int temp = TestNewsGetter.getSelectedSubTag();
+					if (temp != -1) {
+						firstTestSubTagsBtnGroup[0].select(temp);
+					} else {
+						firstTestSubTagsBtnGroup[0].clearSelection();
+					}
+
+					firstCardLayout.show(firstCardPanel, "测试界面");
+				}
+			}
+		});
+
+		// 结果按钮点击事件
+		consistencyButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				List<String> paths = FilePathSelector.getFilePaths();
+				if (!paths.isEmpty()) {
+					double result = ConsistencyCheck.getConsistencyRate(paths);
+					NumberFormat fmt = NumberFormat.getPercentInstance();
+					fmt.setMaximumFractionDigits(2);
+					firstConsistencyText.setText("一致性检验结果为：" + fmt.format(result));
+					firstCardLayout.show(firstCardPanel, "检验结果");
+				}
+				logger.debug("首页->结果->未选择文件");
+			}
+		});
+
+		// 首页->测试页面->上一条点击事件
+		firstTestLastButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				TestNewsGetter.indexMinus();
+
+				firstTestNewsContentPane.setText(TestNewsGetter.getSelectedContent());
+				firstTestNewsContentPane.setCaretPosition(0);
+
+				// 设置主标签默认选中第一个
+				firstTestMainTagsGroup.select(0);
+
+				// 设置子标签面板切换到第一个
+				firstTestSubTagsCardLayout.show(firstTestSubTagsCardPanel, "0");
+				TestNewsGetter.setSelectedMainTag(0);
+				int temp = TestNewsGetter.getSelectedSubTag();
+				if (temp != -1) {
+					firstTestSubTagsBtnGroup[0].select(temp);
+				} else {
+					firstTestSubTagsBtnGroup[0].clearSelection();
+				}
+				
+				numEditBox.setText((TestNewsGetter.getSelectedIndex() + 1) + "");
+			}
+		});
+
+		// 首页->测试页面->下一条点击事件
+		firstTestNextButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				TestNewsGetter.indexPlus();
+
+				firstTestNewsContentPane.setText(TestNewsGetter.getSelectedContent());
+				firstTestNewsContentPane.setCaretPosition(0);
+
+				// 设置主标签默认选中第一个
+				firstTestMainTagsGroup.select(0);
+
+				// 设置子标签面板切换到第一个
+				firstTestSubTagsCardLayout.show(firstTestSubTagsCardPanel, "0");
+				TestNewsGetter.setSelectedMainTag(0);
+				int temp = TestNewsGetter.getSelectedSubTag();
+				if (temp != -1) {
+					firstTestSubTagsBtnGroup[0].select(temp);
+				} else {
+					firstTestSubTagsBtnGroup[0].clearSelection();
+				}
+				
+				numEditBox.setText((TestNewsGetter.getSelectedIndex() + 1) + "");
+			}
+		});
+		
+		// 首页->测试界面->转到点击事件
+		firstTestChangeButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				String filepath = FilePathSelector.getFilePath();
-				if(filepath != null){
-					String password = JOptionPane.showInputDialog("请输入秘钥：");
-					FileCopy.copyFile(filepath, password);
+				TestNewsGetter.setIndex(Integer.parseInt(numEditBox.getText()));
+				
+				firstTestNewsContentPane.setText(TestNewsGetter.getSelectedContent());
+				firstTestNewsContentPane.setCaretPosition(0);
+
+				// 设置主标签默认选中第一个
+				firstTestMainTagsGroup.select(0);
+
+				// 设置子标签面板切换到第一个
+				firstTestSubTagsCardLayout.show(firstTestSubTagsCardPanel, "0");
+				TestNewsGetter.setSelectedMainTag(0);
+				int temp = TestNewsGetter.getSelectedSubTag();
+				if (temp != -1) {
+					firstTestSubTagsBtnGroup[0].select(temp);
+				} else {
+					firstTestSubTagsBtnGroup[0].clearSelection();
 				}
+				
+				numEditBox.setText((TestNewsGetter.getSelectedIndex() + 1) + "");
 			}
 		});
 
@@ -218,11 +598,31 @@ public class MainWindow {
 		newsBottomButtons.add(newsNextButton);
 		JButton newsLastButton = new PageSelectButton("尾页");
 		newsBottomButtons.add(newsLastButton);
+
+		// 切换页码
+		JTextField jTextField1 = new JTextField("第");
+		jTextField1.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		jTextField1.setFocusable(false);
+		jTextField1.setBorder(null);
+		newsBottomButtons.add(jTextField1);
+		JTextField pageEditBox = new JTextField("1");
+		pageEditBox.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		pageEditBox.setFocusable(true);
+		pageEditBox.setColumns(2);
+		newsBottomButtons.add(pageEditBox);
+		JTextField jTextField2 = new JTextField("页");
+		jTextField2.setFont(new Font("微软雅黑", Font.PLAIN, 12));
+		jTextField2.setFocusable(false);
+		jTextField2.setBorder(null);
+		newsBottomButtons.add(jTextField2);
+		JButton newsToPageButton = new PageSelectButton("转到");
+		newsBottomButtons.add(newsToPageButton);
+
 		showNewsListPanel.add(newsBottomButtons, BorderLayout.SOUTH);
-		
+
 		// 点击首页事件
 		newsFirstButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -233,15 +633,16 @@ public class MainWindow {
 				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
 				// 设置滚动条滚动到顶部
 				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
-				if(showNewsScrollBar != null){
+				if (showNewsScrollBar != null) {
 					showNewsScrollBar.setValue(0);
 				}
+				pageEditBox.setText(Integer.toString(NewsGetter.getPage()));
 			}
 		});
-		
+
 		// 点击上一页事件
 		newsPreviousButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -251,15 +652,16 @@ public class MainWindow {
 				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
 				// 设置滚动条滚动到顶部
 				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
-				if(showNewsScrollBar != null){
+				if (showNewsScrollBar != null) {
 					showNewsScrollBar.setValue(0);
 				}
+				pageEditBox.setText(Integer.toString(NewsGetter.getPage()));
 			}
 		});
-		
+
 		// 点击下一页事件
 		newsNextButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -269,15 +671,16 @@ public class MainWindow {
 				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
 				// 设置滚动条滚动到顶部
 				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
-				if(showNewsScrollBar != null){
+				if (showNewsScrollBar != null) {
 					showNewsScrollBar.setValue(0);
 				}
+				pageEditBox.setText(Integer.toString(NewsGetter.getPage()));
 			}
 		});
-		
+
 		// 点击尾页事件
 		newsLastButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -287,14 +690,32 @@ public class MainWindow {
 				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
 				// 设置滚动条滚动到顶部
 				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
-				if(showNewsScrollBar != null){
+				if (showNewsScrollBar != null) {
 					showNewsScrollBar.setValue(0);
 				}
+				pageEditBox.setText(Integer.toString(NewsGetter.getPage()));
 			}
 		});
-		
-		
-		
+
+		// 点击转到事件
+		newsToPageButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				logger.debug("显示新闻界面-点击转到");
+				int page = Integer.parseInt(pageEditBox.getText());
+				Object[][] showNewsTableData = NewsGetter.setPage(page);
+				Object[] showNewsColumnTitle = { "标题" };
+				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
+				// 设置滚动条滚动到顶部
+				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
+				if (showNewsScrollBar != null) {
+					showNewsScrollBar.setValue(0);
+				}
+				pageEditBox.setText(Integer.toString(NewsGetter.getPage()));
+			}
+		});
 
 		// 显示新闻界面->新闻详细内容界面
 		JPanel showNewsDetailPanel = new JPanel();
@@ -380,16 +801,16 @@ public class MainWindow {
 				});
 				newsDetailSubTagsGb.setConstraints(newsDetailSubTagsBtnGroup[i].get(j), newsDetailSubTagsGbc);
 				newsDetailSubTagsPanels[i].add(newsDetailSubTagsBtnGroup[i].get(j));
-				
+
 				// 添加子标签点击事件
 				newsDetailSubTagsBtnGroup[i].get(j).addActionListener(new ActionListener() {
-					
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						for (int j = 0; j < subTagsText[NewsGetter.getSelectedMainTag()].length - 1 ; j++) {
+						for (int j = 0; j < subTagsText[NewsGetter.getSelectedMainTag()].length - 1; j++) {
 							if (e.getActionCommand().equals(subTagsText[NewsGetter.getSelectedMainTag()][j])) {
-								logger.debug("显示新闻界面-点击子标签"+j);
+								logger.debug("显示新闻界面-点击子标签" + j);
 								NewsGetter.refactorTags(j);
 							}
 						}
@@ -406,13 +827,13 @@ public class MainWindow {
 				}
 			});
 			newsDetailSubTagsBtnGroup[i].get(subTagsText[i].length - 1).addActionListener(new ActionListener() {
-				
+
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					for (int j = 0; j < subTagsText[NewsGetter.getSelectedMainTag()].length ; j++) {
+					for (int j = 0; j < subTagsText[NewsGetter.getSelectedMainTag()].length; j++) {
 						if (e.getActionCommand().equals(subTagsText[NewsGetter.getSelectedMainTag()][j])) {
-							logger.debug("显示新闻界面-点击子标签"+j);
+							logger.debug("显示新闻界面-点击子标签" + j);
 							NewsGetter.refactorTags(j);
 						}
 					}
@@ -432,13 +853,13 @@ public class MainWindow {
 					// TODO Auto-generated method stub
 					for (int j = 0; j < 9; j++) {
 						if (e.getActionCommand().equals(mainTagsText[j])) {
-							logger.debug("显示新闻界面-点击主标签"+j);
+							logger.debug("显示新闻界面-点击主标签" + j);
 							newsDetailSubTagsCardLayout.show(newsDetailSubTagsCardPanel, Integer.toString(j));
 							NewsGetter.setSelectedMainTag(j);
 							int temp = NewsGetter.getSelectedSubTag();
-							if(temp != -1){
+							if (temp != -1) {
 								newsDetailSubTagsBtnGroup[j].select(temp);
-							}else{
+							} else {
 								newsDetailSubTagsBtnGroup[j].clearSelection();
 							}
 						}
@@ -446,7 +867,7 @@ public class MainWindow {
 				}
 			});
 		}
-		
+
 		// 详细新闻界面底部返回按钮、删除按钮及容器
 		JPanel backPanel = new JPanel();
 		backPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
@@ -468,10 +889,10 @@ public class MainWindow {
 		deleteButton.setBorderPainted(false);
 		backPanel.add(deleteButton);
 		showNewsDetailMainPanel.add(backPanel, BorderLayout.SOUTH);
-		
+
 		// 添加删除按钮的点击事件
 		deleteButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -481,16 +902,16 @@ public class MainWindow {
 				showNewsModel.setDataVector(showNewsTableData, showNewsColumnTitle);
 				// 设置滚动条滚动到顶部
 				JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
-				if(showNewsScrollBar != null){
+				if (showNewsScrollBar != null) {
 					showNewsScrollBar.setValue(0);
 				}
 				showNewsCardLayout.show(showNewsPanel, "新闻列表");
 			}
 		});
-		
+
 		// 添加返回按钮的点击事件
 		backButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -498,22 +919,22 @@ public class MainWindow {
 				showNewsCardLayout.show(showNewsPanel, "新闻列表");
 			}
 		});
-		
+
 		// 添加详细新闻内容版面
 		JEditorPane newsContentPane = new JEditorPane();
 		newsContentPane.setBackground(Color.WHITE);
 		newsContentPane.setContentType("text/html");
 		newsContentPane.setEditable(false);
 		newsContentPane.setSelectionColor(new Color(230, 230, 230));
-		newsContentPane.setText("<html><body><H1>留守儿童与回家父母手拉手</H1><span>2014-01-29</span>&nbsp;&nbsp;<span>光明日报(数字报)</span><br/><span>06,教科新闻</span><P>信息来源於四川新闻网 / Cited from http://www.newssc.org/<P>□川报集团特派记者 王小玲本报记者 黄泽君<P>【基层即景】<P>小区绿意盎然，地面不见一点垃圾，楼道扶梯干乾净净……11月13日，记者走进成都市锦江区双桂路街道五福桥社区江东民居时，不少居民正围在一起聊天。生活环境改善了，有问题能很快得到解决。居民龙先勇觉得，自从社会管理创新以来，日子越过越舒心了。<P>成立院落党支部、鼓励居民成为志愿者服务社区、实行“以院养院”的物管自治机制……社区党委书记姚艳洪介绍，目前五福桥社区一共成立了11个社会组织，注册志愿者多达1500余名，全部由本社区居民组成，在养老、物管、社区自治等方面为居民提供服务。<P>生活满意度越来越高，生活环境越来越好，这是五福桥社区居民近年来最大的感受。大家希望，能有更多的利好政策倾向基层，倾向社区。<P>【会场连线】<P>嘉宾：李向志 十八大代表、德阳市委书记丁爱谱 十八大代表、攀枝花市东区长寿路街道健康路社区党员<P>畅通社区工作人员成长渠道<P>社区党委书记姚艳洪：希望把人、财、物等资源更多地配置到社区，进一步提高社区工作人员的素质和待遇。<P>李向志：社会管理是个系统工程，在实践中要从城乡社区抓起，夯实基层基础，坚持重心下移、服务下延、工作下沉。作为全国社会管理创新试点城市之一，德阳近两年来做了一些探索，我们将社区人员基本报酬、办公经费纳入财政预算，并建立了自然增长机制。同时，加强社区队伍建设，每个社区居委会都配备了5至9名工作人员，并聘请社区综合服务协管员，招录大学生加入社区管理队伍，加大在社区工作人员中优先发展党员、招录公务员、选拔基层领导干部的工作力度，进一步畅通了社区工作人员的成长渠道。建议国家建立社会管理工作投入保障机制，特别是建立面向基层 “费随事转”的转移支付机制，为加强和创新社会管理提供有力保障。<P>整合辖区资源应有长效机制<P>居民黄家发：现在社区每周都会开展活动，这让我们的社区更加和谐，但有时会出现组织经费不足的情况，希望能有更多资金和政策支持。<P>丁爱谱：十八大报告提出要强化企事业单位、人民团体在社会管理和服务中的职责，引导社会组织健康有序发展，发挥群衆参与社会管理的基础作用。作为一名普通的党员，我在20多年的社区服务工作中，深有同感。目前，尽管我们在整合辖区资源、协调居民参与上做了一些尝试，但是仍然缺乏以制度固定下来的资源整合长效机制。如果能够建立一种社区牵头、辖区企业参与、百姓受益的政策或工作导向，使社区与辖区单位的关系能制度化、规范化，社区的各项社会工作就会更容易开展，效果也会好很多。<P>让群衆在社区就能办好事<P>居民胡延碧：我们希望有更多与民生相关的公共服务，能够深入基层，深入社区。<P>李向志：十八大报告提出要改进政府提供公共服务方式，加强基层社会管理和服务体系建设，增强城乡社区服务功能。我们要坚持把服务群衆作为社区建设的核心和关键，不断完善社区服务体系，切实解决民生问题。一方面要完善政务服务平台，将党务服务、劳动就业、社会保障等服务职能从街道（乡镇）便民服务中心向社区延伸，真正实现群衆在社区就能办所有事。另一方面，也要改进我们的社区服务方式，德阳这两年向社区群衆免费发放服务联系卡，建立困难群衆情况登记制度，社区工作人员定期主动上门探访空巢老人、残疾人、留守儿童等，帮助解决实际困难，我认为这些都是行之有效的办法。<P>（本报北京11月13日电） </P></body></html>");
-		
+		newsContentPane.setText(
+				"<html><body><H1>留守儿童与回家父母手拉手</H1><span>2014-01-29</span>&nbsp;&nbsp;<span>光明日报(数字报)</span><br/><span>06,教科新闻</span><P>信息来源於四川新闻网 / Cited from http://www.newssc.org/<P>□川报集团特派记者 王小玲本报记者 黄泽君<P>【基层即景】<P>小区绿意盎然，地面不见一点垃圾，楼道扶梯干乾净净……11月13日，记者走进成都市锦江区双桂路街道五福桥社区江东民居时，不少居民正围在一起聊天。生活环境改善了，有问题能很快得到解决。居民龙先勇觉得，自从社会管理创新以来，日子越过越舒心了。<P>成立院落党支部、鼓励居民成为志愿者服务社区、实行“以院养院”的物管自治机制……社区党委书记姚艳洪介绍，目前五福桥社区一共成立了11个社会组织，注册志愿者多达1500余名，全部由本社区居民组成，在养老、物管、社区自治等方面为居民提供服务。<P>生活满意度越来越高，生活环境越来越好，这是五福桥社区居民近年来最大的感受。大家希望，能有更多的利好政策倾向基层，倾向社区。<P>【会场连线】<P>嘉宾：李向志 十八大代表、德阳市委书记丁爱谱 十八大代表、攀枝花市东区长寿路街道健康路社区党员<P>畅通社区工作人员成长渠道<P>社区党委书记姚艳洪：希望把人、财、物等资源更多地配置到社区，进一步提高社区工作人员的素质和待遇。<P>李向志：社会管理是个系统工程，在实践中要从城乡社区抓起，夯实基层基础，坚持重心下移、服务下延、工作下沉。作为全国社会管理创新试点城市之一，德阳近两年来做了一些探索，我们将社区人员基本报酬、办公经费纳入财政预算，并建立了自然增长机制。同时，加强社区队伍建设，每个社区居委会都配备了5至9名工作人员，并聘请社区综合服务协管员，招录大学生加入社区管理队伍，加大在社区工作人员中优先发展党员、招录公务员、选拔基层领导干部的工作力度，进一步畅通了社区工作人员的成长渠道。建议国家建立社会管理工作投入保障机制，特别是建立面向基层 “费随事转”的转移支付机制，为加强和创新社会管理提供有力保障。<P>整合辖区资源应有长效机制<P>居民黄家发：现在社区每周都会开展活动，这让我们的社区更加和谐，但有时会出现组织经费不足的情况，希望能有更多资金和政策支持。<P>丁爱谱：十八大报告提出要强化企事业单位、人民团体在社会管理和服务中的职责，引导社会组织健康有序发展，发挥群衆参与社会管理的基础作用。作为一名普通的党员，我在20多年的社区服务工作中，深有同感。目前，尽管我们在整合辖区资源、协调居民参与上做了一些尝试，但是仍然缺乏以制度固定下来的资源整合长效机制。如果能够建立一种社区牵头、辖区企业参与、百姓受益的政策或工作导向，使社区与辖区单位的关系能制度化、规范化，社区的各项社会工作就会更容易开展，效果也会好很多。<P>让群衆在社区就能办好事<P>居民胡延碧：我们希望有更多与民生相关的公共服务，能够深入基层，深入社区。<P>李向志：十八大报告提出要改进政府提供公共服务方式，加强基层社会管理和服务体系建设，增强城乡社区服务功能。我们要坚持把服务群衆作为社区建设的核心和关键，不断完善社区服务体系，切实解决民生问题。一方面要完善政务服务平台，将党务服务、劳动就业、社会保障等服务职能从街道（乡镇）便民服务中心向社区延伸，真正实现群衆在社区就能办所有事。另一方面，也要改进我们的社区服务方式，德阳这两年向社区群衆免费发放服务联系卡，建立困难群衆情况登记制度，社区工作人员定期主动上门探访空巢老人、残疾人、留守儿童等，帮助解决实际困难，我认为这些都是行之有效的办法。<P>（本报北京11月13日电） </P></body></html>");
+
 		JScrollPane newsDetailContentPanel = new NewsScrollPane(newsContentPane);
 		newsDetailContentPanel.setBackground(Color.WHITE);
-		Border newsDetailContentBorder = new CompoundBorder(BorderFactory.createEmptyBorder(10,0, 10, 0),
+		Border newsDetailContentBorder = new CompoundBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0),
 				BorderFactory.createLineBorder(Color.BLACK, 1));
 		newsDetailContentPanel.setBorder(newsDetailContentBorder);
 		showNewsDetailMainPanel.add(newsDetailContentPanel, BorderLayout.CENTER);
-		
 
 		// 统计界面
 		statisticsPanel.setLayout(new BorderLayout());
@@ -618,10 +1039,10 @@ public class MainWindow {
 		statisticsFigurePanel.setBackground(Color.WHITE);
 		gb.setConstraints(statisticsFigurePanel, gbc);
 		statisticsPanel.add(statisticsFigurePanel);
-		
+
 		JPanel statisticsSelectMode = new JPanel();
 		statisticsSelectMode.setLayout(new GridLayout(1, 6));
-		for(int i = 0; i < 4; i++){
+		for (int i = 0; i < 4; i++) {
 			JPanel temp = new JPanel();
 			temp.setBackground(Color.WHITE);
 			statisticsSelectMode.add(temp);
@@ -633,18 +1054,18 @@ public class MainWindow {
 		JButton tendencyComparison = new JButton("倾向性比较");
 		modeSelectGroup.add(tendencyComparison);
 		statisticsSelectMode.add(tendencyComparison);
-		
+
 		statisticsFigurePanel.setLayout(new BorderLayout());
 		statisticsFigurePanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		statisticsFigurePanel.add(statisticsSelectMode, BorderLayout.NORTH);
-		
+
 		// 放置统计图的面板（包括左右按钮）
 		JPanel statisticsFigureLayout = new JPanel();
 		statisticsFigureLayout.setBackground(Color.WHITE);
 		statisticsFigureLayout.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0),
 				BorderFactory.createLineBorder(Color.BLACK)));
 		statisticsFigurePanel.add(statisticsFigureLayout, BorderLayout.CENTER);
-		
+
 		statisticsFigureLayout.setLayout(new BorderLayout());
 		JPanel leftButtonPanel = new JPanel(new GridLayout(3, 1));
 		leftButtonPanel.setBackground(Color.WHITE);
@@ -662,74 +1083,74 @@ public class MainWindow {
 		JButton rightButton = new ShiftButton("fa-chevron-right", 20, "");
 		rightButtonPanel.add(rightButton);
 		statisticsFigureLayout.add(rightButtonPanel, BorderLayout.EAST);
-		
+
 		JPanel statisticsFigureContent = new JPanel();
 		final CardLayout figureCardLayout = new CardLayout();
 		statisticsFigureContent.setLayout(figureCardLayout);
 		statisticsFigureLayout.add(statisticsFigureContent, BorderLayout.CENTER);
-		
+
 		// 趋势统计面板
 		JPanel trendStatisticsPanel = new JPanel();
 		trendStatisticsPanel.setLayout(new BorderLayout());
 		statisticsFigureContent.add("趋势统计", trendStatisticsPanel);
-		
+
 		// 倾向性比较面板
 		JPanel tendencyComparisonPanel = new JPanel();
 		tendencyComparisonPanel.setLayout(new BorderLayout());
 		statisticsFigureContent.add("倾向性比较", tendencyComparisonPanel);
-		
+
 		StatisticsGetter.init();
 		trendStatisticsPanel.add(StatisticsGetter.getOldBarChartPanel(), BorderLayout.CENTER);
 		tendencyComparisonPanel.add(StatisticsGetter.getOldPieChartPanel(), BorderLayout.CENTER);
-		
+
 		// 设置向左按钮点击事件
 		leftButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				logger.debug("统计界面-点击向左切换按钮");
 				StatisticsGetter.changePreviousNewspaper();
-				if(!StatisticsGetter.isTendencyComparison){
+				if (!StatisticsGetter.isTendencyComparison) {
 					trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
 					trendStatisticsPanel.add(StatisticsGetter.getBarChartPanel());
 					trendStatisticsPanel.updateUI();
-				}else{
+				} else {
 					tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
 					tendencyComparisonPanel.add(StatisticsGetter.getPieChartPanel());
 					tendencyComparisonPanel.updateUI();
 				}
 			}
 		});
-		
+
 		// 设置向右点击事件
 		rightButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				logger.debug("统计界面-点击向右切换按钮");
 				StatisticsGetter.changeNextNewspaper();
-				if(!StatisticsGetter.isTendencyComparison){
+				if (!StatisticsGetter.isTendencyComparison) {
 					trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
 					trendStatisticsPanel.add(StatisticsGetter.getBarChartPanel());
 					trendStatisticsPanel.updateUI();
-				}else{
+				} else {
 					tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
 					tendencyComparisonPanel.add(StatisticsGetter.getPieChartPanel());
 					tendencyComparisonPanel.updateUI();
 				}
 			}
 		});
-		
+
 		// 趋势统计点击事件
 		trendStatistics.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				logger.debug("点击趋势统计按钮");
-				if(StatisticsGetter.isTendencyComparison){
+				if (StatisticsGetter.isTendencyComparison) {
 					StatisticsGetter.setIsTendencyComparison(false);
 					trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
 					trendStatisticsPanel.add(StatisticsGetter.getBarChartPanel());
@@ -737,15 +1158,15 @@ public class MainWindow {
 				}
 			}
 		});
-		
+
 		// 倾向性比较点击事件
 		tendencyComparison.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				logger.debug("点击倾向性比较按钮");
-				if(!StatisticsGetter.isTendencyComparison){
+				if (!StatisticsGetter.isTendencyComparison) {
 					StatisticsGetter.setIsTendencyComparison(true);
 					tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
 					tendencyComparisonPanel.add(StatisticsGetter.getPieChartPanel());
@@ -753,7 +1174,7 @@ public class MainWindow {
 				}
 			}
 		});
-		
+
 		// 添加主标签点击事件
 		for (int i = 0; i < 9; i++) {
 			statisticsMainTags.get(i).addActionListener(new ActionListener() {
@@ -762,16 +1183,16 @@ public class MainWindow {
 					// TODO Auto-generated method stub
 					for (int j = 0; j < 9; j++) {
 						if (e.getActionCommand().equals(mainTagsText[j])) {
-							logger.debug("统计界面-点击主标签"+j);
+							logger.debug("统计界面-点击主标签" + j);
 							statisticsSubTagsLayout.show(statisticsSubTags, Integer.toString(j));
 							// 清除选中状态
 							statisticsSubTagsBtnGroup[j].clearSelection();
 							StatisticsGetter.setSelectedMainTag(j);
-							if(StatisticsGetter.isTendencyComparison){
+							if (StatisticsGetter.isTendencyComparison) {
 								tendencyComparisonPanel.remove(StatisticsGetter.getOldPieChartPanel());
 								tendencyComparisonPanel.add(StatisticsGetter.getPieChartPanel());
 								tendencyComparisonPanel.updateUI();
-							}else{
+							} else {
 								trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
 								trendStatisticsPanel.add(StatisticsGetter.getDefaultBarChartPanel());
 								trendStatisticsPanel.updateUI();
@@ -781,20 +1202,20 @@ public class MainWindow {
 				}
 			});
 		}
-		
+
 		// 添加子标签点击事件
-		for(int i = 0; i < 9; i++){
+		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < subTagsText[i].length; j++) {
 				statisticsSubTagsBtnGroup[i].get(j).addActionListener(new ActionListener() {
-					
+
 					@Override
 					public void actionPerformed(ActionEvent e) {
 						// TODO Auto-generated method stub
-						for(int j = 0; j < subTagsText[StatisticsGetter.getSelectedMainTag()].length; j++){
+						for (int j = 0; j < subTagsText[StatisticsGetter.getSelectedMainTag()].length; j++) {
 							if (e.getActionCommand().equals(subTagsText[StatisticsGetter.getSelectedMainTag()][j])) {
-								logger.debug("统计界面-点击子标签"+j);
+								logger.debug("统计界面-点击子标签" + j);
 								StatisticsGetter.setSelectedSubTag(j);
-								if(!StatisticsGetter.isTendencyComparison){
+								if (!StatisticsGetter.isTendencyComparison) {
 									trendStatisticsPanel.remove(StatisticsGetter.getOldBarChartPanel());
 									trendStatisticsPanel.add(StatisticsGetter.getBarChartPanel());
 									trendStatisticsPanel.updateUI();
@@ -834,41 +1255,34 @@ public class MainWindow {
 		JButton recycleNewsLastButton = new PageSelectButton("尾页");
 		recycleNewsBottomButtons.add(recycleNewsLastButton);
 		recyclePanel.add(recycleNewsBottomButtons, BorderLayout.SOUTH);
-		
+
 		// 表格点击事件
 		recycleNewsTable.addMouseListener(new MouseAdapter() {
-			
+
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
 				JTable src = null;
 				if (e.getSource() instanceof JTable) {
 					src = (JTable) e.getSource();
-					if(src.getSelectedColumn() == 1){
+					if (src.getSelectedColumn() == 1) {
 						Object[][] recycleNewsTableData = DeletedNewsGetter.restore(src.getSelectedRow());
 						Object[] recycleNewsColumnTitle = { "标题", "操作" };
 						recycleNewsModel.setDataVector(recycleNewsTableData, recycleNewsColumnTitle);
 						recycleNewsTable.getColumn(recycleNewsColumnTitle[1]).setMaxWidth(60);
 						// 设置滚动条滚动到顶部
 						JScrollBar recycleNewsScrollBar = recycleScrollPane.getVerticalScrollBar();
-						if(recycleNewsScrollBar != null){
+						if (recycleNewsScrollBar != null) {
 							recycleNewsScrollBar.setValue(0);
 						}
 					}
 				}
 			}
 		});
-		
-//		TableColumn tableColumn = recycleNewsTable.getColumn("操作"); 
-//		 //DefaultTableCellRenderer类可以绘制单元格的背景、字体颜色等功能   
-//        DefaultTableCellRenderer recycleNewsColume2Render = new DefaultTableCellRenderer();   
-//        //绘制部门列的背景为黄色   
-//        recycleNewsColume2Render.setBackground(Color.blue);
-//        tableColumn.setCellRenderer(recycleNewsColume2Render);
-		
+
 		// 点击首页事件
 		recycleNewsFirstButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -880,15 +1294,15 @@ public class MainWindow {
 				recycleNewsTable.getColumn(recycleNewsColumnTitle[1]).setMaxWidth(60);
 				// 设置滚动条滚动到顶部
 				JScrollBar recycleNewsScrollBar = recycleScrollPane.getVerticalScrollBar();
-				if(recycleNewsScrollBar != null){
+				if (recycleNewsScrollBar != null) {
 					recycleNewsScrollBar.setValue(0);
 				}
 			}
 		});
-		
+
 		// 点击上一页事件
 		recycleNewsPreviousButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -899,15 +1313,15 @@ public class MainWindow {
 				recycleNewsTable.getColumn(recycleNewsColumnTitle[1]).setMaxWidth(60);
 				// 设置滚动条滚动到顶部
 				JScrollBar recycleNewsScrollBar = recycleScrollPane.getVerticalScrollBar();
-				if(recycleNewsScrollBar != null){
+				if (recycleNewsScrollBar != null) {
 					recycleNewsScrollBar.setValue(0);
 				}
 			}
 		});
-		
+
 		// 点击下一页事件
 		recycleNewsNextButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -918,15 +1332,15 @@ public class MainWindow {
 				recycleNewsTable.getColumn(recycleNewsColumnTitle[1]).setMaxWidth(60);
 				// 设置滚动条滚动到顶部
 				JScrollBar recycleNewsScrollBar = recycleScrollPane.getVerticalScrollBar();
-				if(recycleNewsScrollBar != null){
+				if (recycleNewsScrollBar != null) {
 					recycleNewsScrollBar.setValue(0);
 				}
 			}
 		});
-		
+
 		// 点击尾页事件
 		recycleNewsLastButton.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -937,12 +1351,11 @@ public class MainWindow {
 				recycleNewsTable.getColumn(recycleNewsColumnTitle[1]).setMaxWidth(60);
 				// 设置滚动条滚动到顶部
 				JScrollBar recycleNewsScrollBar = recycleScrollPane.getVerticalScrollBar();
-				if(recycleNewsScrollBar != null){
+				if (recycleNewsScrollBar != null) {
 					recycleNewsScrollBar.setValue(0);
 				}
 			}
 		});
-		
 
 		// 为tab栏按钮设置点击事件
 		ActionListener tabListener = new ActionListener() {
@@ -954,12 +1367,13 @@ public class MainWindow {
 				case "首页":
 					logger.debug("点击首页");
 					cardLayout.show(pagePanel, "首页");
+					firstCardLayout.show(firstCardPanel, "欢迎信息");
 					break;
 				case "新闻":
 					logger.debug("点击新闻");
 					cardLayout.show(pagePanel, "新闻");
 					showNewsCardLayout.show(showNewsPanel, "新闻列表");
-					//showNewsTable.clearSelection();
+					// showNewsTable.clearSelection();
 					NewsGetter.init();
 					Object[][] showNewsTableData = NewsGetter.getNews();
 					Object[] showNewsColumnTitle = { "标题" };
@@ -967,14 +1381,15 @@ public class MainWindow {
 					showNewsTable.clearSelection();
 					// 设置滚动条滚动到顶部
 					JScrollBar showNewsScrollBar = showNewsScrollPane.getVerticalScrollBar();
-					if(showNewsScrollBar != null){
+					if (showNewsScrollBar != null) {
 						showNewsScrollBar.setValue(0);
 					}
+					pageEditBox.setText(Integer.toString(NewsGetter.getPage()));
 					break;
 				case "统计":
 					logger.debug("点击统计");
 					cardLayout.show(pagePanel, "统计");
-//					recycleNewsTable.clearSelection();
+					// recycleNewsTable.clearSelection();
 					statisticsMainTags.select(0);
 					// 显示第一个主标签对应子标签
 					statisticsSubTagsLayout.show(statisticsSubTags, "0");
@@ -1000,7 +1415,7 @@ public class MainWindow {
 					recycleNewsTable.clearSelection();
 					// 设置滚动条滚动到顶部
 					JScrollBar recycleNewsScrollBar = recycleScrollPane.getVerticalScrollBar();
-					if(recycleNewsScrollBar != null){
+					if (recycleNewsScrollBar != null) {
 						recycleNewsScrollBar.setValue(0);
 					}
 					break;
@@ -1019,42 +1434,42 @@ public class MainWindow {
 				JTable src = null;
 				if (e.getSource() instanceof JTable) {
 					src = (JTable) e.getSource();
-					
+
 					NewsGetter.setSelected(src.getSelectedRow());
 					newsContentPane.setText(NewsGetter.getSelectedContent());
-					
+
 					// 设置主标签默认选中第一个
 					newsDetailMainTagsGroup.select(0);
-					
+
 					// 设置子标签面板切换到第一个
 					newsDetailSubTagsCardLayout.show(newsDetailSubTagsCardPanel, "0");
 					NewsGetter.setSelectedMainTag(0);
 					int temp = NewsGetter.getSelectedSubTag();
-					if(temp != -1){
+					if (temp != -1) {
 						newsDetailSubTagsBtnGroup[0].select(temp);
-					}else{
+					} else {
 						newsDetailSubTagsBtnGroup[0].clearSelection();
 					}
-					
+
 					newsContentPane.setCaretPosition(0);
-        
-			        showNewsCardLayout.show(showNewsPanel, "新闻详细内容");
+
+					showNewsCardLayout.show(showNewsPanel, "新闻详细内容");
 				}
 			}
 		});
-		
+
 		// 设置 趋势统计 和 倾向性比较 按钮点击事件
 		trendStatistics.addActionListener(new ActionListener() {
-					
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				figureCardLayout.show(statisticsFigureContent, "趋势统计");
 			}
 		});
-		
+
 		tendencyComparison.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub

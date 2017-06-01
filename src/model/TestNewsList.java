@@ -16,15 +16,19 @@ public class TestNewsList {
 	private String password = null;
 	private String filepath = null;
 
-	public void init() {
+	public boolean init() {
 		String filepath = FilePathSelector.getFilePath();
-		this.password = JOptionPane.showInputDialog("«Î ‰»Î√ÿ‘ø£∫");
-		FileCopy.copyFile(filepath, this.password);
-		int index = filepath.lastIndexOf('\\');
-		this.filepath = filepath.substring(0, index) + "\\" + password + ".xml";
+		if (filepath != null) {
+			this.password = JOptionPane.showInputDialog("«Î ‰»Î√ÿ‘ø£∫");
+			FileCopy.copyFile(filepath, this.password);
+			int index = filepath.lastIndexOf('\\');
+			this.filepath = filepath.substring(0, index) + "\\" + password + ".xml";
 
-		XMLReader xmlReader = new XMLReader(this.filepath);
-		this.newslist = xmlReader.readXml();
+			XMLReader xmlReader = new XMLReader(this.filepath);
+			this.newslist = xmlReader.readXml();
+			return true;
+		}
+		return false;
 	}
 
 	public String getTitle(int index) {
@@ -134,7 +138,8 @@ public class TestNewsList {
 			}
 		}
 		this.newslist.get(index).put("TagIts", AESEncryptor.encrypt(newTagString, this.password));
-		XMLWriter.write(filepath, newslist.get(index).get("ID"), "TagIts", newTagString);
+		XMLWriter.write(filepath, newslist.get(index).get("ID"), "TagIts",
+				AESEncryptor.encrypt(newTagString, this.password));
 	}
 
 	public boolean hasTag(int index) {
@@ -154,6 +159,5 @@ public class TestNewsList {
 
 		return true;
 	}
-	
-	
+
 }

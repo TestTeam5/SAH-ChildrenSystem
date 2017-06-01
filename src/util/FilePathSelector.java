@@ -57,15 +57,6 @@ public class FilePathSelector {
 			File fi = jfc.getSelectedFile();
 			String filePath = fi.getAbsolutePath() + "\\" + filename + ".xml";
 			return filePath;
-//			System.out.println("save: " + f);
-//			try {
-//				FileWriter out = new FileWriter(f);
-//				out.write(content);
-//				out.close();
-//				return true;
-//			} catch (Exception e) {
-//				return false;
-//			}
 		}
 		return null;
 	}

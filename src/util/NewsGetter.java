@@ -11,6 +11,7 @@ public class NewsGetter {
 	static NewsList newsList = Initializer.newsList;
 	static int selectedIndex = 0; // 选中项的新闻下标
 	static int selectedMainTag = 0;	//选中的主标签
+	static int pageNumber = 0; // 新闻列表选中页码
 	static Object[][] newsTitles = { new Object[] { "" }, new Object[] { "" }, new Object[] { "" }, new Object[] { "" },
 			new Object[] { "" }, new Object[] { "" }, new Object[] { "" }, new Object[] { "" }, new Object[] { "" },
 			new Object[] { "" }, new Object[] { "" }, new Object[] { "" }, new Object[] { "" }, new Object[] { "" },
@@ -19,12 +20,14 @@ public class NewsGetter {
 			new Object[] { "" } };
 
 	public static void init(){
+		pageNumber = 0;
 		index = -1;
 		indexPlus();
 	}
 	
 	// 获取下一页新闻标题
 	public static Object[][] getNews() {
+		pagePlus();
 		if(index >= newsList.size())
 			return newsTitles;
 		for (int i = 0; i < 25; i++) {
@@ -61,12 +64,37 @@ public class NewsGetter {
 		}
 	}
 
+	private static void pagePlus() {
+		pageNumber++;
+		if(pageNumber > getMaxPage()){
+			pageNumber = getMaxPage();
+		}
+	}
+	
+	private static void pageMinus(){
+		pageNumber--;
+		if(pageNumber < 1){
+			pageNumber = 1;
+		}
+	}
+	
 	// 获取上一页新闻标题
 	public static Object[][] getPreviousNews() {
 		for (int i = 0; i < 50; i++) {
 			indexMinus();
 		}
-		return getNews();
+		boolean shouldMinusAgain = false;
+		if(pageNumber >= getMaxPage()){
+			shouldMinusAgain = false;
+		}else{
+			shouldMinusAgain = true;
+		}
+		Object[][] temp = getNews();
+		if(shouldMinusAgain){
+			pageMinus();
+		}
+		pageMinus();
+		return temp;
 	}
 
 	// 获取尾页新闻标题
@@ -77,7 +105,9 @@ public class NewsGetter {
 			index = 25 - index;
 		}
 		index = index + newsList.size() + 25;
-		return getPreviousNews();
+		Object[][] temp = getPreviousNews();
+		pageNumber = getMaxPage();
+		return temp;
 	}
 	
 	// 设置选中的新闻项
@@ -121,5 +151,37 @@ public class NewsGetter {
 	public static void refactorTags(int subTag){
 		String ntag = selectedMainTag + " " + subTag;
 		newsList.refactor(selectedIndex, ntag);
+	}
+	
+	public static int getPage(){
+		return pageNumber;
+	}
+	
+	public static int getMaxPage(){
+		return newsList.getNotDeletedCount()/25 + 1;
+	}
+	
+	public static Object[][] setPage(int page){
+		if(page < 0){
+			init();
+			return getNews();
+		}else if(page > getMaxPage()){
+			return getLastNews();
+		}else if(page > pageNumber){
+			int temp = pageNumber;
+			for(int i = 0; i < page - temp - 1; i++){
+				getNews();
+			}
+			return getNews();
+		}else if(page < pageNumber){
+			int temp = pageNumber;
+			for(int i = 0; i < temp - page - 1; i++){
+				getPreviousNews();
+			}
+			return getPreviousNews();
+		}else{
+			getPreviousNews();
+			return getNews();
+		}
 	}
 }

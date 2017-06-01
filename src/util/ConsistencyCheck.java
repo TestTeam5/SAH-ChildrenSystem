@@ -1,5 +1,6 @@
 package util;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +11,30 @@ public class ConsistencyCheck {
 	private static double consistencyCount, sum;
 	private static List<List<Map<String, String>>> uncheckNews;
 
+	public static double getConsistencyRate(List<String> paths){
+		List<List<Map<String, String>>> unchecks = new ArrayList<>();
+		for(String path: paths){
+			int index = path.lastIndexOf("\\");
+			String password = null;
+			if(index != -1){
+				password = path.substring(index + 1, path.length()-4);
+			}else{
+				password = path.substring(0, path.length()-4);
+			}
+			XMLReader xmlReader = new XMLReader(path);
+			List<Map<String, String>> temp = xmlReader.readXml();
+			for(Map<String, String> tempMap: temp){
+				if(tempMap.get("TagIts") != null){
+					tempMap.put("TagIts", AESEncryptor.decrypt(tempMap.get("TagIts"), password));
+				}
+			}
+			unchecks.add(temp);
+		}
+		return consistencyRate(unchecks);
+	}
+	
 	public static double consistencyRate(List<List<Map<String, String>>> unchecks) {
-		if(unchecks.equals(null)){
+		if(unchecks == null){
 			System.out.println("NO FILES");
 			return 0;
 		}  else{
@@ -39,15 +62,19 @@ public class ConsistencyCheck {
 	}
 	
 	private static String inOrder(String tags){
-		String[] orderTagsArray = tags.split("|");
-		Arrays.sort(orderTagsArray);
-		StringBuffer orderTags = new StringBuffer();
-		for(String tag : orderTagsArray){
-			orderTags.append(tag);
-			orderTags.append("|");
+		if(tags != null){
+			String[] orderTagsArray = tags.split("|");
+			Arrays.sort(orderTagsArray);
+			StringBuffer orderTags = new StringBuffer();
+			for(String tag : orderTagsArray){
+				orderTags.append(tag);
+				orderTags.append("|");
+			}
+			orderTags.deleteCharAt(orderTags.length() - 1);
+			return orderTags.toString();
+		}else{
+			return "";
 		}
-		orderTags.deleteCharAt(orderTags.length() - 1);
-		return orderTags.toString();
 	}
 
 }
