@@ -473,9 +473,13 @@ public class MainWindow {
 				List<String> paths = FilePathSelector.getFilePaths();
 				if (!paths.isEmpty()) {
 					double result = ConsistencyCheck.getConsistencyRate(paths);
-					NumberFormat fmt = NumberFormat.getPercentInstance();
-					fmt.setMaximumFractionDigits(2);
-					firstConsistencyText.setText("一致性检验结果为：" + fmt.format(result));
+					if(result >= 0){
+						NumberFormat fmt = NumberFormat.getPercentInstance();
+						fmt.setMaximumFractionDigits(2);
+						firstConsistencyText.setText("一致性检验结果为：" + fmt.format(result));
+					}else{
+						firstConsistencyText.setText("选择文件有误！");
+					}
 					firstCardLayout.show(firstCardPanel, "检验结果");
 				}
 				logger.debug("首页->结果->未选择文件");

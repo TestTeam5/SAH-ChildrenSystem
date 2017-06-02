@@ -25,10 +25,21 @@ public class ConsistencyCheck {
 			List<Map<String, String>> temp = xmlReader.readXml();
 			for(Map<String, String> tempMap: temp){
 				if(tempMap.get("TagIts") != null){
-					tempMap.put("TagIts", AESEncryptor.decrypt(tempMap.get("TagIts"), password));
+					String decryptTagString = AESEncryptor.decrypt(tempMap.get("TagIts"), password);
+					if(decryptTagString != null){
+						tempMap.put("TagIts", decryptTagString);
+					}else{
+						return -1;
+					}
 				}
 			}
 			unchecks.add(temp);
+		}
+		int num = unchecks.get(0).size();
+		for(List<Map<String, String>> temp: unchecks){
+			if(temp.size() != num){
+				return -1;
+			}
 		}
 		return consistencyRate(unchecks);
 	}

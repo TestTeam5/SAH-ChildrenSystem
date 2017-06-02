@@ -67,6 +67,8 @@ public class AESEncryptor {
         } catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
 		}
         return null;
     }

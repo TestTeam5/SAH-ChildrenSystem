@@ -29,7 +29,10 @@ public class DeletedNewsGetter {
 	// 执行index--操作
 	public static void indexMinus() {
 		index--;
-		if(index < newsList.getFirstDeleted()){
+		if(newsList.getFirstDeleted() == -1){
+			index = newsList.size();
+		}
+		else if(index < newsList.getFirstDeleted()){
 			index = newsList.getFirstDeleted();
 			if(index == -1){
 				index = newsList.size();
@@ -42,6 +45,11 @@ public class DeletedNewsGetter {
 	
 	// 获取下一页新闻标题
 	public static Object[][] getNews() {
+		if(newsList.getFirstDeleted() == -1){
+			for (int i = 0; i < 25; i++) {
+				newsTitles[i] = new Object[] { "", "" };
+			}
+		}
 		if(index >= newsList.size())
 			return newsTitles;
 		for (int i = 0; i < 25; i++) {
