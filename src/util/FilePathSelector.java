@@ -47,6 +47,19 @@ public class FilePathSelector {
 		return filePath;
 	}
 
+	public static String getFolderPath(){
+		JFileChooser jfc = new JFileChooser();
+		jfc.setDialogTitle("Save xml file to path");
+		jfc.setFileSelectionMode(JFileChooser.SAVE_DIALOG | JFileChooser.DIRECTORIES_ONLY);
+		updateFont(jfc, new Font("Î¢ÈíÑÅºÚ", Font.PLAIN, 12));
+		int result = jfc.showDialog(new JLabel(), "±£´æ");
+		if (result == JFileChooser.APPROVE_OPTION) {
+			File fi = jfc.getSelectedFile();
+			return fi.getAbsolutePath();
+		}
+		return null;
+	}
+	
 	public static String getNewFilePath(String filename) {
 		JFileChooser jfc = new JFileChooser();
 		jfc.setDialogTitle("Save xml file to path");

@@ -38,6 +38,7 @@ import org.apache.log4j.Logger;
 
 import util.ConsistencyCheck;
 import util.DeletedNewsGetter;
+import util.FileCopy;
 import util.FileManager;
 import util.FilePathSelector;
 import util.Initializer;
@@ -156,6 +157,8 @@ public class MainWindow {
 		firstTopButtonPanel.setLayout(new GridLayout(1, 8, 5, 5));
 		firstPagePanel.add(firstTopButtonPanel, BorderLayout.NORTH);
 
+		JButton exportButton = new PageSelectButton("导出");
+		firstTopButtonPanel.add(exportButton);
 		JButton importButton = new PageSelectButton("导入");
 		firstTopButtonPanel.add(importButton);
 		JButton testButton = new PageSelectButton("测试");
@@ -420,6 +423,19 @@ public class MainWindow {
 		firstConsistencyText.setBorder(null);
 		firstConsistencyPanel.add(firstConsistencyText);
 
+		// 导出按钮点击事件
+		exportButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String folderpath = FilePathSelector.getFolderPath();
+				if(folderpath != null){
+					FileCopy.exportCopyFile(folderpath);
+				}
+			}
+		});
+		
 		// 导入按钮点击事件
 		importButton.addActionListener(new ActionListener() {
 

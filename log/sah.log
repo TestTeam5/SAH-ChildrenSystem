@@ -3201,3 +3201,11 @@
 2017-06-02 17:47:12 [AWT-EventQueue-0] DEBUG main.MainWindow$44.actionPerformed(MainWindow.java:1377) 点击新闻
 2017-06-02 17:47:14 [AWT-EventQueue-0] DEBUG main.MainWindow$27.actionPerformed(MainWindow.java:903) 新闻详细界面-点击删除按钮
 2017-06-02 17:47:15 [AWT-EventQueue-0] DEBUG main.MainWindow$44.actionPerformed(MainWindow.java:1412) 点击回收站
+2017-06-04 00:04:55 [main] DEBUG main.MainWindow.main(MainWindow.java:66) 界面初始化开始
+2017-06-04 00:04:55 [main] DEBUG main.MainWindow.main(MainWindow.java:68) 数据初始化开始
+2017-06-04 00:04:56 [main] DEBUG main.MainWindow.main(MainWindow.java:72) 数据初始化完成
+2017-06-04 00:04:56 [main] DEBUG main.MainWindow.main(MainWindow.java:85) 界面初始化完成
+2017-06-04 00:06:08 [main] DEBUG main.MainWindow.main(MainWindow.java:66) 界面初始化开始
+2017-06-04 00:06:08 [main] DEBUG main.MainWindow.main(MainWindow.java:68) 数据初始化开始
+2017-06-04 00:06:09 [main] DEBUG main.MainWindow.main(MainWindow.java:72) 数据初始化完成
+2017-06-04 00:06:09 [main] DEBUG main.MainWindow.main(MainWindow.java:85) 界面初始化完成
