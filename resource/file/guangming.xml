@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?><ArrayOfNewsData xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <NewsData>
-        <TagIts>1 1|2 2|3 3|0 0</TagIts>
+        <TagIts>1 1|2 2|3 3|0 0|4 4</TagIts>
         <IsLoad>true</IsLoad>
         <IsDeleted>false</IsDeleted>
         <Memo/>

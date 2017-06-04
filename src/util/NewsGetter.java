@@ -20,6 +20,7 @@ public class NewsGetter {
 			new Object[] { "" } };
 
 	public static void init(){
+		newsList = Initializer.newsList;
 		pageNumber = 0;
 		index = -1;
 		indexPlus();

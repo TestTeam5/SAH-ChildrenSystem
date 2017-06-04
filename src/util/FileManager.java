@@ -45,7 +45,7 @@ public class FileManager {
 					String newTag = newTagNode.getFirstChild().getNodeValue();
 					if(oldTagNode.hasChildNodes() && !newTag.equals(oldTagNode.getFirstChild().getNodeValue())){
 						oldTagNode.getFirstChild().setNodeValue(newTag);
-					} else{
+					} else if(!oldTagNode.hasChildNodes()){
 						oldTagNode.appendChild(oldDoc.createTextNode(newTag));
 					}
 				}
