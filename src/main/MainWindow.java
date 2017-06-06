@@ -10,7 +10,6 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -18,6 +17,7 @@ import java.awt.event.MouseEvent;
 import java.text.NumberFormat;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -429,11 +429,27 @@ public class MainWindow {
 		firstConsistencyPanel.setBackground(Color.WHITE);
 
 		JTextField firstConsistencyText = new JTextField("一致性检验结果为：");
-		firstConsistencyText.setHorizontalAlignment(JTextField.CENTER);
-		firstConsistencyText.setFont(new Font("微软雅黑", Font.PLAIN, 20));
+		firstConsistencyText.setHorizontalAlignment(JTextField.LEFT);
+		firstConsistencyText.setFont(new Font("微软雅黑", Font.PLAIN, 16));
 		firstConsistencyText.setFocusable(false);
-		firstConsistencyText.setBorder(null);
-		firstConsistencyPanel.add(firstConsistencyText);
+		firstConsistencyText.setBorder(BorderFactory.createEmptyBorder(10, 20, 0, 20));
+		firstConsistencyPanel.add(firstConsistencyText, BorderLayout.NORTH);
+		
+		Vector<Vector<String>> firstConsistencyTableData = Initializer.resultNewsVec;
+		Vector<String> firstConsistencyColumnTitle = new Vector<>();
+		firstConsistencyColumnTitle.add("标题");
+		DefaultTableModel firstConsistencyModel = new DefaultTableModel(); // 新建一个默认数据模型
+		JTable firstConsistencyTable = new NewsTable(firstConsistencyModel, true);
+		firstConsistencyModel.setDataVector(firstConsistencyTableData, firstConsistencyColumnTitle);
+		
+		JScrollPane firstConsistencyScrollPane = new NewsScrollPane(firstConsistencyTable);
+		Border firstConsistencyScrollBorder = new CompoundBorder(
+				new CompoundBorder(BorderFactory.createEmptyBorder(10, 20, 30, 20),
+						BorderFactory.createLineBorder(Color.BLACK, 1)),
+				BorderFactory.createEmptyBorder(20, 25, 20, 25));
+		firstConsistencyScrollPane.setBorder(firstConsistencyScrollBorder);
+		firstConsistencyScrollPane.setBackground(Color.WHITE);
+		firstConsistencyPanel.add(firstConsistencyScrollPane, BorderLayout.CENTER);
 
 		// 导出按钮点击事件
 		exportButton.addActionListener(new ActionListener() {
@@ -508,6 +524,9 @@ public class MainWindow {
 					}else{
 						firstConsistencyText.setText("选择文件有误！");
 					}
+					
+					firstConsistencyTable.invalidate();
+					
 					firstCardLayout.show(firstCardPanel, "检验结果");
 				}
 				logger.debug("首页->结果->未选择文件");

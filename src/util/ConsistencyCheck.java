@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 public class ConsistencyCheck {
 	
@@ -57,14 +58,25 @@ public class ConsistencyCheck {
 	}
 	
 	private static int getConsistencyCount(){
+		Initializer.wrongLineNum.clear();
+		Initializer.resultNewsVec.clear();
 		int indexOfNewsList, indexOfNews, count = uncheckNews.get(0).size();
 		String tags1, tags2;
+		Vector<String> vec;
 		for(indexOfNews = 0; indexOfNews < uncheckNews.get(0).size(); indexOfNews++){
 			tags1 = uncheckNews.get(0).get(indexOfNews).get(tag);
+			
+			vec = new Vector<>();
+			vec.add(uncheckNews.get(0).get(indexOfNews).get("Title"));
+			Initializer.resultNewsVec.add(vec);
+			
 			for(indexOfNewsList = 1; indexOfNewsList < uncheckNews.size(); indexOfNewsList++){
 				tags2 = uncheckNews.get(indexOfNewsList).get(indexOfNews).get(tag);
 				if(!inOrder(tags1).equals(inOrder(tags2))){
 					count--;
+					
+					Initializer.wrongLineNum.add(indexOfNews);
+					
 					break;
 				}
 			}
