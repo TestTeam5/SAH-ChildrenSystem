@@ -393,6 +393,18 @@ public class MainWindow {
 		firstTestChangeButton.setBorderPainted(false);
 		firstTestShiftPanel.add(firstTestChangeButton);
 		
+		firstTestTempPanel = new JPanel();
+		firstTestTempPanel.setSize(1, 1);
+		firstTestTempPanel.setBackground(Color.WHITE);
+		firstTestShiftPanel.add(firstTestTempPanel);
+		
+		JButton firstTestFinishButton = new JButton("完成");
+		firstTestFinishButton.setBackground(Color.DARK_GRAY);
+		firstTestFinishButton.setForeground(Color.WHITE);
+		firstTestFinishButton.setFocusPainted(false);
+		firstTestFinishButton.setBorderPainted(false);
+		firstTestShiftPanel.add(firstTestFinishButton);
+		
 		firstTestMainPanel.add(firstTestShiftPanel, BorderLayout.SOUTH);
 
 		// 添加详细新闻内容版面
@@ -583,6 +595,16 @@ public class MainWindow {
 				}
 				
 				numEditBox.setText((TestNewsGetter.getSelectedIndex() + 1) + "");
+			}
+		});
+		
+		// 首页->测试界面->完成点击事件
+		firstTestFinishButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				firstCardLayout.show(firstCardPanel, "欢迎信息");
 			}
 		});
 

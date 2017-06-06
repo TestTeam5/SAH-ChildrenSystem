@@ -3551,3 +3551,11 @@
 2017-06-06 19:09:16 [AWT-EventQueue-0] DEBUG main.MainWindow$5.actionPerformed(MainWindow.java:288) 显示新闻界面-点击子标签0
 2017-06-06 19:09:17 [AWT-EventQueue-0] DEBUG main.MainWindow$8.actionPerformed(MainWindow.java:331) 显示新闻界面-点击主标签2
 2017-06-06 19:09:17 [AWT-EventQueue-0] DEBUG main.MainWindow$5.actionPerformed(MainWindow.java:288) 显示新闻界面-点击子标签0
+2017-06-06 19:16:43 [main] DEBUG main.MainWindow.main(MainWindow.java:66) 界面初始化开始
+2017-06-06 19:16:43 [main] DEBUG main.MainWindow.main(MainWindow.java:68) 数据初始化开始
+2017-06-06 19:16:44 [main] DEBUG main.MainWindow.main(MainWindow.java:72) 数据初始化完成
+2017-06-06 19:16:44 [main] DEBUG main.MainWindow.main(MainWindow.java:85) 界面初始化完成
+2017-06-06 19:21:07 [main] DEBUG main.MainWindow.main(MainWindow.java:66) 界面初始化开始
+2017-06-06 19:21:07 [main] DEBUG main.MainWindow.main(MainWindow.java:68) 数据初始化开始
+2017-06-06 19:21:08 [main] DEBUG main.MainWindow.main(MainWindow.java:72) 数据初始化完成
+2017-06-06 19:21:08 [main] DEBUG main.MainWindow.main(MainWindow.java:85) 界面初始化完成
