@@ -1,5 +1,6 @@
 package util;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -24,7 +25,7 @@ public class XMLWriter {
             // 2.从DOM工厂里获取DOM解析器
             DocumentBuilder db = dbf.newDocumentBuilder();
             // 3.解析XML文档，得到document，即DOM树
-            Document doc = db.parse(path);
+            Document doc = db.parse(new FileInputStream(path));
             NodeList list = doc.getElementsByTagName("ID");
             
             for(int i = 0; i < list.getLength(); i++){
@@ -51,7 +52,7 @@ public class XMLWriter {
             writeFile(doc, path);
             
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
 	
